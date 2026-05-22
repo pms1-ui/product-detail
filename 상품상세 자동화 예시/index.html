@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 상세 페이지</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background-color: #f9f9f9; color: #121212; display: flex; justify-content: center; }
+        
+        .detail-container { width: 100%; max-width: 800px; background: white; overflow: hidden; display: flex; flex-direction: column; align-items: center; }
+
+        /* 공통 */
+        .section-divider { width: 7.5vw; height: 0.75vw; background: #14297E; margin-bottom: 3.75vw; }
+        .section-title { text-align: center; font-size: 7.75vw; font-weight: 600; color: #121212; margin-bottom: 1.25vw; }
+        .section-subtitle { text-align: center; font-size: 4.375vw; font-weight: 400; color: #121212; margin-bottom: 6.25vw; }
+
+        /* 인트로 */
+        .intro-section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 18.75vw 0; }
+        .main-hero { width: 100%; height: auto; aspect-ratio: 800/1106; object-fit: cover; background: #9E5656; }
+        .intro-text-area { width: 100%; padding: 25vw 9.375vw; display: flex; flex-direction: column; align-items: center; gap: 10vw; }
+        .eng-title { text-align: center; font-size: 3.75vw; color: #979797; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; line-height: 1.2; }
+        .kor-title { text-align: center; font-size: 8.75vw; color: #121212; font-weight: 700; line-height: 1.2; }
+        .intro-images { width: 100%; display: flex; justify-content: center; gap: 1.25vw; overflow: hidden; }
+        .intro-images img { width: 48%; height: auto; object-fit: cover; }
+        .description-box { text-align: center; display: flex; flex-direction: column; gap: 10vw; }
+        .description-box p { font-size: 4.375vw; color: #121212; font-weight: 400; line-height: 1.6; word-break: keep-all; }
+
+        /* 상품 이미지 그리드 */
+        .product-images { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 3.75vw; }
+        .product-img { width: 100%; aspect-ratio: 800/1106; object-fit: cover; display: block; }
+        .product-images-group { width: 100%; display: flex; flex-direction: column; gap: 3.75vw; }
+        .color-notice { width: 100%; padding: 3.75vw; font-size: 3.125vw; color: #555555; font-weight: 500; line-height: 1.6; }
+
+        /* 디테일 포인트 */
+        .detail-section { width: 100%; padding: 12.5vw 0; display: flex; flex-direction: column; align-items: center; }
+        .detail-section .section-subtitle { font-weight: 400; }
+        .fabric-box { width: 100%; background: #F4F4F4; padding: 7.75vw; text-align: center; margin-bottom: 10vw; }
+        .fabric-box span.label { font-size: 4.375vw; font-weight: 600; color: #121212; }
+        .fabric-box span.value { font-size: 4.375vw; font-weight: 400; color: #121212; }
+        .detail-images { width: 100%; display: flex; flex-direction: column; gap: 12.5vw; }
+        .detail-img { width: 100%; aspect-ratio: 800/600; object-fit: cover; background: #F4F4F4; display: block; }
+        .detail-notice { width: 100%; padding: 3.75vw; display: flex; flex-direction: column; gap: 2.5vw; }
+        .detail-notice-title { font-size: 3.125vw; font-weight: 500; color: #121212; }
+        .detail-notice-desc { font-size: 3.125vw; font-weight: 500; color: #555555; }
+
+        /* KC 인증 */
+        .kc-section { width: 100%; padding: 12.5vw 0; display: flex; flex-direction: column; align-items: center; }
+        .kc-badge-box { width: 100%; background: #F7F7F7; padding: 6.25vw 3.75vw; display: flex; align-items: center; gap: 3.75vw; justify-content: center; }
+        .kc-badge-box img { width: 10vw; height: auto; flex-shrink: 0; }
+        .kc-text { text-align: left; }
+        .kc-title { color: #2D3895; font-size: 4.5vw; font-weight: 600; margin-bottom: 1.5vw; }
+        .kc-desc { color: #121212; font-size: 3.375vw; font-weight: 400; line-height: 1.7; }
+
+        /* 모델 사이즈 */
+        .model-section { width: 100%; padding: 12.5vw 0; display: flex; flex-direction: column; align-items: center; }
+        .model-row { display: flex; justify-content: center; align-items: center; gap: 2.5vw; margin-bottom: 3.75vw; flex-wrap: wrap; }
+        .model-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.5vw; }
+        .model-thumb { width: 27.5vw; height: 27.5vw; border-radius: 50%; overflow: hidden; position: relative; background: #A34D4D; }
+        .model-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .model-thumb.light-bg { background: #F1F1F1; }
+        .model-name { font-size: 3.625vw; font-weight: 600; color: #121212; letter-spacing: 1.2px; text-transform: uppercase; }
+        .model-info { font-size: 3.125vw; color: #494949; font-weight: 500; line-height: 1.5; }
+
+        /* 사이즈 가이드 / 상품 사이즈 테이블 */
+        .size-section { width: 100%; padding: 12.5vw 0; display: flex; flex-direction: column; align-items: center; }
+        .size-section .section-subtitle { font-weight: 500; margin-bottom: 2.5vw; }
+        .size-notice { font-size: 3.125vw; color: #555555; font-weight: 500; text-align: center; margin-bottom: 5vw; }
+        .table-container { width: 100%; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        th { background: #14297E; color: white; font-size: 3.5vw; font-weight: 600; padding: 2.75vw 1.875vw; border: none; }
+        td { padding: 2.75vw 1.875vw; font-size: 3.125vw; border: none; color: #121212; font-weight: 400; }
+        tr td:first-child { background: #E5E5E5; font-weight: 500; }
+        .table-data-row td:first-child { background: #E5E5E5; }
+        .table-data-row td { background: #F4F4F4; }
+        .unit-text { width: 100%; text-align: right; font-size: 3.75vw; color: #121212; margin-bottom: 1.25vw; font-weight: 400; padding-right: 2.5vw; }
+
+        /* 도식화 이미지 */
+        .size-illustration { width: 80%; max-width: 520px; margin: 0 auto 5vw; opacity: 0.45; }
+        .size-illustration img { width: 100%; height: auto; }
+
+        /* 체크포인트 */
+        .check-section { width: 100%; padding: 12.5vw 0; display: flex; flex-direction: column; align-items: center; }
+        .check-area { width: 100%; display: flex; flex-direction: column; gap: 0.5vw; }
+        .check-row { display: flex; align-items: stretch; }
+        .check-label { width: 20%; background: #E5E5E5; color: #121212; font-size: 3.75vw; font-weight: 500; display: flex; align-items: center; justify-content: center; padding: 5vw 1.25vw; }
+        .check-options-wrap { width: 80%; background: #F4F4F4; display: flex; flex-direction: column; justify-content: center; padding: 3.125vw 3.75vw; }
+        .check-options-text { display: flex; justify-content: space-between; margin-bottom: 1.875vw; }
+        .check-options-text span { font-size: 3.75vw; font-weight: 500; color: #939393; }
+        .check-options-text span.active { color: #121212; }
+        .check-slider { position: relative; height: 3.125vw; display: flex; align-items: center; }
+        .check-slider-line { position: absolute; left: 1.25vw; right: 1.25vw; height: 0.375vw; background: #C7C7C7; }
+        .check-slider-dots { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
+        .check-slider-dot { width: 2.25vw; height: 2.25vw; background: #C7C7C7; border-radius: 50%; }
+        .check-slider-dot.active { width: 3.125vw; height: 3.125vw; background: #121212; }
+    </style>
+</head>
+<body>
+
+<div class="detail-container">
+
+    <!-- 인트로 섹션 -->
+    <section class="intro-section">
+        <img class="main-hero" src="https://placehold.co/800x1106" alt="메인 상품 이미지">
+
+        <div class="intro-text-area">
+            <div style="display: flex; flex-direction: column; gap: 50px; align-items: center;">
+                <div class="eng-title">Front Graphic Sweatshirt</div>
+                <div class="kor-title">전면 그래픽 맨투맨</div>
+            </div>
+
+            <div class="intro-images">
+                <img src="https://placehold.co/800x451" alt="상품 이미지" style="width: 100%;">
+            </div>
+
+            <div class="description-box">
+                <p>아웃도어 프로덕츠 키즈의<br>바시티 패딩 점퍼입니다.</p>
+                <p>여유 있는 핏으로 제작되었으며,<br>3oz 패딩을 퀼팅한 원단의 안감으로<br>보온성이 좋아 쌀쌀한 환절기 아이템으로<br>좋은 점퍼입니다.<br>소매의 배색 라인과 등판의 바시티 그래픽으로<br>포인트를 준 점퍼 스타일이며,<br>등하교 룩, 외출 룩 등 다양한 코디가 가능한<br>실용적인 아우터입니다.</p>
+            </div>
+        </div>
+
+        <!-- 상품 이미지 그룹 1 -->
+        <div class="product-images">
+            <div class="product-images-group">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 1" style="background: #8A3B3B;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 2" style="background: #8A3B3B;">
+            </div>
+            <div class="product-images-group" style="margin-top: 120px;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 3" style="background: #8A3B3B;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 4" style="background: #8A3B3B;">
+            </div>
+        </div>
+
+        <!-- 상품 이미지 그룹 2 (밝은 배경) -->
+        <div class="product-images" style="margin-top: 150px;">
+            <div class="product-images-group">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 5" style="background: #F1F1F1;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 6" style="background: #F1F1F1;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 7" style="background: #F1F1F1;">
+            </div>
+            <div class="product-images-group" style="margin-top: 150px;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 8" style="background: #F1F1F1;">
+                <img class="product-img" src="https://placehold.co/800x1106" alt="상품컷 9" style="background: #F1F1F1;">
+            </div>
+        </div>
+
+        <div class="color-notice">
+            제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.
+        </div>
+    </section>
+
+    <!-- 대형 이미지 (오버플로우) -->
+    <section style="width: 100%; padding-top: 100px; overflow: hidden;">
+        <img src="https://placehold.co/872x872" alt="대형 이미지 1" style="width: 100%; height: auto; display: block;">
+        <img src="https://placehold.co/889x889" alt="대형 이미지 2" style="width: 100%; height: auto; display: block;">
+    </section>
+
+    <!-- 디테일 포인트 -->
+    <section class="detail-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Detail Point</h3>
+        <p class="section-subtitle">제품 상세 특징</p>
+
+        <div class="fabric-box">
+            <span class="label">FABRIC</span><br>
+            <span class="value">겉감, 배색 : 나일론 100%<br>안감, 충전재 : 폴리에스터 100%</span>
+        </div>
+
+        <div class="detail-images">
+            <img class="detail-img" src="https://placehold.co/800x600" alt="디테일컷 1">
+            <img class="detail-img" src="https://placehold.co/800x600" alt="디테일컷 2">
+            <img class="detail-img" src="https://placehold.co/800x600" alt="디테일컷 3">
+            <img class="detail-img" src="https://placehold.co/800x600" alt="디테일컷 4">
+            <img class="detail-img" src="https://placehold.co/800x600" alt="디테일컷 5">
+        </div>
+
+        <div class="detail-notice">
+            <div class="detail-notice-title">디테일한 특징을 확인해주세요!</div>
+            <div class="detail-notice-desc">사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
+        </div>
+    </section>
+
+    <!-- KC 인증마크 -->
+    <section class="kc-section">
+        <div class="kc-badge-box">
+            <img src="https://placehold.co/94x143" alt="KC마크">
+            <div class="kc-text">
+                <div class="kc-title">KC안전인증마크</div>
+                <div class="kc-desc">FITI시험연구원의 품질안전검사 합격 판정을 받아<br>믿을 수 있는 제품입니다.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 모델 사이즈 -->
+    <section class="model-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Model Size</h3>
+        <p class="section-subtitle" style="font-weight: 500;">모델 사이즈</p>
+
+        <div class="model-row">
+            <div class="model-card">
+                <div class="model-thumb">
+                    <img src="https://placehold.co/400x400" alt="DANIELLE">
+                </div>
+                <div class="model-name">DANIELLE</div>
+                <div class="model-info">127cm / 23kg<br>130 size</div>
+            </div>
+            <div class="model-card">
+                <div class="model-thumb">
+                    <img src="https://placehold.co/400x400" alt="RUBY">
+                </div>
+                <div class="model-name">RUBY</div>
+                <div class="model-info">126cm / 23kg<br>130 size</div>
+            </div>
+            <div class="model-card">
+                <div class="model-thumb">
+                    <img src="https://placehold.co/400x400" alt="RUKA">
+                </div>
+                <div class="model-name">RUKA</div>
+                <div class="model-info">130cm / 24kg<br>130 size</div>
+            </div>
+        </div>
+
+        <div class="model-row">
+            <div class="model-card">
+                <div class="model-thumb light-bg">
+                    <img src="https://placehold.co/400x400" alt="ALEXANDER">
+                </div>
+                <div class="model-name">ALEXANDER</div>
+                <div class="model-info">126cm / 25.5kg<br>130 size</div>
+            </div>
+            <div class="model-card">
+                <div class="model-thumb light-bg">
+                    <img src="https://placehold.co/400x400" alt="EMMA">
+                </div>
+                <div class="model-name">EMMA</div>
+                <div class="model-info">124cm / 23kg<br>130 size</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 사이즈 가이드 -->
+    <section class="size-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Size Guide</h3>
+        <p class="section-subtitle" style="font-weight: 500;">사이즈 가이드</p>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>사이즈</th>
+                        <th>120</th>
+                        <th>130</th>
+                        <th>145</th>
+                        <th>155</th>
+                        <th>165</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-data-row">
+                        <td><span style="font-size: 3.25vw;">나이</span><br><span style="font-size: 3vw;">(세)</span></td>
+                        <td>5-6</td>
+                        <td>7-8</td>
+                        <td>9-10</td>
+                        <td>11-12</td>
+                        <td>13-14</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td><span style="font-size: 3.25vw;">신장</span><br><span style="font-size: 3vw;">(cm)</span></td>
+                        <td>110-120</td>
+                        <td>120-130</td>
+                        <td>130-140</td>
+                        <td>140-150</td>
+                        <td>150-160</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td><span style="font-size: 3.25vw;">체중</span><br><span style="font-size: 3vw;">(kg)</span></td>
+                        <td>20-25</td>
+                        <td>25-30</td>
+                        <td>30-35</td>
+                        <td>35-40</td>
+                        <td>40-45</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="size-notice" style="margin-top: 20px;">평균 사이즈표로 체형과 제품에 따라 다소 차이가 있을 수 있습니다.</div>
+    </section>
+
+    <!-- 상품 사이즈 -->
+    <section class="size-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Product Size</h3>
+        <p class="section-subtitle" style="font-weight: 500;">상품 사이즈</p>
+
+        <div class="size-illustration">
+            <img src="https://placehold.co/620x637" alt="사이즈 측정 도식화">
+        </div>
+
+        <div class="unit-text">(cm)</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>치수항목</th>
+                        <th>어깨너비</th>
+                        <th>가슴둘레</th>
+                        <th>소매길이</th>
+                        <th>총장</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="table-data-row">
+                        <td>120</td>
+                        <td>44.1</td>
+                        <td>95</td>
+                        <td>40.1</td>
+                        <td>48.5</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td>130</td>
+                        <td>46.5</td>
+                        <td>100</td>
+                        <td>43.5</td>
+                        <td>52.5</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td>145</td>
+                        <td>49.1</td>
+                        <td>105.5</td>
+                        <td>46.8</td>
+                        <td>56.5</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td>155</td>
+                        <td>51.7</td>
+                        <td>111</td>
+                        <td>50.1</td>
+                        <td>60.5</td>
+                    </tr>
+                    <tr class="table-data-row">
+                        <td>165</td>
+                        <td>54.3</td>
+                        <td>116.5</td>
+                        <td>53.4</td>
+                        <td>64.5</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 체크 포인트 -->
+    <section class="check-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Check Point</h3>
+        <p class="section-subtitle" style="font-weight: 500;">체크 포인트</p>
+
+        <div class="check-area">
+            <!-- 핏 -->
+            <div class="check-row">
+                <div class="check-label">핏</div>
+                <div class="check-options-wrap">
+                    <div class="check-options-text">
+                        <span class="active">크게나옴</span>
+                        <span>정사이즈</span>
+                        <span>작게나옴</span>
+                    </div>
+                    <div class="check-slider">
+                        <div class="check-slider-line"></div>
+                        <div class="check-slider-dots">
+                            <div class="check-slider-dot active"></div>
+                            <div class="check-slider-dot"></div>
+                            <div class="check-slider-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 두께감 -->
+            <div class="check-row">
+                <div class="check-label">두께감</div>
+                <div class="check-options-wrap">
+                    <div class="check-options-text">
+                        <span class="active">두꺼움</span>
+                        <span>적당함</span>
+                        <span>얇음</span>
+                    </div>
+                    <div class="check-slider">
+                        <div class="check-slider-line"></div>
+                        <div class="check-slider-dots">
+                            <div class="check-slider-dot active"></div>
+                            <div class="check-slider-dot"></div>
+                            <div class="check-slider-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 신축성 -->
+            <div class="check-row">
+                <div class="check-label">신축성</div>
+                <div class="check-options-wrap">
+                    <div class="check-options-text">
+                        <span>좋음</span>
+                        <span>약간있음</span>
+                        <span class="active">없음</span>
+                    </div>
+                    <div class="check-slider">
+                        <div class="check-slider-line"></div>
+                        <div class="check-slider-dots">
+                            <div class="check-slider-dot"></div>
+                            <div class="check-slider-dot"></div>
+                            <div class="check-slider-dot active"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 안감 -->
+            <div class="check-row">
+                <div class="check-label">안감</div>
+                <div class="check-options-wrap">
+                    <div class="check-options-text">
+                        <span class="active">있음</span>
+                        <span>부분안감</span>
+                        <span>없음</span>
+                    </div>
+                    <div class="check-slider">
+                        <div class="check-slider-line"></div>
+                        <div class="check-slider-dots">
+                            <div class="check-slider-dot active"></div>
+                            <div class="check-slider-dot"></div>
+                            <div class="check-slider-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+</html>
