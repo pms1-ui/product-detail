@@ -3,551 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 상세 페이지 생성기</title>
+    <title>상품 상세 페이지 생성기 - 사용 가이드</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background: #1a1a2e; min-height: 100vh; }
-        .app-header { background: #16213e; padding: 14px 30px; border-bottom: 1px solid #0f3460; display: flex; flex-direction: column; gap: 10px; }
-        .app-header-top { display: flex; align-items: center; justify-content: space-between; }
-        .app-header h1 { color: white; font-size: 18px; font-weight: 600; }
-        .app-header p { color: #8892b0; font-size: 12px; }
-        .brand-tabs { display: flex; gap: 4px; }
-        .brand-tab { padding: 8px 16px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; color: #8892b0; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; text-decoration: none; }
-        .brand-tab:hover { border-color: #4a9eff; color: #ccd6f6; }
-        .brand-tab.active { background: #14297E; border-color: #14297E; color: white; font-weight: 600; }
-        .app-layout { display: flex; height: calc(100vh - 90px); }
-        /* 좌측 */
-        .input-panel { width: 380px; background: #16213e; overflow-y: auto; padding: 24px 20px; border-right: 1px solid #0f3460; flex-shrink: 0; }
-        .input-panel::-webkit-scrollbar { width: 5px; }
-        .input-panel::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
-        .input-group { margin-bottom: 16px; }
-        .input-group label { display: block; color: #8892b0; font-size: 11px; font-weight: 500; margin-bottom: 6px; letter-spacing: 0.3px; }
-        .input-group input[type="text"], .input-group textarea, .input-group select {
-            width: 100%; padding: 10px 12px; background: #0a1628; border: 1px solid #1e3a5f;
-            border-radius: 6px; color: #e6f1ff; font-size: 13px; outline: none; transition: border 0.2s; }
-        .input-group input[type="text"]:focus, .input-group textarea:focus, .input-group select:focus { border-color: #4a9eff; box-shadow: 0 0 0 2px rgba(74,158,255,0.1); }
-        .input-group textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
-        .input-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-        .sec-head { color: #ccd6f6; font-size: 12px; font-weight: 600; margin: 28px 0 12px; padding: 8px 0; border-bottom: 1px solid #1e3a5f; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.3px; }
-        .sec-head:first-child { margin-top: 0; }
-        .sec-head span { display: flex; align-items: center; gap: 6px; }
-        .btn-add { width: 24px; height: 24px; background: transparent; color: #4a9eff; border: 1.5px solid #4a9eff; border-radius: 5px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.15s; }
-        .btn-add:hover { background: #4a9eff; color: white; }
-        .file-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; padding: 6px 10px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; transition: border 0.15s; }
-        .file-row:hover { border-color: #3a6a9f; }
-        .file-row input[type="file"] { flex: 1; font-size: 11px; color: #8892b0; }
-        .file-row input[type="file"]::file-selector-button { padding: 4px 10px; background: #1e3a5f; color: #ccd6f6; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; margin-right: 8px; transition: background 0.15s; }
-        .file-row input[type="file"]::file-selector-button:hover { background: #2a4a7f; }
-        .file-row .file-name-display { flex: 1; font-size: 12px; color: #a8b2d1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .file-row .btn-del { display: none; width: 20px; height: 20px; background: transparent; color: #e74c3c; border: 1px solid #e74c3c; border-radius: 4px; font-size: 11px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
-        .file-row:hover .btn-del { display: flex; }
-        .file-row .btn-del:hover { background: #e74c3c; color: white; }
-        .file-slots { margin-bottom: 8px; }
-        /* 우측 */
-        .preview-panel { flex: 1; overflow-y: auto; background: #e8e8e8; padding: 20px 20px 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; gap: 10px; align-items: center; }
-        .btn-download { padding: 12px 24px; background: #14297E; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(20,41,126,0.4); transition: all 0.15s; }
-        .btn-download:hover { background: #1a3599; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,41,126,0.5); }
-        .btn-download.loading { opacity: 0.5; pointer-events: none; }
-        /* 분할 모달 */
-        .crop-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
-        .crop-modal.show { display: flex; }
-        .crop-modal-box { background: #16213e; border: 1px solid #1e3a5f; border-radius: 12px; padding: 30px; width: 340px; text-align: center; }
-        .crop-modal-box h3 { color: #e6f1ff; font-size: 16px; margin-bottom: 8px; }
-        .crop-modal-box p { color: #8892b0; font-size: 12px; margin-bottom: 20px; }
-        .crop-modal-box input { width: 80px; padding: 10px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; color: white; font-size: 18px; text-align: center; outline: none; }
-        .crop-modal-box input:focus { border-color: #4a9eff; }
-        .crop-modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-        .crop-modal-btns button { padding: 10px 20px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
-        .crop-modal-btns .btn-confirm { background: #14297E; color: white; }
-        .crop-modal-btns .btn-confirm:hover { background: #1a3599; }
-        .crop-modal-btns .btn-cancel { background: #1e3a5f; color: #ccd6f6; }
-        .crop-modal-btns .btn-cancel:hover { background: #2a4a7f; }
-
-        /* 미리보기 800px 고정 */
-        #preview-container { width: 800px; background: white; }
-        #preview-container * { box-sizing: border-box; }
-        #preview-container .section-divider { width: 60px; height: 6px; background: #14297E; margin: 0 auto 30px; }
-        #preview-container .section-title { text-align: center; font-size: 62px; font-weight: 600; color: #121212; margin-bottom: 10px; }
-        #preview-container .section-subtitle { text-align: center; font-size: 35px; font-weight: 500; color: #121212; margin-bottom: 50px; }
-        #preview-container .intro-section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 150px 0 0 0; }
-        #preview-container .main-hero { width: 100%; height: auto; display: block; cursor: pointer; }
-        #preview-container .intro-text-area { width: 100%; padding: 200px 75px; display: flex; flex-direction: column; align-items: center; gap: 80px; }
-        #preview-container .eng-title { text-align: center; font-size: 30px; color: #979797; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; }
-        #preview-container .kor-title { text-align: center; font-size: 70px; color: #121212; font-weight: 700; line-height: 1.2; }
-        #preview-container .intro-images { width: 100%; overflow: hidden; }
-        #preview-container .intro-images img { width: 100%; height: auto; display: block; cursor: pointer; }
-        #preview-container .description-box { text-align: center; display: flex; flex-direction: column; gap: 80px; }
-        #preview-container .description-box p { font-size: 35px; color: #121212; font-weight: 400; line-height: 1.4; }
-        #preview-container .product-images { width: 100%; display: flex; flex-direction: column; gap: 30px; }
-        #preview-container .product-img { width: 100%; height: auto; display: block; cursor: pointer; }
-        #preview-container .color-notice { width: 100%; padding: 30px; font-size: 25px; color: #555555; font-weight: 500; line-height: 1.6; }
-        #preview-container .detail-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
-        #preview-container .fabric-box { width: 100%; background: #F4F4F4; padding: 62px; text-align: center; margin-bottom: 80px; }
-        #preview-container .fabric-box .label { font-size: 35px; font-weight: 600; color: #121212; }
-        #preview-container .fabric-box .value { font-size: 35px; font-weight: 400; color: #121212; }
-        #preview-container .detail-images { width: 100%; display: flex; flex-direction: column; gap: 100px; }
-        #preview-container .detail-img { width: 100%; height: auto; background: #F4F4F4; display: block; cursor: pointer; }
-        #preview-container .detail-notice { width: 100%; padding: 30px; display: flex; flex-direction: column; gap: 20px; }
-        #preview-container .detail-notice-title { font-size: 25px; font-weight: 500; color: #121212; }
-        #preview-container .detail-notice-desc { font-size: 25px; font-weight: 500; color: #555555; }
-        #preview-container .kc-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
-        #preview-container .kc-badge-box { width: 100%; background: #F7F7F7; padding: 50px 40px; display: flex; align-items: center; gap: 30px; justify-content: center; }
-        #preview-container .kc-badge-box img { width: 80px; height: auto; }
-        #preview-container .kc-text { text-align: left; }
-        #preview-container .kc-title { color: #2D3895; font-size: 36px; font-weight: 600; margin-bottom: 12px; }
-        #preview-container .kc-desc { color: #121212; font-size: 27px; font-weight: 400; line-height: 1.7; }
-        #preview-container .model-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
-        #preview-container .model-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
-        #preview-container .model-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        #preview-container .model-thumb { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; background: #A34D4D; cursor: pointer; }
-        #preview-container .model-thumb img { width: 100%; height: 100%; object-fit: cover; }
-        #preview-container .model-thumb.light-bg { background: #F1F1F1; }
-        #preview-container .model-name { font-size: 29px; font-weight: 600; color: #121212; letter-spacing: 1.45px; text-transform: uppercase; }
-        #preview-container .model-info { font-size: 25px; color: #494949; font-weight: 500; line-height: 1.5; }
-        #preview-container .size-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
-        #preview-container .size-notice { font-size: 25px; color: #555555; font-weight: 500; text-align: center; margin-top: 20px; }
-        #preview-container .table-container { width: 100%; }
-        #preview-container table { width: 100%; border-collapse: collapse; text-align: center; }
-        #preview-container th { background: #14297E; color: white; font-size: 28px; font-weight: 600; padding: 28px 15px; border: none; }
-        #preview-container td { padding: 28px 15px; font-size: 25px; border: none; color: #121212; font-weight: 400; }
-        #preview-container tr td:first-child { background: #E5E5E5; font-weight: 500; font-size: 26px; }
-        #preview-container .table-data-row td { background: #F4F4F4; }
-        #preview-container .unit-text { width: 100%; text-align: right; font-size: 30px; color: #121212; margin-bottom: 10px; padding-right: 20px; }
-        #preview-container .size-illustration { width: 80%; margin: 0 auto 40px; opacity: 0.45; cursor: pointer; }
-        #preview-container .size-illustration img { width: 100%; height: auto; }
-        #preview-container .check-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
-        #preview-container .check-area { width: 100%; display: flex; flex-direction: column; gap: 4px; }
-        #preview-container .check-row { display: flex; align-items: stretch; }
-        #preview-container .check-label { width: 20%; background: #E5E5E5; color: #121212; font-size: 30px; font-weight: 500; display: flex; align-items: center; justify-content: center; padding: 40px 10px; }
-        #preview-container .check-options-wrap { width: 80%; background: #F4F4F4; display: flex; flex-direction: column; justify-content: center; padding: 25px 30px; }
-        #preview-container .check-options-text { display: flex; justify-content: space-between; margin-bottom: 15px; }
-        #preview-container .check-options-text span { font-size: 30px; font-weight: 500; color: #939393; }
-        #preview-container .check-options-text span.active { color: #121212; }
-        #preview-container .check-slider { position: relative; height: 25px; display: flex; align-items: center; }
-        #preview-container .check-slider-line { position: absolute; left: 10px; right: 10px; height: 3px; background: #C7C7C7; }
-        #preview-container .check-slider-dots { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
-        #preview-container .check-slider-dot { width: 18px; height: 18px; background: #C7C7C7; border-radius: 50%; }
-        #preview-container .check-slider-dot.active { width: 25px; height: 25px; background: #121212; }
+        body { background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+        .container { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
+        h1 { font-size: 32px; font-weight: 700; color: white; margin-bottom: 8px; }
+        .subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 48px; }
+        h2 { font-size: 20px; font-weight: 600; color: #e2e8f0; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #1e293b; }
+        p, li { font-size: 14px; line-height: 1.8; color: #cbd5e1; }
+        ul, ol { padding-left: 20px; margin-bottom: 16px; }
+        li { margin-bottom: 6px; }
+        .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
+        .brand-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; text-decoration: none; transition: all 0.15s; }
+        .brand-card:hover { border-color: #4a9eff; background: #1e3a5f; transform: translateY(-2px); }
+        .brand-card .brand-name { font-size: 14px; font-weight: 600; color: white; }
+        .brand-card .brand-arrow { margin-left: auto; color: #64748b; font-size: 18px; }
+        .brand-card:hover .brand-arrow { color: #4a9eff; }
+        .step-box { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
+        .step-box .step-num { display: inline-block; width: 24px; height: 24px; background: #14297E; color: white; border-radius: 50%; font-size: 12px; font-weight: 700; text-align: center; line-height: 24px; margin-right: 10px; }
+        .step-box .step-title { font-size: 14px; font-weight: 600; color: white; display: inline; }
+        .step-box p { font-size: 13px; color: #94a3b8; margin-top: 8px; padding-left: 34px; }
+        .tip { background: #172554; border: 1px solid #1e3a5f; border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
+        .tip strong { color: #60a5fa; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .tip p { margin-top: 6px; font-size: 13px; color: #93c5fd; }
+        .footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid #1e293b; text-align: center; color: #64748b; font-size: 12px; }
     </style>
 </head>
 <body>
-<div class="app-header">
-    <div class="app-header-top">
-        <h1>상품 상세 페이지 생성기</h1>
-        <p>좌측에서 수정하거나, 우측 이미지를 직접 클릭해서 교체할 수 있습니다.</p>
-    </div>
-    <div class="brand-tabs">
-        <a class="brand-tab active" href="/index.html">아웃도어프로덕츠</a>
-        <a class="brand-tab" href="/universal-overall.html">유니버셜오버롤</a>
-        <a class="brand-tab" href="/ellesse.html">엘레쎄</a>
-        <a class="brand-tab" href="/univ.html">유니브</a>
-        <a class="brand-tab" href="/ordinary-holiday.html">오디너리홀리데이</a>
-    </div>
-</div>
-<div class="app-layout">
-<div class="input-panel">
-    <div class="sec-head"><span>① 메인 히어로 이미지</span><button class="btn-add" onclick="addSlot('hero')">+</button></div>
-    <div class="file-slots" id="heroSlots"></div>
+<div class="container">
+    <h1>상품 상세 페이지 생성기</h1>
+    <p class="subtitle">브랜드별 상품 상세 이미지를 빠르게 제작하고 다운로드할 수 있는 도구입니다.</p>
 
-    <div class="sec-head"><span>② 상품명 / 설명</span></div>
-    <div class="input-group">
-        <label>영문 상품명</label>
-        <input type="text" id="engTitle" value="Front Graphic Sweatshirt" oninput="render()">
-    </div>
-    <div class="input-group">
-        <label>한글 상품명</label>
-        <input type="text" id="korTitle" value="전면 그래픽 맨투맨" oninput="render()">
-    </div>
-    <div class="sec-head"><span>소개 이미지</span><button class="btn-add" onclick="addSlot('intro')">+</button></div>
-    <div class="file-slots" id="introSlots"></div>
-    <div class="input-group">
-        <label>짧은 소개</label>
-        <textarea id="desc1" oninput="render()">아웃도어 프로덕츠 키즈의
-바시티 패딩 점퍼입니다.</textarea>
-    </div>
-    <div class="input-group">
-        <label>상세 설명</label>
-        <textarea id="desc2" rows="6" oninput="render()">여유 있는 핏으로 제작되었으며,
-3oz 패딩을 퀼팅한 원단의 안감으로
-보온성이 좋아 쌀쌀한 환절기 아이템으로
-좋은 점퍼입니다.
-소매의 배색 라인과 등판의 바시티 그래픽으로
-포인트를 준 점퍼 스타일이며,
-등하교 룩, 외출 룩 등 다양한 코디가 가능한
-실용적인 아우터입니다.</textarea>
+    <h2>브랜드 선택</h2>
+    <p>아래에서 작업할 브랜드를 선택하세요.</p>
+    <div class="brand-grid">
+        <a class="brand-card" href="/outdoorproducts.html">
+            <span class="brand-name">아웃도어프로덕츠</span>
+            <span class="brand-arrow">→</span>
+        </a>
+        <a class="brand-card" href="/universal-overall.html">
+            <span class="brand-name">유니버셜오버롤</span>
+            <span class="brand-arrow">→</span>
+        </a>
+        <a class="brand-card" href="/ellesse.html">
+            <span class="brand-name">엘레쎄</span>
+            <span class="brand-arrow">→</span>
+        </a>
+        <a class="brand-card" href="/univ.html">
+            <span class="brand-name">유니브</span>
+            <span class="brand-arrow">→</span>
+        </a>
+        <a class="brand-card" href="/ordinary-holiday.html">
+            <span class="brand-name">오디너리홀리데이</span>
+            <span class="brand-arrow">→</span>
+        </a>
     </div>
 
-    <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcut')">+</button></div>
-    <div class="file-slots" id="modelcutSlots"></div>
-
-    <div class="sec-head"><span>④ Detail Point</span></div>
-    <div class="input-group">
-        <label>원단 구성 (FABRIC)</label>
-        <textarea id="fabricInfo" rows="2" oninput="render()">겉감, 배색 : 나일론 100%
-안감, 충전재 : 폴리에스터 100%</textarea>
+    <h2>사용 방법</h2>
+    <div class="step-box">
+        <span class="step-num">1</span>
+        <span class="step-title">브랜드 선택</span>
+        <p>상단 탭 또는 위 카드에서 작업할 브랜드를 선택합니다.</p>
     </div>
-    <div class="sec-head"><span>디테일컷</span><button class="btn-add" onclick="addSlot('detailcut')">+</button></div>
-    <div class="file-slots" id="detailcutSlots"></div>
-
-    <div class="sec-head"><span>⑤ 모델 사이즈</span></div>
-    <div class="input-group">
-        <label>모델 정보 (이름,키/몸무게,사이즈)</label>
-        <textarea id="modelInfo" rows="5" oninput="render()">DANIELLE,127cm / 23kg,130 size
-RUBY,126cm / 23kg,130 size
-RUKA,130cm / 24kg,130 size
-ALEXANDER,126cm / 25.5kg,130 size
-EMMA,124cm / 23kg,130 size</textarea>
+    <div class="step-box">
+        <span class="step-num">2</span>
+        <span class="step-title">좌측 패널에서 내용 입력</span>
+        <p>상품명, 설명, 사이즈 정보 등을 입력합니다. + 버튼으로 이미지 슬롯을 추가하고 파일을 선택하세요.</p>
     </div>
-    <div class="sec-head"><span>모델 썸네일</span><button class="btn-add" onclick="addSlot('modelthumb')">+</button></div>
-    <div class="file-slots" id="modelthumbSlots"></div>
+    <div class="step-box">
+        <span class="step-num">3</span>
+        <span class="step-title">우측 미리보기에서 이미지 클릭</span>
+        <p>우측 미리보기의 이미지를 직접 클릭해서 교체할 수도 있습니다.</p>
+    </div>
+    <div class="step-box">
+        <span class="step-num">4</span>
+        <span class="step-title">이미지 다운로드</span>
+        <p>우측 하단 다운로드 버튼을 클릭합니다. 분할 수를 입력하면 여러 장으로 나눠 ZIP 파일로 받을 수 있습니다.</p>
+    </div>
 
-    <div class="sec-head"><span>⑥ Size Guide</span></div>
-    <div class="input-group"><label>사이즈</label><input type="text" id="sizes" value="120,130,145,155,165" oninput="render()"></div>
-    <div class="input-group"><label>나이</label><input type="text" id="ages" value="5-6,7-8,9-10,11-12,13-14" oninput="render()"></div>
-    <div class="input-group"><label>신장</label><input type="text" id="heights" value="110-120,120-130,130-140,140-150,150-160" oninput="render()"></div>
-    <div class="input-group"><label>체중</label><input type="text" id="weights" value="20-25,25-30,30-35,35-40,40-45" oninput="render()"></div>
+    <h2>주요 기능</h2>
+    <ul>
+        <li><strong>실시간 미리보기</strong> — 입력 즉시 우측에 반영됩니다.</li>
+        <li><strong>이미지 추가/삭제</strong> — + 버튼으로 슬롯 추가, 호버 시 ✕ 버튼으로 삭제합니다.</li>
+        <li><strong>이미지 직접 클릭 교체</strong> — 우측 미리보기의 이미지를 클릭하면 바로 파일 선택이 열립니다.</li>
+        <li><strong>분할 다운로드</strong> — 세로가 긴 상세 이미지를 1~10장으로 나눠 다운로드합니다. 2장 이상이면 ZIP으로 제공됩니다.</li>
+        <li><strong>브랜드별 양식</strong> — 각 브랜드의 상세 페이지 디자인 양식에 맞게 개별 페이지가 제공됩니다.</li>
+    </ul>
 
-    <div class="sec-head"><span>⑦ Product Size</span></div>
-    <div class="input-group"><label>어깨너비</label><input type="text" id="shoulder" value="44.1,46.5,49.1,51.7,54.3" oninput="render()"></div>
-    <div class="input-group"><label>가슴둘레</label><input type="text" id="chest" value="95,100,105.5,111,116.5" oninput="render()"></div>
-    <div class="input-group"><label>소매길이</label><input type="text" id="sleeve" value="40.1,43.5,46.8,50.1,53.4" oninput="render()"></div>
-    <div class="input-group"><label>총장</label><input type="text" id="totalLength" value="48.5,52.5,56.5,60.5,64.5" oninput="render()"></div>
-    <div class="sec-head"><span>도식화 이미지</span><button class="btn-add" onclick="addSlot('sizechart')">+</button></div>
-    <div class="file-slots" id="sizechartSlots"></div>
+    <div class="tip">
+        <strong>💡 Tip</strong>
+        <p>이미지는 가로 800px 기준으로 렌더링됩니다. 세로 길이는 원본 비율에 따라 자동 조절되므로, 가로 800px 이상의 이미지를 사용하면 가장 선명한 결과물을 얻을 수 있습니다.</p>
+    </div>
 
-    <div class="sec-head"><span>⑧ Check Point</span></div>
-    <div class="input-group"><label>핏</label><select id="checkFit" onchange="render()"><option value="0" selected>크게나옴</option><option value="1">정사이즈</option><option value="2">작게나옴</option></select></div>
-    <div class="input-group"><label>두께감</label><select id="checkThick" onchange="render()"><option value="0" selected>두꺼움</option><option value="1">적당함</option><option value="2">얇음</option></select></div>
-    <div class="input-group"><label>신축성</label><select id="checkStretch" onchange="render()"><option value="0">좋음</option><option value="1">약간있음</option><option value="2" selected>없음</option></select></div>
-    <div class="input-group"><label>안감</label><select id="checkLining" onchange="render()"><option value="0" selected>있음</option><option value="1">부분안감</option><option value="2">없음</option></select></div>
-</div>
-
-<div class="preview-panel">
-    <div id="preview-container"></div>
-</div>
-<div class="download-floating">
-    <button class="btn-download" onclick="showCropModal()">📥 이미지로 다운로드 (PNG)</button>
-</div>
-<div class="crop-modal" id="cropModal">
-    <div class="crop-modal-box">
-        <h3>이미지 분할 다운로드</h3>
-        <p>세로를 몇 장으로 나눌지 입력하세요 (1~10)<br>2장 이상이면 ZIP으로 다운로드됩니다.</p>
-        <input type="number" id="cropCount" min="1" max="10" value="1">
-        <div class="crop-modal-btns">
-            <button class="btn-cancel" onclick="hideCropModal()">취소</button>
-            <button class="btn-confirm" onclick="startDownload()">다운로드</button>
-        </div>
+    <div class="footer">
+        상품 상세 페이지 생성기 v1.0
     </div>
 </div>
-</div>
-
-<input type="file" id="hiddenFileInput" accept="image/*" style="display:none">
-
-<script>
-// 데이터: 각 키는 {src, name} 배열
-const data = {
-    hero: [], intro: [], modelcut: [], detailcut: [], modelthumb: [], sizechart: []
-};
-
-// 슬롯 추가 (좌측 + 버튼)
-function addSlot(key) {
-    const idx = data[key].length;
-    data[key].push({ src: '', name: '' });
-    renderSlots(key);
-    render();
-}
-
-// 슬롯 삭제
-function removeSlot(key, idx) {
-    data[key].splice(idx, 1);
-    renderSlots(key);
-    render();
-}
-
-// 파일 선택 처리
-function handleFile(input, key, idx) {
-    const f = input.files[0]; if (!f) return;
-    const r = new FileReader();
-    r.onload = e => {
-        data[key][idx] = { src: e.target.result, name: f.name };
-        renderSlots(key);
-        render();
-    };
-    r.readAsDataURL(f);
-}
-
-// 좌측 슬롯 렌더링
-function renderSlots(key) {
-    const container = document.getElementById(key + 'Slots');
-    if (!container) return;
-    container.innerHTML = data[key].map((item, i) => {
-        if (item.src) {
-            return `<div class="file-row">
-                <span class="file-name-display">${item.name}</span>
-                <button class="btn-del" onclick="removeSlot('${key}',${i})">✕</button>
-            </div>`;
-        } else {
-            return `<div class="file-row">
-                <input type="file" accept="image/*" onchange="handleFile(this,'${key}',${i})">
-                <button class="btn-del" onclick="removeSlot('${key}',${i})">✕</button>
-            </div>`;
-        }
-    }).join('');
-}
-
-// 우측 이미지 클릭 → 파일 선택 → 교체
-let clickTarget = null;
-function imgClick(key, idx) {
-    clickTarget = { key, idx };
-    const input = document.getElementById('hiddenFileInput');
-    input.onchange = function() {
-        const f = this.files[0]; if (!f) return;
-        const r = new FileReader();
-        r.onload = e => {
-            // 슬롯이 없으면 추가
-            while (data[clickTarget.key].length <= clickTarget.idx) {
-                data[clickTarget.key].push({ src: '', name: '' });
-            }
-            data[clickTarget.key][clickTarget.idx] = { src: e.target.result, name: f.name };
-            renderSlots(clickTarget.key);
-            render();
-        };
-        r.readAsDataURL(f);
-        this.value = '';
-    };
-    input.click();
-}
-
-function nl2br(s) { return s.replace(/\n/g, '<br>'); }
-function val(id) { return document.getElementById(id).value; }
-function split(id) { return val(id).split(',').map(s => s.trim()); }
-function getSrc(key, idx, fallback) {
-    return (data[key][idx] && data[key][idx].src) ? data[key][idx].src : fallback;
-}
-
-function checkRow(label, opts, active) {
-    const txts = opts.map((o,i)=>`<span class="${i==active?'active':''}">${o}</span>`).join('');
-    const dots = opts.map((_,i)=>`<div class="check-slider-dot ${i==active?'active':''}"></div>`).join('');
-    return `<div class="check-row"><div class="check-label">${label}</div>
-        <div class="check-options-wrap"><div class="check-options-text">${txts}</div>
-        <div class="check-slider"><div class="check-slider-line"></div>
-        <div class="check-slider-dots">${dots}</div></div></div></div>`;
-}
-
-function render() {
-    // 히어로
-    let heroHtml = '';
-    if (data.hero.length > 0) {
-        heroHtml = data.hero.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x1106';
-            return `<img class="main-hero" src="${src}" onclick="imgClick('hero',${i})">`;
-        }).join('');
-    } else {
-        heroHtml = `<img class="main-hero" src="https://placehold.co/800x1106" onclick="imgClick('hero',0)">`;
-    }
-
-    // 소개 이미지
-    let introHtml = '';
-    if (data.intro.length > 0) {
-        introHtml = data.intro.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x451';
-            return `<img src="${src}" style="width:100%;cursor:pointer;" onclick="imgClick('intro',${i})">`;
-        }).join('');
-    } else {
-        introHtml = `<img src="https://placehold.co/800x451" style="width:100%;cursor:pointer;" onclick="imgClick('intro',0)">`;
-    }
-
-    // 모델컷
-    let modelcutHtml = '';
-    if (data.modelcut.length > 0) {
-        modelcutHtml = data.modelcut.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x1106';
-            return `<img class="product-img" src="${src}" onclick="imgClick('modelcut',${i})">`;
-        }).join('');
-    } else {
-        modelcutHtml = `<img class="product-img" src="https://placehold.co/800x1106" onclick="imgClick('modelcut',0)">`;
-    }
-
-    // 디테일컷
-    let detailHtml = '';
-    if (data.detailcut.length > 0) {
-        detailHtml = data.detailcut.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x600';
-            return `<img class="detail-img" src="${src}" onclick="imgClick('detailcut',${i})">`;
-        }).join('');
-    } else {
-        detailHtml = `<img class="detail-img" src="https://placehold.co/800x600" onclick="imgClick('detailcut',0)">`;
-    }
-
-    // 도식화
-    const sizeChartSrc = (data.sizechart[0] && data.sizechart[0].src) ? data.sizechart[0].src : 'https://placehold.co/620x637';
-
-    // 모델 정보
-    const models = val('modelInfo').trim().split('\n').map(l => l.split(',').map(s=>s.trim()));
-    const modelRow1 = models.slice(0,3).map((m,i) => {
-        if (m.length < 3) return '';
-        const src = (data.modelthumb[i] && data.modelthumb[i].src) ? data.modelthumb[i].src : 'https://placehold.co/400x400';
-        return `<div class="model-card"><div class="model-thumb" onclick="imgClick('modelthumb',${i})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}<br>${m[2]}</div></div>`;
-    }).join('');
-    const modelRow2 = models.slice(3).map((m,i) => {
-        if (m.length < 3) return '';
-        const idx = i + 3;
-        const src = (data.modelthumb[idx] && data.modelthumb[idx].src) ? data.modelthumb[idx].src : 'https://placehold.co/400x400';
-        return `<div class="model-card"><div class="model-thumb light-bg" onclick="imgClick('modelthumb',${idx})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}<br>${m[2]}</div></div>`;
-    }).join('');
-
-    // 테이블
-    const sizes = split('sizes');
-    const sizeH = sizes.map(s=>`<th>${s}</th>`).join('');
-    const ageR = split('ages').map(a=>`<td>${a}</td>`).join('');
-    const hgtR = split('heights').map(h=>`<td>${h}</td>`).join('');
-    const wgtR = split('weights').map(w=>`<td>${w}</td>`).join('');
-    const sh=split('shoulder'), ch=split('chest'), sl=split('sleeve'), tl=split('totalLength');
-    let pRows = '';
-    sizes.forEach((s,i) => { pRows += `<tr class="table-data-row"><td>${s}</td><td>${sh[i]||''}</td><td>${ch[i]||''}</td><td>${sl[i]||''}</td><td>${tl[i]||''}</td></tr>`; });
-
-    document.getElementById('preview-container').innerHTML = `
-    <section class="intro-section">
-        ${heroHtml}
-        <div class="intro-text-area">
-            <div style="display:flex;flex-direction:column;gap:50px;align-items:center;">
-                <div class="eng-title">${val('engTitle')}</div>
-                <div class="kor-title">${val('korTitle')}</div>
-            </div>
-            <div class="intro-images">${introHtml}</div>
-            <div class="description-box">
-                <p>${nl2br(val('desc1'))}</p>
-                <p>${nl2br(val('desc2'))}</p>
-            </div>
-        </div>
-        <div class="product-images">${modelcutHtml}</div>
-        <div class="color-notice">제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="detail-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Detail Point</h3>
-        <p class="section-subtitle" style="font-weight:400;">제품 상세 특징</p>
-        <div class="fabric-box"><span class="label">FABRIC</span><br><span class="value">${nl2br(val('fabricInfo'))}</span></div>
-        <div class="detail-images">${detailHtml}</div>
-        <div class="detail-notice">
-            <div class="detail-notice-title">디테일한 특징을 확인해주세요!</div>
-            <div class="detail-notice-desc">사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
-        </div>
-    </section>
-
-    <section class="kc-section">
-        <div class="kc-badge-box">
-            <img src="https://placehold.co/94x143">
-            <div class="kc-text"><div class="kc-title">KC안전인증마크</div>
-            <div class="kc-desc">FITI시험연구원의 품질안전검사 합격 판정을 받아<br>믿을 수 있는 제품입니다.</div></div>
-        </div>
-    </section>
-
-    <section class="model-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Model Size</h3>
-        <p class="section-subtitle" style="font-weight:500;">모델 사이즈</p>
-        <div class="model-row">${modelRow1}</div>
-        <div class="model-row">${modelRow2}</div>
-    </section>
-
-    <section class="size-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Size Guide</h3>
-        <p class="section-subtitle" style="font-weight:500;">사이즈 가이드</p>
-        <div class="table-container"><table><thead><tr><th>사이즈</th>${sizeH}</tr></thead><tbody>
-            <tr class="table-data-row"><td><span style="font-size:26px;">나이</span><br><span style="font-size:24px;">(세)</span></td>${ageR}</tr>
-            <tr class="table-data-row"><td><span style="font-size:26px;">신장</span><br><span style="font-size:24px;">(cm)</span></td>${hgtR}</tr>
-            <tr class="table-data-row"><td><span style="font-size:26px;">체중</span><br><span style="font-size:24px;">(kg)</span></td>${wgtR}</tr>
-        </tbody></table></div>
-        <div class="size-notice">평균 사이즈표로 체형과 제품에 따라 다소 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="size-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Product Size</h3>
-        <p class="section-subtitle" style="font-weight:500;">상품 사이즈</p>
-        <div class="size-illustration" onclick="imgClick('sizechart',0)"><img src="${sizeChartSrc}"></div>
-        <div class="unit-text">(cm)</div>
-        <div class="table-container"><table><thead><tr><th>치수항목</th><th>어깨너비</th><th>가슴둘레</th><th>소매길이</th><th>총장</th></tr></thead>
-        <tbody>${pRows}</tbody></table></div>
-    </section>
-
-    <section class="check-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Check Point</h3>
-        <p class="section-subtitle" style="font-weight:500;">체크 포인트</p>
-        <div class="check-area">
-            ${checkRow('핏',['크게나옴','정사이즈','작게나옴'], val('checkFit'))}
-            ${checkRow('두께감',['두꺼움','적당함','얇음'], val('checkThick'))}
-            ${checkRow('신축성',['좋음','약간있음','없음'], val('checkStretch'))}
-            ${checkRow('안감',['있음','부분안감','없음'], val('checkLining'))}
-        </div>
-    </section>`;
-}
-
-function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
-function hideCropModal() { document.getElementById('cropModal').classList.remove('show'); }
-
-async function startDownload() {
-    const count = parseInt(document.getElementById('cropCount').value) || 1;
-    if (count < 1 || count > 10) { alert('1~10 사이 숫자를 입력하세요.'); return; }
-    hideCropModal();
-
-    const btn = document.querySelector('.btn-download');
-    btn.classList.add('loading'); btn.textContent = '⏳ 생성 중...';
-
-    try {
-        const el = document.getElementById('preview-container');
-        const fullCanvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', width: 800, windowWidth: 800 });
-
-        const fullW = fullCanvas.width;
-        const fullH = fullCanvas.height;
-        const sliceH = Math.ceil(fullH / count);
-        const title = val('korTitle') || 'output';
-
-        if (count === 1) {
-            const a = document.createElement('a');
-            a.download = `상품상세_${title}.png`;
-            a.href = fullCanvas.toDataURL('image/png');
-            a.click();
-        } else {
-            const zip = new JSZip();
-            for (let i = 0; i < count; i++) {
-                const cropCanvas = document.createElement('canvas');
-                cropCanvas.width = fullW;
-                const thisH = Math.min(sliceH, fullH - i * sliceH);
-                cropCanvas.height = thisH;
-                const ctx = cropCanvas.getContext('2d');
-                ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
-                const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
-                zip.file(`상품상세_${title}_${i + 1}.png`, blob);
-            }
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-            const a = document.createElement('a');
-            a.download = `상품상세_${title}.zip`;
-            a.href = URL.createObjectURL(zipBlob);
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
-    } catch(e) { alert('오류: ' + e.message); }
-    btn.classList.remove('loading'); btn.textContent = '📥 이미지로 다운로드 (PNG)';
-}
-
-// 초기: 각 섹션에 기본 1개 슬롯
-addSlot('hero');
-addSlot('intro');
-addSlot('modelcut');
-addSlot('detailcut');
-addSlot('sizechart');
-render();
-</script>
 </body>
 </html>
