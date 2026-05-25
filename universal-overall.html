@@ -1030,6 +1030,18 @@ function toggleExplorerSort() {
     renderExplorer();
 }
 
+function toggleItemVersions(id, headerEl) {
+    const el = document.getElementById(id);
+    const toggle = headerEl.querySelector('.exp-toggle');
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+        toggle.style.transform = 'rotate(90deg)';
+    } else {
+        el.style.display = 'none';
+        toggle.style.transform = 'rotate(0deg)';
+    }
+}
+
 function renderFolderTabs() {
     document.getElementById('folderTabs').innerHTML = FOLDERS.map(f =>
         `<button onclick="explorerFolder='${f}';renderFolderTabs();renderExplorer()" style="padding:7px 16px; background:${f===explorerFolder?'#14297E':'#1e3a5f'}; color:${f===explorerFolder?'white':'#8892b0'}; border:none; border-radius:5px; font-size:12px; font-weight:${f===explorerFolder?'600':'400'}; cursor:pointer;">📂 ${f}</button>`
@@ -1074,7 +1086,7 @@ function renderExplorer() {
         el.innerHTML = `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`;
         return;
     }
-    el.innerHTML = items.map(item => {
+    el.innerHTML = items.map((item, idx) => {
         const verList = item.versions.map((v, i) => {
             return `<div style="padding:8px 12px; margin:4px 0; background:#16213e; border-radius:5px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
@@ -1088,11 +1100,14 @@ function renderExplorer() {
             </div>`;
         }).join('');
         return `<div style="margin-bottom:10px; padding:14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="color:#e6f1ff; font-size:13px; font-weight:600;">📄 ${item.fullCode}</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleItemVersions('expVer${idx}', this)">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="exp-toggle" style="color:#64748b; font-size:12px; transition:transform 0.2s; display:inline-block;">▶</span>
+                    <span style="color:#e6f1ff; font-size:13px; font-weight:600;">${item.fullCode}</span>
+                </div>
                 <span style="color:#4a9eff; font-size:11px;">${item.versions.length}개 버전</span>
             </div>
-            ${verList}
+            <div id="expVer${idx}" style="display:none; margin-top:8px;">${verList}</div>
         </div>`;
     }).join('');
 }
