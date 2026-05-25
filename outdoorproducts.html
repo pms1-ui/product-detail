@@ -48,10 +48,12 @@
         .file-slots { margin-bottom: 8px; }
         /* 우측 */
         .preview-panel { flex: 1; overflow-y: auto; background: #e8e8e8; padding: 20px 20px 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; gap: 10px; align-items: center; }
+        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
         .btn-download { padding: 12px 24px; background: #14297E; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(20,41,126,0.4); transition: all 0.15s; }
         .btn-download:hover { background: #1a3599; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,41,126,0.5); }
         .btn-download.loading { opacity: 0.5; pointer-events: none; }
+        .btn-upload { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(15,118,110,0.4); transition: all 0.15s; }
+        .btn-upload:hover { background: #0d9488; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,118,110,0.5); }
         /* 분할 모달 */
         .crop-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
         .crop-modal.show { display: flex; }
@@ -230,7 +232,40 @@ EMMA,124cm / 23kg,130 size</textarea>
     <div id="preview-container"></div>
 </div>
 <div class="download-floating">
+    <button class="btn-upload" onclick="showUploadModal()">🚀 서버 업로드 및 코드화</button>
     <button class="btn-download" onclick="showCropModal()">📥 이미지로 다운로드 (PNG)</button>
+</div>
+<div class="crop-modal" id="uploadModal">
+    <div class="crop-modal-box">
+        <h3>서버 업로드 및 코드화</h3>
+        <p>품번을 입력하면 파일명이 자동 생성됩니다.</p>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">작성자</label>
+            <input type="text" id="uploadAuthor" value="박명수" readonly style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#64748b; font-size:13px;">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">브랜드</label>
+            <select id="uploadBrand" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; appearance:none;">
+                <option value="HR">HR</option>
+                <option value="GL">GL</option>
+            </select>
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="uploadCode" placeholder="ex: UO263ISS001" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none;">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">분할 수 (1~10)</label>
+            <input type="number" id="uploadCropCount" min="1" max="10" value="3" style="width:80px; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; text-align:center;">
+        </div>
+        <div id="uploadPreviewNames" style="background:#0a1628; border-radius:6px; padding:10px 14px; margin-bottom:16px; min-height:30px;">
+            <p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideUploadModal()">취소</button>
+            <button class="btn-confirm" onclick="executeUpload()">생성 및 다운로드</button>
+        </div>
+    </div>
 </div>
 <div class="crop-modal" id="cropModal">
     <div class="crop-modal-box">
@@ -495,6 +530,71 @@ function render() {
 
 function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
 function hideCropModal() { document.getElementById('cropModal').classList.remove('show'); }
+function showUploadModal() {
+    document.getElementById('uploadModal').classList.add('show');
+    updateUploadPreview();
+}
+function hideUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+
+function updateUploadPreview() {
+    const code = document.getElementById('uploadCode').value.trim();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const el = document.getElementById('uploadPreviewNames');
+    if (!code) {
+        el.innerHTML = '<p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>';
+        return;
+    }
+    let names = [];
+    for (let i = 1; i <= count; i++) { names.push(`${code}_${i}.png`); }
+    el.innerHTML = names.map(n => `<div style="color:#93c5fd; font-size:12px; margin-bottom:3px;">📄 ${n}</div>`).join('');
+}
+
+async function executeUpload() {
+    const code = document.getElementById('uploadCode').value.trim();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const brand = document.getElementById('uploadBrand').value;
+    const author = document.getElementById('uploadAuthor').value;
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (count < 1 || count > 10) { alert('분할 수는 1~10 사이로 입력하세요.'); return; }
+    hideUploadModal();
+
+    const btn = document.querySelector('.btn-upload');
+    btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; btn.textContent = '⏳ 생성 중...';
+
+    try {
+        const el = document.getElementById('preview-container');
+        const fullCanvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', width: 800, windowWidth: 800 });
+        const fullW = fullCanvas.width;
+        const fullH = fullCanvas.height;
+        const sliceH = Math.ceil(fullH / count);
+
+        if (count === 1) {
+            const a = document.createElement('a');
+            a.download = `${code}_1.png`;
+            a.href = fullCanvas.toDataURL('image/png');
+            a.click();
+        } else {
+            const zip = new JSZip();
+            for (let i = 0; i < count; i++) {
+                const cropCanvas = document.createElement('canvas');
+                cropCanvas.width = fullW;
+                const thisH = Math.min(sliceH, fullH - i * sliceH);
+                cropCanvas.height = thisH;
+                const ctx = cropCanvas.getContext('2d');
+                ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
+                const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
+                zip.file(`${code}_${i + 1}.png`, blob);
+            }
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.download = `${code}.zip`;
+            a.href = URL.createObjectURL(zipBlob);
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+    } catch(e) { alert('오류: ' + e.message); }
+    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.textContent = '🚀 서버 업로드 및 코드화';
+}
 
 async function startDownload() {
     const count = parseInt(document.getElementById('cropCount').value) || 1;
@@ -548,6 +648,10 @@ addSlot('modelcut');
 addSlot('detailcut');
 addSlot('sizechart');
 render();
+
+// 업로드 모달 실시간 미리보기
+document.getElementById('uploadCode').addEventListener('input', updateUploadPreview);
+document.getElementById('uploadCropCount').addEventListener('input', updateUploadPreview);
 </script>
 </body>
 </html>
