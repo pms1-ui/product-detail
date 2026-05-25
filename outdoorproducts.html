@@ -289,6 +289,35 @@ EMMA,124cm / 23kg,130 size</textarea>
         </div>
     </div>
 </div>
+
+<!-- 품번 조회 모달 (진입 시 표시) -->
+<div class="crop-modal show" id="lookupModal">
+    <div class="crop-modal-box" style="width:400px;">
+        <h3>품번 조회</h3>
+        <p>작업할 품번을 입력하세요. 기존 작업물이 있으면 불러올 수 있습니다.</p>
+        <div style="text-align:left; margin:16px 0;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="lookupCode" placeholder="ex: OD261OJK02" style="width:100%; padding:10px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:14px; outline:none;">
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="skipLookup()">건너뛰기</button>
+            <button class="btn-confirm" onclick="doLookup()">조회</button>
+        </div>
+    </div>
+</div>
+
+<!-- 버전 선택 모달 -->
+<div class="crop-modal" id="versionModal">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto;">
+        <h3>기존 작업물 발견</h3>
+        <p>불러올 버전을 선택하거나, 새로 만들 수 있습니다.</p>
+        <div id="versionList" style="margin:16px 0; text-align:left;"></div>
+        <div class="crop-modal-btns">
+            <button class="btn-confirm" onclick="createNew()">새로 만들기</button>
+        </div>
+    </div>
+</div>
+
 </div>
 
 <input type="file" id="hiddenFileInput" accept="image/*" style="display:none">
@@ -724,6 +753,130 @@ render();
 // 업로드 모달 실시간 미리보기
 document.getElementById('uploadCode').addEventListener('input', updateUploadPreview);
 document.getElementById('uploadCropCount').addEventListener('input', updateUploadPreview);
+
+// ===== 품번 조회 / 버전 관리 =====
+let currentCode = '';
+
+function getStorageKey(code) { return `odp_detail_${code}`; }
+
+function getSavedVersions(code) {
+    const raw = localStorage.getItem(getStorageKey(code));
+    if (!raw) return [];
+    try { return JSON.parse(raw); } catch(e) { return []; }
+}
+
+function saveCurrentVersion(code, ts) {
+    const versions = getSavedVersions(code);
+    const formData = {
+        ts: ts,
+        engTitle: val('engTitle'),
+        korTitle: val('korTitle'),
+        desc1: val('desc1'),
+        desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'),
+        modelInfo: val('modelInfo'),
+        sizes: val('sizes'),
+        ages: val('ages'),
+        heights: val('heights'),
+        weights: val('weights'),
+        shoulder: val('shoulder'),
+        chest: val('chest'),
+        sleeve: val('sleeve'),
+        totalLength: val('totalLength'),
+        checkFit: val('checkFit'),
+        checkThick: val('checkThick'),
+        checkStretch: val('checkStretch'),
+        checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(code), JSON.stringify(versions));
+}
+
+function loadVersion(versionData) {
+    document.getElementById('engTitle').value = versionData.engTitle || '';
+    document.getElementById('korTitle').value = versionData.korTitle || '';
+    document.getElementById('desc1').value = versionData.desc1 || '';
+    document.getElementById('desc2').value = versionData.desc2 || '';
+    document.getElementById('fabricInfo').value = versionData.fabricInfo || '';
+    document.getElementById('modelInfo').value = versionData.modelInfo || '';
+    document.getElementById('sizes').value = versionData.sizes || '';
+    document.getElementById('ages').value = versionData.ages || '';
+    document.getElementById('heights').value = versionData.heights || '';
+    document.getElementById('weights').value = versionData.weights || '';
+    document.getElementById('shoulder').value = versionData.shoulder || '';
+    document.getElementById('chest').value = versionData.chest || '';
+    document.getElementById('sleeve').value = versionData.sleeve || '';
+    document.getElementById('totalLength').value = versionData.totalLength || '';
+    document.getElementById('checkFit').value = versionData.checkFit || '0';
+    document.getElementById('checkThick').value = versionData.checkThick || '0';
+    document.getElementById('checkStretch').value = versionData.checkStretch || '2';
+    document.getElementById('checkLining').value = versionData.checkLining || '0';
+    render();
+}
+
+function skipLookup() {
+    document.getElementById('lookupModal').classList.remove('show');
+}
+
+function doLookup() {
+    const code = document.getElementById('lookupCode').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    currentCode = code;
+    document.getElementById('uploadCode').value = code;
+    updateUploadPreview();
+
+    const versions = getSavedVersions(code);
+    document.getElementById('lookupModal').classList.remove('show');
+
+    if (versions.length === 0) {
+        // 기존 없음 → 새로 만들기
+        alert(`"${code}" 기존 작업물이 없습니다. 새로 생성합니다.`);
+    } else {
+        // 기존 있음 → 버전 선택 모달
+        showVersionModal(code, versions);
+    }
+}
+
+function showVersionModal(code, versions) {
+    const listEl = document.getElementById('versionList');
+    listEl.innerHTML = versions.map((v, i) => {
+        const label = v.ts || '(시간 미상)';
+        return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectVersion('${code}',${i})">
+            <div>
+                <div style="color:#e6f1ff; font-size:13px; font-weight:500;">버전 ${i + 1}</div>
+                <div style="color:#8892b0; font-size:11px; margin-top:2px;">작성: ${label} · ${v.korTitle || ''}</div>
+            </div>
+            <span style="color:#4a9eff; font-size:14px;">→</span>
+        </div>`;
+    }).join('');
+    document.getElementById('versionModal').classList.add('show');
+}
+
+function selectVersion(code, idx) {
+    const versions = getSavedVersions(code);
+    if (versions[idx]) {
+        loadVersion(versions[idx]);
+    }
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+function createNew() {
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+// executeUpload 후 자동 저장
+const origExecuteUpload = executeUpload;
+executeUpload = async function() {
+    await origExecuteUpload();
+    const code = document.getElementById('uploadCode').value.trim();
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    if (code) { saveCurrentVersion(code, ts); }
+};
+
+// Enter 키로 조회
+document.getElementById('lookupCode').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLookup();
+});
 </script>
 </body>
 </html>
