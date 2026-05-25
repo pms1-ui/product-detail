@@ -839,7 +839,13 @@ function doLookup() {
     // 해당 품번의 컬러 목록 조회
     const colors = getColorsForCode(code);
     if (colors.length > 0) {
-        document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${code} — ${colors.length}개 컬러 발견</span>`;
+        // TTL을 맨 앞으로 정렬
+        const sorted = colors.sort((a, b) => {
+            if (a === 'TTL') return -1;
+            if (b === 'TTL') return 1;
+            return a.localeCompare(b);
+        });
+        document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${sorted.join(' / ')}</span>`;
     } else {
         document.getElementById('lookupStatus').innerHTML = `<span style="color:#f59e0b;">새 품번입니다. 컬러를 추가하세요.</span>`;
     }
@@ -847,12 +853,18 @@ function doLookup() {
 }
 
 function showColorModal(code, colors) {
+    // TTL을 맨 앞으로 정렬
+    const sorted = [...colors].sort((a, b) => {
+        if (a === 'TTL') return -1;
+        if (b === 'TTL') return 1;
+        return a.localeCompare(b);
+    });
     document.getElementById('colorModalTitle').textContent = `${code} - 컬러 선택`;
     const listEl = document.getElementById('colorList');
-    if (colors.length === 0) {
+    if (sorted.length === 0) {
         listEl.innerHTML = '<p style="color:#64748b; font-size:12px; padding:8px 0;">등록된 컬러가 없습니다. 아래에서 새 컬러를 추가하세요.</p>';
     } else {
-        listEl.innerHTML = colors.map(color => {
+        listEl.innerHTML = sorted.map(color => {
             const fullKey = `${code}_${color}`;
             const versions = getSavedVersions(fullKey);
             return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectColor('${color}')">
