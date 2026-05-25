@@ -877,6 +877,71 @@ executeUpload = async function() {
 document.getElementById('lookupCode').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doLookup();
 });
+
+// 테스트용 더미 데이터 (HR12341234)
+(function seedTestData() {
+    const testCode = 'HR12341234';
+    const key = getStorageKey(testCode);
+    if (!localStorage.getItem(key)) {
+        const dummyVersions = [
+            {
+                ts: '2505201430',
+                engTitle: 'Kids Varsity Jacket',
+                korTitle: '키즈 바시티 자켓',
+                desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.',
+                desc2: '여유 있는 핏으로 제작되었으며,\n3oz 패딩을 퀼팅한 원단의 안감으로\n보온성이 좋아 쌀쌀한 환절기 아이템으로\n좋은 점퍼입니다.',
+                fabricInfo: '겉감 : 나일론 100%\n안감 : 폴리에스터 100%',
+                modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size',
+                sizes: '120,130,145,155,165',
+                ages: '5-6,7-8,9-10,11-12,13-14',
+                heights: '110-120,120-130,130-140,140-150,150-160',
+                weights: '20-25,25-30,30-35,35-40,40-45',
+                shoulder: '44.1,46.5,49.1,51.7,54.3',
+                chest: '95,100,105.5,111,116.5',
+                sleeve: '40.1,43.5,46.8,50.1,53.4',
+                totalLength: '48.5,52.5,56.5,60.5,64.5',
+                checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0'
+            },
+            {
+                ts: '2505221015',
+                engTitle: 'Kids Varsity Jacket V2',
+                korTitle: '키즈 바시티 자켓 (수정)',
+                desc1: '아웃도어 프로덕츠 키즈의\n인기 바시티 점퍼입니다.',
+                desc2: '넉넉한 핏으로 제작되었으며,\n3oz 패딩 퀼팅 안감으로\n보온성이 뛰어난 환절기 필수 아이템입니다.',
+                fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%',
+                modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size\nALEXANDER,126cm / 25.5kg,130 size',
+                sizes: '120,130,145,155,165',
+                ages: '5-6,7-8,9-10,11-12,13-14',
+                heights: '110-120,120-130,130-140,140-150,150-160',
+                weights: '20-25,25-30,30-35,35-40,40-45',
+                shoulder: '44.1,46.5,49.1,51.7,54.3',
+                chest: '95,100,105.5,111,116.5',
+                sleeve: '40.1,43.5,46.8,50.1,53.4',
+                totalLength: '48.5,52.5,56.5,60.5,64.5',
+                checkFit: '1', checkThick: '1', checkStretch: '1', checkLining: '0'
+            },
+            {
+                ts: '2505251100',
+                engTitle: 'Kids Varsity Jacket Final',
+                korTitle: '키즈 바시티 자켓 (최종)',
+                desc1: '아웃도어 프로덕츠 키즈의\n대표 바시티 패딩 점퍼입니다.',
+                desc2: '여유 있는 핏으로 제작되었으며,\n3oz 패딩을 퀼팅한 원단의 안감으로\n보온성이 좋아 쌀쌀한 환절기 아이템으로\n좋은 점퍼입니다.\n소매의 배색 라인과 등판의 바시티 그래픽으로\n포인트를 준 점퍼 스타일이며,\n등하교 룩, 외출 룩 등 다양한 코디가 가능한\n실용적인 아우터입니다.',
+                fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%',
+                modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size\nALEXANDER,126cm / 25.5kg,130 size\nEMMA,124cm / 23kg,130 size',
+                sizes: '120,130,145,155,165',
+                ages: '5-6,7-8,9-10,11-12,13-14',
+                heights: '110-120,120-130,130-140,140-150,150-160',
+                weights: '20-25,25-30,30-35,35-40,40-45',
+                shoulder: '44.1,46.5,49.1,51.7,54.3',
+                chest: '95,100,105.5,111,116.5',
+                sleeve: '40.1,43.5,46.8,50.1,53.4',
+                totalLength: '48.5,52.5,56.5,60.5,64.5',
+                checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0'
+            }
+        ];
+        localStorage.setItem(key, JSON.stringify(dummyVersions));
+    }
+})();
 </script>
 </body>
 </html>
