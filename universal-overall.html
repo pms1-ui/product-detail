@@ -554,19 +554,19 @@ function render() {
     const sizeChartSrc = (data.sizechart[0] && data.sizechart[0].src) ? data.sizechart[0].src : 'https://placehold.co/620x637';
 
     // 모델 정보
-    const models = val('modelInfo').trim().split('\n').map(l => l.split(',').map(s=>s.trim()));
+    const models = val('modelInfo').trim().split('\n').filter(l => l.trim()).map(l => l.split(',').map(s=>s.trim()));
     const modelRow1 = models.slice(0,3).map((m,i) => {
-        if (m.length < 3) return '';
+        if (m.length < 2) return '';
         const src = (data.modelthumb[i] && data.modelthumb[i].src) ? data.modelthumb[i].src : 'https://placehold.co/400x400';
         return `<div class="model-card"><div class="model-thumb" onclick="imgClick('modelthumb',${i})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}<br>${m[2]}</div></div>`;
+            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
     }).join('');
     const modelRow2 = models.slice(3).map((m,i) => {
-        if (m.length < 3) return '';
+        if (m.length < 2) return '';
         const idx = i + 3;
         const src = (data.modelthumb[idx] && data.modelthumb[idx].src) ? data.modelthumb[idx].src : 'https://placehold.co/400x400';
         return `<div class="model-card"><div class="model-thumb light-bg" onclick="imgClick('modelthumb',${idx})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}<br>${m[2]}</div></div>`;
+            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
     }).join('');
 
     // 테이블
