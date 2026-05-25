@@ -248,7 +248,7 @@ EMMA,124cm / 23kg,130 size</textarea>
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="uploadCode" placeholder="ex: UO263ISS001" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none;">
+            <input type="text" id="uploadCode" placeholder="HR12341234" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
         </div>
         <div style="text-align:left; margin-bottom:16px; display:flex; gap:12px;">
             <div style="flex:1;">
@@ -594,13 +594,14 @@ function updateUploadPreview() {
     const code = document.getElementById('uploadCode').value.trim();
     const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
     const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    const ver = currentVersion || 1;
     const el = document.getElementById('uploadPreviewNames');
     if (!code) {
         el.innerHTML = '<p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>';
         return;
     }
     let names = [];
-    for (let i = 1; i <= count; i++) { names.push(`${code}_${i}_${ts}.png`); }
+    for (let i = 1; i <= count; i++) { names.push(`${code}_${ver}_${i}_${ts}.png`); }
     el.innerHTML = names.map(n => `<div style="color:#93c5fd; font-size:12px; margin-bottom:3px;">📄 ${n}</div>`).join('');
 }
 
@@ -642,15 +643,16 @@ async function executeUpload() {
 
         // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
         const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+        const ver = currentVersion || 1;
         let imageUrls = [];
         for (let i = 0; i < count; i++) {
-            imageUrls.push(`${baseUrl}/${code}_${i + 1}_${ts}.jpg`);
+            imageUrls.push(`${baseUrl}/${code}_${ver}_${i + 1}_${ts}.jpg`);
         }
 
         // ZIP 다운로드
         if (count === 1) {
             const a = document.createElement('a');
-            a.download = `${code}_1_${ts}.png`;
+            a.download = `${code}_${ver}_1_${ts}.png`;
             a.href = fullCanvas.toDataURL('image/png');
             a.click();
         } else {
@@ -663,11 +665,11 @@ async function executeUpload() {
                 const ctx = cropCanvas.getContext('2d');
                 ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
                 const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
-                zip.file(`${code}_${i + 1}_${ts}.png`, blob);
+                zip.file(`${code}_${ver}_${i + 1}_${ts}.png`, blob);
             }
             const zipBlob = await zip.generateAsync({ type: 'blob' });
             const a = document.createElement('a');
-            a.download = `${code}_${ts}.zip`;
+            a.download = `${code}_${ver}_${ts}.zip`;
             a.href = URL.createObjectURL(zipBlob);
             a.click();
             URL.revokeObjectURL(a.href);
