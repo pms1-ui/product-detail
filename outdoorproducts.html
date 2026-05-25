@@ -146,7 +146,11 @@
             <span><span id="currentCodeText"></span><span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span></span>
             <button id="viewCodeBtn" onclick="showCodeResult()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">코드 보기</button>
             <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
-                <button id="saveBtn" onclick="saveCurrentWork()" style="display:none; padding:4px 10px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px; cursor:default; font-weight:500; opacity:0.6;">저장됨</button>
+                <div style="display:flex; gap:4px;">
+                    <button id="saveBtn" onclick="saveCurrentWork()" style="display:none; padding:4px 10px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px; cursor:default; font-weight:500; opacity:0.6;">저장됨</button>
+                    <button id="saveAsBtn" onclick="showSaveAsModal()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">다른 품번으로 저장</button>
+                    <button id="copyToBtn" onclick="showCopyToModal()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#f59e0b; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">복사</button>
+                </div>
                 <span id="lastSavedTime" style="font-size:9px; color:#64748b; font-weight:400;"></span>
             </div>
         </div>
@@ -306,6 +310,48 @@ EMMA,124cm / 23kg,130 size</textarea>
         <div class="crop-modal-btns">
             <button class="btn-cancel" onclick="hideCropModal()">취소</button>
             <button class="btn-confirm" onclick="startDownload()">다운로드</button>
+        </div>
+    </div>
+</div>
+
+<!-- 다른 품번으로 저장 모달 -->
+<div class="crop-modal" id="saveAsModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:380px; position:relative;">
+        <button onclick="document.getElementById('saveAsModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+        <h3 style="margin-bottom:6px;">다른 품번으로 저장</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 저장합니다. (현재 품번도 유지됨)</p>
+        <div style="text-align:left; margin-bottom:12px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="saveAsCode" placeholder="HR12341234" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
+            <input type="text" id="saveAsColor" maxlength="3" placeholder="BLK" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="document.getElementById('saveAsModal').classList.remove('show')">취소</button>
+            <button class="btn-confirm" onclick="executeSaveAs()">저장</button>
+        </div>
+    </div>
+</div>
+
+<!-- 복사 모달 -->
+<div class="crop-modal" id="copyToModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:380px; position:relative;">
+        <button onclick="document.getElementById('copyToModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+        <h3 style="margin-bottom:6px;">복사</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 복사합니다. 복사 후 해당 품번으로 전환됩니다.</p>
+        <div style="text-align:left; margin-bottom:12px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="copyToCode" placeholder="HR12341234" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
+            <input type="text" id="copyToColor" maxlength="3" placeholder="BLK" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="document.getElementById('copyToModal').classList.remove('show')">취소</button>
+            <button class="btn-confirm" onclick="executeCopyTo()">복사 및 전환</button>
         </div>
     </div>
 </div>
@@ -783,6 +829,8 @@ function updateCodeDisplay() {
         document.getElementById('currentCodeText').textContent = getFullCode();
         document.getElementById('currentVerText').textContent = currentVersion > 0 ? `ver. ${currentVersion}` : 'new';
         document.getElementById('saveBtn').style.display = 'inline-block';
+        document.getElementById('saveAsBtn').style.display = 'inline-block';
+        document.getElementById('copyToBtn').style.display = 'inline-block';
     } else {
         el.style.display = 'none';
     }
@@ -912,6 +960,73 @@ document.addEventListener('input', function(e) {
 document.addEventListener('change', function(e) {
     if (e.target.closest('#editorArea')) { markUnsaved(); }
 });
+
+// 다른 품번으로 저장
+function showSaveAsModal() {
+    document.getElementById('saveAsCode').value = currentCode;
+    document.getElementById('saveAsColor').value = currentColor;
+    document.getElementById('saveAsModal').classList.add('show');
+}
+
+function executeSaveAs() {
+    const code = document.getElementById('saveAsCode').value.trim();
+    const color = document.getElementById('saveAsColor').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (!color || color.length !== 3) { alert('컬러코드 3글자를 입력하세요.'); return; }
+    const targetKey = `${code}_${color}`;
+    const versions = getSavedVersions(targetKey);
+    const savedAt = getFullTimestamp();
+    const formData = {
+        ts: getTimestamp(), savedAt: savedAt,
+        engTitle: val('engTitle'), korTitle: val('korTitle'), desc1: val('desc1'), desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'), modelInfo: val('modelInfo'), sizes: val('sizes'), ages: val('ages'),
+        heights: val('heights'), weights: val('weights'), shoulder: val('shoulder'), chest: val('chest'),
+        sleeve: val('sleeve'), totalLength: val('totalLength'), checkFit: val('checkFit'),
+        checkThick: val('checkThick'), checkStretch: val('checkStretch'), checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(targetKey), JSON.stringify(versions));
+    document.getElementById('saveAsModal').classList.remove('show');
+    alert(`${targetKey} ver.${versions.length}로 저장되었습니다.`);
+}
+
+// 복사 (복사 후 전환)
+function showCopyToModal() {
+    document.getElementById('copyToCode').value = currentCode;
+    document.getElementById('copyToColor').value = '';
+    document.getElementById('copyToModal').classList.add('show');
+}
+
+function executeCopyTo() {
+    const code = document.getElementById('copyToCode').value.trim();
+    const color = document.getElementById('copyToColor').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (!color || color.length !== 3) { alert('컬러코드 3글자를 입력하세요.'); return; }
+    const targetKey = `${code}_${color}`;
+    const versions = getSavedVersions(targetKey);
+    const savedAt = getFullTimestamp();
+    const formData = {
+        ts: getTimestamp(), savedAt: savedAt,
+        engTitle: val('engTitle'), korTitle: val('korTitle'), desc1: val('desc1'), desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'), modelInfo: val('modelInfo'), sizes: val('sizes'), ages: val('ages'),
+        heights: val('heights'), weights: val('weights'), shoulder: val('shoulder'), chest: val('chest'),
+        sleeve: val('sleeve'), totalLength: val('totalLength'), checkFit: val('checkFit'),
+        checkThick: val('checkThick'), checkStretch: val('checkStretch'), checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(targetKey), JSON.stringify(versions));
+    document.getElementById('copyToModal').classList.remove('show');
+    // 전환
+    currentCode = code;
+    currentColor = color;
+    currentVersion = versions.length;
+    document.getElementById('lookupCode').value = code;
+    document.getElementById('uploadCode').value = targetKey;
+    document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${targetKey} ver.${currentVersion} (복사됨)</span>`;
+    updateCodeDisplay();
+    updateUploadPreview();
+    markSaved(savedAt);
+}
 
 function loadVersion(versionData) {
     document.getElementById('engTitle').value = versionData.engTitle || '';
