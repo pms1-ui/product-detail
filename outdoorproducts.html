@@ -140,9 +140,9 @@
 <div class="app-header">
     <div class="app-header-top">
         <h1>상품 상세 페이지 생성기</h1>
-        <div id="currentCodeDisplay" style="display:none; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:6px 14px; font-size:13px; color:#e6f1ff; font-weight:600; letter-spacing:0.5px;">
-            <span id="currentCodeText"></span>
-            <span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span>
+        <div id="currentCodeDisplay" style="display:none; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:6px 14px; font-size:13px; color:#e6f1ff; font-weight:600; letter-spacing:0.5px; display:none; align-items:center; gap:12px;">
+            <span><span id="currentCodeText"></span><span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span></span>
+            <button id="viewCodeBtn" onclick="showCodeResult()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">코드 보기</button>
         </div>
     </div>
     <div class="brand-tabs">
@@ -621,6 +621,7 @@ function updateUploadPreview() {
 }
 
 function hideCodeResult() { document.getElementById('codeResultModal').classList.remove('show'); }
+function showCodeResult() { document.getElementById('codeResultModal').classList.add('show'); }
 function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function copyCode() {
     const text = document.getElementById('codeResultArea').value;
@@ -638,7 +639,7 @@ function copyCode() {
 }
 
 async function executeUpload() {
-    const code = document.getElementById('uploadCode').value.trim();
+    const code = document.getElementById('uploadCode').value.trim() || getFullCode();
     const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
     const author = document.getElementById('uploadAuthor').value;
     const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
@@ -646,75 +647,36 @@ async function executeUpload() {
     if (count < 1 || count > 10) { alert('분할 수는 1~10 사이로 입력하세요.'); return; }
     hideUploadModal();
 
-    const btn = document.querySelector('.btn-upload');
-    btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; btn.textContent = '⏳ 생성 중...';
+    // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
+    const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+    const ver = currentVersion || 1;
+    let imageUrls = [];
+    for (let i = 0; i < count; i++) {
+        imageUrls.push(`${baseUrl}/${code}_${ver}_${i + 1}_${ts}.jpg`);
+    }
 
-    try {
-        const el = document.getElementById('preview-container');
-        const fullCanvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', width: 800, windowWidth: 800 });
-        const fullW = fullCanvas.width;
-        const fullH = fullCanvas.height;
-        const sliceH = Math.ceil(fullH / count);
+    // 코드화 결과 생성
+    let htmlCode = '';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+    imageUrls.forEach(url => {
+        htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
+    });
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
 
-        // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
-        const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
-        const ver = currentVersion || 1;
-        let imageUrls = [];
-        for (let i = 0; i < count; i++) {
-            imageUrls.push(`${baseUrl}/${code}_${ver}_${i + 1}_${ts}.jpg`);
+    // 코드 저장 및 표시
+    document.getElementById('codeResultArea').value = htmlCode;
+    const highlighted = htmlCode.split('\n').map((line, i, arr) => {
+        if (i === 0 || i === arr.length - 1 || i === arr.length - 2) {
+            return `<span style="color:#f59e0b;">${escHtml(line)}</span>`;
         }
+        return `<span style="color:#93c5fd;">${escHtml(line)}</span>`;
+    }).join('\n');
+    document.getElementById('codeResultHighlight').innerHTML = highlighted;
+    document.getElementById('codeResultModal').classList.add('show');
 
-        // ZIP 다운로드
-        if (count === 1) {
-            const a = document.createElement('a');
-            a.download = `${code}_${ver}_1_${ts}.png`;
-            a.href = fullCanvas.toDataURL('image/png');
-            a.click();
-        } else {
-            const zip = new JSZip();
-            for (let i = 0; i < count; i++) {
-                const cropCanvas = document.createElement('canvas');
-                cropCanvas.width = fullW;
-                const thisH = Math.min(sliceH, fullH - i * sliceH);
-                cropCanvas.height = thisH;
-                const ctx = cropCanvas.getContext('2d');
-                ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
-                const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
-                zip.file(`${code}_${ver}_${i + 1}_${ts}.png`, blob);
-            }
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-            const a = document.createElement('a');
-            a.download = `${code}_${ver}_${ts}.zip`;
-            a.href = URL.createObjectURL(zipBlob);
-            a.click();
-            URL.revokeObjectURL(a.href);
-        }
-
-        // 코드화 결과 생성
-        let htmlCode = '';
-        // 고정 상단 (다른 색상으로 표시용 주석)
-        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
-        // 동적 이미지
-        imageUrls.forEach(url => {
-            htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
-        });
-        // 고정 하단
-        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
-        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
-
-        document.getElementById('codeResultArea').value = htmlCode;
-        // 하이라이트 버전
-        const highlighted = htmlCode.split('\n').map((line, i, arr) => {
-            if (i === 0 || i === arr.length - 1 || i === arr.length - 2) {
-                return `<span style="color:#f59e0b;">${escHtml(line)}</span>`;
-            }
-            return `<span style="color:#93c5fd;">${escHtml(line)}</span>`;
-        }).join('\n');
-        document.getElementById('codeResultHighlight').innerHTML = highlighted;
-        document.getElementById('codeResultModal').classList.add('show');
-
-    } catch(e) { alert('오류: ' + e.message); }
-    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.textContent = '🚀 서버 업로드 및 코드화';
+    // 코드 보기 버튼 활성화
+    document.getElementById('viewCodeBtn').style.display = 'inline-block';
 }
 
 async function startDownload() {
@@ -784,7 +746,7 @@ function getFullCode() { return currentColor ? `${currentCode}_${currentColor}` 
 function updateCodeDisplay() {
     const el = document.getElementById('currentCodeDisplay');
     if (currentCode) {
-        el.style.display = 'block';
+        el.style.display = 'flex';
         document.getElementById('currentCodeText').textContent = getFullCode();
         document.getElementById('currentVerText').textContent = currentVersion > 0 ? `ver. ${currentVersion}` : 'new';
     } else {
