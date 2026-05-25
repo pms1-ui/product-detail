@@ -54,6 +54,8 @@
         .btn-download.loading { opacity: 0.5; pointer-events: none; }
         .btn-upload { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(15,118,110,0.4); transition: all 0.15s; }
         .btn-upload:hover { background: #0d9488; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,118,110,0.5); }
+        .btn-explorer { padding: 12px 24px; background: #6b21a8; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(107,33,168,0.4); transition: all 0.15s; }
+        .btn-explorer:hover { background: #7c3aed; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(107,33,168,0.5); }
         /* 분할 모달 */
         .crop-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
         .crop-modal.show { display: flex; }
@@ -247,6 +249,7 @@ EMMA,124cm / 23kg,130 size</textarea>
 <div class="download-floating">
     <button class="btn-upload" onclick="showUploadModal()">🚀 서버 업로드 및 코드화</button>
     <button class="btn-download" onclick="showCropModal()">📥 이미지로 다운로드 (PNG)</button>
+    <button class="btn-explorer" onclick="showExplorer()">📁 품번 전체보기</button>
 </div>
 <div class="crop-modal" id="uploadModal">
     <div class="crop-modal-box">
@@ -300,6 +303,29 @@ EMMA,124cm / 23kg,130 size</textarea>
             <button class="btn-cancel" onclick="hideCropModal()">취소</button>
             <button class="btn-confirm" onclick="startDownload()">다운로드</button>
         </div>
+    </div>
+</div>
+
+<!-- 파일 탐색기 모달 -->
+<div class="crop-modal" id="explorerModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:640px; max-height:85vh; overflow-y:auto; position:relative; text-align:left;">
+        <button onclick="document.getElementById('explorerModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
+        <h3 style="margin-bottom:6px;">📁 품번 전체보기</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">저장된 모든 품번/컬러/버전을 탐색합니다.</p>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+            <input type="text" id="explorerSearch" placeholder="품번 검색..." oninput="renderExplorer()" style="flex:1; padding:8px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:12px; outline:none; text-transform:uppercase;">
+            <button onclick="toggleExplorerSort()" id="explorerSortBtn" style="padding:8px 12px; background:#1e3a5f; color:#ccd6f6; border:none; border-radius:6px; font-size:11px; cursor:pointer; white-space:nowrap;">↑ 오름차순</button>
+        </div>
+        <div id="explorerContent" style="min-height:200px;"></div>
+    </div>
+</div>
+
+<!-- 파일 미리보기 모달 -->
+<div class="crop-modal" id="filePreviewModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:500px; max-height:85vh; overflow-y:auto; position:relative;">
+        <button onclick="document.getElementById('filePreviewModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
+        <h3 id="filePreviewTitle" style="margin-bottom:12px;"></h3>
+        <div id="filePreviewBody"></div>
     </div>
 </div>
 
@@ -984,6 +1010,110 @@ document.getElementById('lookupCode').addEventListener('keydown', function(e) {
         ]));
     }
 })();
+
+// ===== 파일 탐색기 =====
+let explorerSortAsc = true;
+
+function showExplorer() {
+    document.getElementById('explorerModal').classList.add('show');
+    renderExplorer();
+}
+
+function toggleExplorerSort() {
+    explorerSortAsc = !explorerSortAsc;
+    document.getElementById('explorerSortBtn').textContent = explorerSortAsc ? '↑ 오름차순' : '↓ 내림차순';
+    renderExplorer();
+}
+
+function getAllItems() {
+    const prefix = 'odp_detail_';
+    const items = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(prefix)) {
+            const fullCode = key.replace(prefix, '');
+            const versions = JSON.parse(localStorage.getItem(key));
+            items.push({ fullCode, versions });
+        }
+    }
+    return items;
+}
+
+function renderExplorer() {
+    const search = (document.getElementById('explorerSearch').value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    let items = getAllItems();
+    if (search) { items = items.filter(it => it.fullCode.includes(search)); }
+    items.sort((a, b) => explorerSortAsc ? a.fullCode.localeCompare(b.fullCode) : b.fullCode.localeCompare(a.fullCode));
+
+    const el = document.getElementById('explorerContent');
+    if (items.length === 0) {
+        el.innerHTML = '<p style="color:#64748b; font-size:12px; padding:20px 0; text-align:center;">저장된 품번이 없습니다.</p>';
+        return;
+    }
+    el.innerHTML = items.map(item => {
+        const verList = item.versions.map((v, i) => {
+            const files = [];
+            const count = 3; // 기본 분할 수 표시
+            for (let f = 1; f <= count; f++) { files.push(`${item.fullCode}_${i+1}_${f}_${v.ts}.png`); }
+            return `<div style="padding:6px 12px; margin:4px 0; background:#16213e; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="color:#e6f1ff; font-size:12px;">ver.${i+1}</span>
+                    <span style="color:#64748b; font-size:11px; margin-left:8px;">${v.ts} · ${v.korTitle||''}</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:3px 8px; background:#14297E; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">코드</button>
+                    <button onclick="previewVersion('${item.fullCode}',${i})" style="padding:3px 8px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:10px; cursor:pointer;">상세</button>
+                </div>
+            </div>`;
+        }).join('');
+        return `<div style="margin-bottom:12px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="color:#e6f1ff; font-size:14px; font-weight:600;">${item.fullCode}</span>
+                <span style="color:#4a9eff; font-size:11px;">${item.versions.length}개 버전</span>
+            </div>
+            ${verList}
+        </div>`;
+    }).join('');
+}
+
+function showItemCode(fullCode, verIdx) {
+    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
+    const v = versions[verIdx];
+    const ts = v.ts;
+    const ver = verIdx + 1;
+    const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+    const count = 3;
+    let htmlCode = '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+    for (let i = 1; i <= count; i++) {
+        htmlCode += `<p align="center"><img title="" alt="" src="${baseUrl}/${fullCode}_${ver}_${i}_${ts}.jpg"></p>\n`;
+    }
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
+
+    document.getElementById('filePreviewTitle').textContent = `${fullCode} ver.${ver} — 코드`;
+    document.getElementById('filePreviewBody').innerHTML = `
+        <pre style="background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:12px; font-size:11px; font-family:monospace; line-height:1.8; white-space:pre-wrap; word-break:break-all; color:#93c5fd; max-height:400px; overflow-y:auto;">${escHtml(htmlCode)}</pre>
+        <div style="text-align:center; margin-top:12px;">
+            <button onclick="navigator.clipboard.writeText(document.querySelector('#filePreviewBody pre').textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));alert('복사됨')" style="padding:8px 20px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; cursor:pointer;">📋 코드 복사</button>
+        </div>`;
+    document.getElementById('filePreviewModal').classList.add('show');
+}
+
+function previewVersion(fullCode, verIdx) {
+    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
+    const v = versions[verIdx];
+    document.getElementById('filePreviewTitle').textContent = `${fullCode} ver.${verIdx+1} — 상세 정보`;
+    document.getElementById('filePreviewBody').innerHTML = `
+        <div style="font-size:12px; color:#cbd5e1; line-height:2;">
+            <div><strong style="color:#8892b0;">상품명:</strong> ${v.korTitle || ''} (${v.engTitle || ''})</div>
+            <div><strong style="color:#8892b0;">원단:</strong> ${(v.fabricInfo||'').replace(/\n/g, ', ')}</div>
+            <div><strong style="color:#8892b0;">사이즈:</strong> ${v.sizes || ''}</div>
+            <div><strong style="color:#8892b0;">작성시간:</strong> ${v.ts || ''}</div>
+            <div><strong style="color:#8892b0;">체크포인트:</strong> 핏=${['크게나옴','정사이즈','작게나옴'][v.checkFit]}, 두께=${['두꺼움','적당함','얇음'][v.checkThick]}, 신축=${['좋음','약간있음','없음'][v.checkStretch]}, 안감=${['있음','부분안감','없음'][v.checkLining]}</div>
+            <div style="margin-top:8px;"><strong style="color:#8892b0;">모델:</strong><br>${(v.modelInfo||'').replace(/\n/g,'<br>')}</div>
+        </div>`;
+    document.getElementById('filePreviewModal').classList.add('show');
+}
 </script>
 </body>
 </html>
