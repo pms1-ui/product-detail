@@ -311,11 +311,13 @@ EMMA,124cm / 23kg,130 size</textarea>
     <div class="crop-modal-box" style="width:640px; max-height:85vh; overflow-y:auto; position:relative; text-align:left;">
         <button onclick="document.getElementById('explorerModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
         <h3 style="margin-bottom:6px;">📁 품번 전체보기</h3>
-        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">저장된 모든 품번/컬러/버전을 탐색합니다.</p>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">시즌 폴더 → 품번(컬러) → 버전</p>
         <div style="display:flex; gap:8px; margin-bottom:16px;">
             <input type="text" id="explorerSearch" placeholder="품번 검색..." oninput="renderExplorer()" style="flex:1; padding:8px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:12px; outline:none; text-transform:uppercase;">
             <button onclick="toggleExplorerSort()" id="explorerSortBtn" style="padding:8px 12px; background:#1e3a5f; color:#ccd6f6; border:none; border-radius:6px; font-size:11px; cursor:pointer; white-space:nowrap;">↑ 오름차순</button>
         </div>
+        <!-- 폴더 탭 -->
+        <div style="display:flex; gap:4px; margin-bottom:16px;" id="folderTabs"></div>
         <div id="explorerContent" style="min-height:200px;"></div>
     </div>
 </div>
@@ -1013,9 +1015,12 @@ document.getElementById('lookupCode').addEventListener('keydown', function(e) {
 
 // ===== 파일 탐색기 =====
 let explorerSortAsc = true;
+let explorerFolder = '26SS';
+const FOLDERS = ['26SS', '26FW', '27SS', '27FW'];
 
 function showExplorer() {
     document.getElementById('explorerModal').classList.add('show');
+    renderFolderTabs();
     renderExplorer();
 }
 
@@ -1023,6 +1028,12 @@ function toggleExplorerSort() {
     explorerSortAsc = !explorerSortAsc;
     document.getElementById('explorerSortBtn').textContent = explorerSortAsc ? '↑ 오름차순' : '↓ 내림차순';
     renderExplorer();
+}
+
+function renderFolderTabs() {
+    document.getElementById('folderTabs').innerHTML = FOLDERS.map(f =>
+        `<button onclick="explorerFolder='${f}';renderFolderTabs();renderExplorer()" style="padding:7px 16px; background:${f===explorerFolder?'#14297E':'#1e3a5f'}; color:${f===explorerFolder?'white':'#8892b0'}; border:none; border-radius:5px; font-size:12px; font-weight:${f===explorerFolder?'600':'400'}; cursor:pointer;">📂 ${f}</button>`
+    ).join('');
 }
 
 function getAllItems() {
@@ -1033,47 +1044,80 @@ function getAllItems() {
         if (key.startsWith(prefix)) {
             const fullCode = key.replace(prefix, '');
             const versions = JSON.parse(localStorage.getItem(key));
-            items.push({ fullCode, versions });
+            // 시즌 판별: 버전의 ts에서 연도+월로 추정 (25xx = 26SS/FW 기준)
+            const season = getSeasonFromCode(fullCode, versions);
+            items.push({ fullCode, versions, season });
         }
     }
     return items;
 }
 
+function getSeasonFromCode(fullCode, versions) {
+    // 품번 3~4번째 자리가 시즌 힌트 (예: HR263ISS → 26+3 = 26SS의 3번째)
+    // 간단히: 품번에서 숫자 2자리 추출하여 시즌 매핑
+    // 26 = 26SS or 26FW, 27 = 27SS or 27FW
+    // SS: 품번에 S 포함, FW: 품번에 F 포함
+    if (fullCode.includes('26') && fullCode.includes('F')) return '26FW';
+    if (fullCode.includes('27') && fullCode.includes('S')) return '27SS';
+    if (fullCode.includes('27') && fullCode.includes('F')) return '27FW';
+    return '26SS'; // 기본값
+}
+
 function renderExplorer() {
     const search = (document.getElementById('explorerSearch').value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-    let items = getAllItems();
+    let items = getAllItems().filter(it => it.season === explorerFolder);
     if (search) { items = items.filter(it => it.fullCode.includes(search)); }
     items.sort((a, b) => explorerSortAsc ? a.fullCode.localeCompare(b.fullCode) : b.fullCode.localeCompare(a.fullCode));
 
     const el = document.getElementById('explorerContent');
     if (items.length === 0) {
-        el.innerHTML = '<p style="color:#64748b; font-size:12px; padding:20px 0; text-align:center;">저장된 품번이 없습니다.</p>';
+        el.innerHTML = `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`;
         return;
     }
     el.innerHTML = items.map(item => {
         const verList = item.versions.map((v, i) => {
-            const files = [];
-            const count = 3; // 기본 분할 수 표시
-            for (let f = 1; f <= count; f++) { files.push(`${item.fullCode}_${i+1}_${f}_${v.ts}.png`); }
-            return `<div style="padding:6px 12px; margin:4px 0; background:#16213e; border-radius:4px; display:flex; justify-content:space-between; align-items:center;">
+            return `<div style="padding:8px 12px; margin:4px 0; background:#16213e; border-radius:5px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
-                    <span style="color:#e6f1ff; font-size:12px;">ver.${i+1}</span>
-                    <span style="color:#64748b; font-size:11px; margin-left:8px;">${v.ts} · ${v.korTitle||''}</span>
+                    <span style="color:#e6f1ff; font-size:12px; font-weight:500;">ver.${i+1}</span>
+                    <span style="color:#64748b; font-size:11px; margin-left:8px;">${v.ts || ''} · ${v.korTitle||''}</span>
                 </div>
                 <div style="display:flex; gap:6px;">
-                    <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:3px 8px; background:#14297E; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">코드</button>
-                    <button onclick="previewVersion('${item.fullCode}',${i})" style="padding:3px 8px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:10px; cursor:pointer;">상세</button>
+                    <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:4px 10px; background:#14297E; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">코드</button>
+                    <button onclick="openVersionForEdit('${item.fullCode}',${i})" style="padding:4px 10px; background:#0f766e; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">상세</button>
                 </div>
             </div>`;
         }).join('');
-        return `<div style="margin-bottom:12px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
+        return `<div style="margin-bottom:10px; padding:14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="color:#e6f1ff; font-size:14px; font-weight:600;">${item.fullCode}</span>
+                <span style="color:#e6f1ff; font-size:13px; font-weight:600;">📄 ${item.fullCode}</span>
                 <span style="color:#4a9eff; font-size:11px;">${item.versions.length}개 버전</span>
             </div>
             ${verList}
         </div>`;
     }).join('');
+}
+
+function openVersionForEdit(fullCode, verIdx) {
+    // 모달 닫기
+    document.getElementById('explorerModal').classList.remove('show');
+    // 품번/컬러 파싱
+    const parts = fullCode.split('_');
+    const code = parts[0];
+    const color = parts[1] || '';
+    // 상태 설정
+    currentCode = code;
+    currentColor = color;
+    currentVersion = verIdx + 1;
+    // 폼에 로드
+    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
+    if (versions[verIdx]) { loadVersion(versions[verIdx]); }
+    // UI 업데이트
+    document.getElementById('lookupCode').value = code;
+    document.getElementById('uploadCode').value = fullCode;
+    document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${fullCode} ver.${currentVersion} 로드됨</span>`;
+    updateCodeDisplay();
+    updateUploadPreview();
+    unlockEditor();
 }
 
 function showItemCode(fullCode, verIdx) {
@@ -1094,25 +1138,15 @@ function showItemCode(fullCode, verIdx) {
     document.getElementById('filePreviewBody').innerHTML = `
         <pre style="background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:12px; font-size:11px; font-family:monospace; line-height:1.8; white-space:pre-wrap; word-break:break-all; color:#93c5fd; max-height:400px; overflow-y:auto;">${escHtml(htmlCode)}</pre>
         <div style="text-align:center; margin-top:12px;">
-            <button onclick="navigator.clipboard.writeText(document.querySelector('#filePreviewBody pre').textContent.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&'));alert('복사됨')" style="padding:8px 20px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; cursor:pointer;">📋 코드 복사</button>
+            <button onclick="copyExplorerCode()" style="padding:8px 20px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; cursor:pointer;">📋 코드 복사</button>
         </div>`;
     document.getElementById('filePreviewModal').classList.add('show');
 }
 
-function previewVersion(fullCode, verIdx) {
-    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
-    const v = versions[verIdx];
-    document.getElementById('filePreviewTitle').textContent = `${fullCode} ver.${verIdx+1} — 상세 정보`;
-    document.getElementById('filePreviewBody').innerHTML = `
-        <div style="font-size:12px; color:#cbd5e1; line-height:2;">
-            <div><strong style="color:#8892b0;">상품명:</strong> ${v.korTitle || ''} (${v.engTitle || ''})</div>
-            <div><strong style="color:#8892b0;">원단:</strong> ${(v.fabricInfo||'').replace(/\n/g, ', ')}</div>
-            <div><strong style="color:#8892b0;">사이즈:</strong> ${v.sizes || ''}</div>
-            <div><strong style="color:#8892b0;">작성시간:</strong> ${v.ts || ''}</div>
-            <div><strong style="color:#8892b0;">체크포인트:</strong> 핏=${['크게나옴','정사이즈','작게나옴'][v.checkFit]}, 두께=${['두꺼움','적당함','얇음'][v.checkThick]}, 신축=${['좋음','약간있음','없음'][v.checkStretch]}, 안감=${['있음','부분안감','없음'][v.checkLining]}</div>
-            <div style="margin-top:8px;"><strong style="color:#8892b0;">모델:</strong><br>${(v.modelInfo||'').replace(/\n/g,'<br>')}</div>
-        </div>`;
-    document.getElementById('filePreviewModal').classList.add('show');
+function copyExplorerCode() {
+    const pre = document.querySelector('#filePreviewBody pre');
+    const text = pre.textContent;
+    navigator.clipboard.writeText(text).then(() => alert('복사됨'));
 }
 </script>
 </body>
