@@ -269,7 +269,18 @@ EMMA,124cm / 23kg,130 size</textarea>
         </div>
         <div class="crop-modal-btns">
             <button class="btn-cancel" onclick="hideUploadModal()">취소</button>
-            <button class="btn-confirm" onclick="executeUpload()">생성 및 다운로드</button>
+            <button class="btn-confirm" onclick="executeUpload()">생성 및 코드화</button>
+        </div>
+    </div>
+</div>
+<div class="crop-modal" id="codeResultModal">
+    <div class="crop-modal-box" style="width:560px; max-height:80vh; overflow-y:auto;">
+        <h3>코드화 완료</h3>
+        <p>아래 코드를 복사하여 사용하세요.</p>
+        <textarea id="codeResultArea" readonly style="width:100%; min-height:200px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#93c5fd; font-size:12px; font-family:monospace; line-height:1.6; resize:vertical; margin:16px 0;"></textarea>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideCodeResult()">닫기</button>
+            <button class="btn-confirm" onclick="copyCode()">📋 코드 복사</button>
         </div>
     </div>
 </div>
@@ -567,6 +578,14 @@ function updateUploadPreview() {
     el.innerHTML = names.map(n => `<div style="color:#93c5fd; font-size:12px; margin-bottom:3px;">📄 ${n}</div>`).join('');
 }
 
+function hideCodeResult() { document.getElementById('codeResultModal').classList.remove('show'); }
+function copyCode() {
+    const area = document.getElementById('codeResultArea');
+    area.select();
+    document.execCommand('copy');
+    alert('코드가 클립보드에 복사되었습니다.');
+}
+
 async function executeUpload() {
     const code = document.getElementById('uploadCode').value.trim();
     const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
@@ -587,6 +606,14 @@ async function executeUpload() {
         const fullH = fullCanvas.height;
         const sliceH = Math.ceil(fullH / count);
 
+        // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
+        const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+        let imageUrls = [];
+        for (let i = 0; i < count; i++) {
+            imageUrls.push(`${baseUrl}/${code}_${i + 1}_${ts}.jpg`);
+        }
+
+        // ZIP 다운로드
         if (count === 1) {
             const a = document.createElement('a');
             a.download = `${code}_1_${ts}.png`;
@@ -611,6 +638,16 @@ async function executeUpload() {
             a.click();
             URL.revokeObjectURL(a.href);
         }
+
+        // 코드화 결과 생성
+        let htmlCode = '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+        imageUrls.forEach(url => {
+            htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
+        });
+
+        document.getElementById('codeResultArea').value = htmlCode.trim();
+        document.getElementById('codeResultModal').classList.add('show');
+
     } catch(e) { alert('오류: ' + e.message); }
     btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.textContent = '🚀 서버 업로드 및 코드화';
 }
