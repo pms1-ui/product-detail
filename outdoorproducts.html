@@ -276,8 +276,9 @@ EMMA,124cm / 23kg,130 size</textarea>
 <div class="crop-modal" id="codeResultModal">
     <div class="crop-modal-box" style="width:560px; max-height:80vh; overflow-y:auto;">
         <h3>코드화 완료</h3>
-        <p>아래 코드를 복사하여 사용하세요.</p>
-        <textarea id="codeResultArea" readonly style="width:100%; min-height:200px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#93c5fd; font-size:12px; font-family:monospace; line-height:1.6; resize:vertical; margin:16px 0;"></textarea>
+        <p>아래 코드를 복사하여 사용하세요. <span style="color:#f59e0b;">■</span> 고정 영역 / <span style="color:#93c5fd;">■</span> 동적 영역</p>
+        <pre id="codeResultHighlight" style="width:100%; min-height:200px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; font-size:11px; font-family:monospace; line-height:1.8; margin:16px 0; overflow-x:auto; white-space:pre-wrap; word-break:break-all;"></pre>
+        <textarea id="codeResultArea" readonly style="display:none;"></textarea>
         <div class="crop-modal-btns">
             <button class="btn-cancel" onclick="hideCodeResult()">닫기</button>
             <button class="btn-confirm" onclick="copyCode()">📋 코드 복사</button>
@@ -579,11 +580,20 @@ function updateUploadPreview() {
 }
 
 function hideCodeResult() { document.getElementById('codeResultModal').classList.remove('show'); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function copyCode() {
-    const area = document.getElementById('codeResultArea');
-    area.select();
-    document.execCommand('copy');
-    alert('코드가 클립보드에 복사되었습니다.');
+    const text = document.getElementById('codeResultArea').value;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('코드가 클립보드에 복사되었습니다.');
+    }).catch(() => {
+        // fallback
+        const area = document.getElementById('codeResultArea');
+        area.style.display = 'block';
+        area.select();
+        document.execCommand('copy');
+        area.style.display = 'none';
+        alert('코드가 클립보드에 복사되었습니다.');
+    });
 }
 
 async function executeUpload() {
@@ -640,12 +650,26 @@ async function executeUpload() {
         }
 
         // 코드화 결과 생성
-        let htmlCode = '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+        let htmlCode = '';
+        // 고정 상단 (다른 색상으로 표시용 주석)
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+        // 동적 이미지
         imageUrls.forEach(url => {
             htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
         });
+        // 고정 하단
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
 
-        document.getElementById('codeResultArea').value = htmlCode.trim();
+        document.getElementById('codeResultArea').value = htmlCode;
+        // 하이라이트 버전
+        const highlighted = htmlCode.split('\n').map((line, i, arr) => {
+            if (i === 0 || i === arr.length - 1 || i === arr.length - 2) {
+                return `<span style="color:#f59e0b;">${escHtml(line)}</span>`;
+            }
+            return `<span style="color:#93c5fd;">${escHtml(line)}</span>`;
+        }).join('\n');
+        document.getElementById('codeResultHighlight').innerHTML = highlighted;
         document.getElementById('codeResultModal').classList.add('show');
 
     } catch(e) { alert('오류: ' + e.message); }
