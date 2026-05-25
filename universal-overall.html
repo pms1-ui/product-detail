@@ -48,10 +48,12 @@
         .file-slots { margin-bottom: 8px; }
         /* 우측 */
         .preview-panel { flex: 1; overflow-y: auto; background: #e8e8e8; padding: 20px 20px 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
-        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; gap: 10px; align-items: center; }
+        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
         .btn-download { padding: 12px 24px; background: #14297E; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(20,41,126,0.4); transition: all 0.15s; }
         .btn-download:hover { background: #1a3599; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,41,126,0.5); }
         .btn-download.loading { opacity: 0.5; pointer-events: none; }
+        .btn-upload { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(15,118,110,0.4); transition: all 0.15s; }
+        .btn-upload:hover { background: #0d9488; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,118,110,0.5); }
         /* 분할 모달 */
         .crop-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
         .crop-modal.show { display: flex; }
@@ -138,18 +140,30 @@
 <div class="app-header">
     <div class="app-header-top">
         <h1>상품 상세 페이지 생성기</h1>
-        <p>좌측에서 수정하거나, 우측 이미지를 직접 클릭해서 교체할 수 있습니다.</p>
+        <div id="currentCodeDisplay" style="display:none; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:6px 14px; font-size:13px; color:#e6f1ff; font-weight:600; letter-spacing:0.5px;">
+            <span id="currentCodeText"></span>
+            <span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span>
+        </div>
     </div>
     <div class="brand-tabs">
         <a class="brand-tab" href="/outdoorproducts.html">아웃도어프로덕츠</a>
         <a class="brand-tab active" href="/universal-overall.html">유니버셜오버롤</a>
-        <a class="brand-tab" href="/ellesse.html">엘레쎄</a>
-        <a class="brand-tab" href="/univ.html">유니브</a>
-        <a class="brand-tab" href="/ordinary-holiday.html">오디너리홀리데이</a>
     </div>
 </div>
 <div class="app-layout">
 <div class="input-panel">
+    <!-- 품번 조회 영역 -->
+    <div style="margin-bottom:20px; padding:16px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
+        <label style="display:block; color:#ccd6f6; font-size:12px; font-weight:600; margin-bottom:8px;">품번 조회</label>
+        <div style="display:flex; gap:8px;">
+            <input type="text" id="lookupCode" placeholder="HR12341234" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <button onclick="doLookup()" style="padding:10px 16px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">조회</button>
+        </div>
+        <div id="lookupStatus" style="margin-top:8px; font-size:11px; color:#64748b;">품번을 입력하고 조회하세요.</div>
+    </div>
+
+    <!-- 나머지 입력 영역 (품번 조회 전 비활성) -->
+    <div id="editorArea" style="opacity:0.3; pointer-events:none;">
     <div class="sec-head"><span>① 메인 히어로 이미지</span><button class="btn-add" onclick="addSlot('hero')">+</button></div>
     <div class="file-slots" id="heroSlots"></div>
 
@@ -224,13 +238,58 @@ EMMA,124cm / 23kg,130 size</textarea>
     <div class="input-group"><label>두께감</label><select id="checkThick" onchange="render()"><option value="0" selected>두꺼움</option><option value="1">적당함</option><option value="2">얇음</option></select></div>
     <div class="input-group"><label>신축성</label><select id="checkStretch" onchange="render()"><option value="0">좋음</option><option value="1">약간있음</option><option value="2" selected>없음</option></select></div>
     <div class="input-group"><label>안감</label><select id="checkLining" onchange="render()"><option value="0" selected>있음</option><option value="1">부분안감</option><option value="2">없음</option></select></div>
+    </div><!-- /editorArea -->
 </div>
 
 <div class="preview-panel">
     <div id="preview-container"></div>
 </div>
 <div class="download-floating">
+    <button class="btn-upload" onclick="showUploadModal()">🚀 서버 업로드 및 코드화</button>
     <button class="btn-download" onclick="showCropModal()">📥 이미지로 다운로드 (PNG)</button>
+</div>
+<div class="crop-modal" id="uploadModal">
+    <div class="crop-modal-box">
+        <h3>서버 업로드 및 코드화</h3>
+        <p>품번을 입력하면 파일명이 자동 생성됩니다.</p>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">작성자</label>
+            <input type="text" id="uploadAuthor" value="박명수" readonly style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#64748b; font-size:13px;">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="uploadCode" placeholder="HR12341234" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
+        </div>
+        <div style="text-align:left; margin-bottom:16px; display:flex; gap:12px;">
+            <div style="flex:1;">
+                <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">분할 수 (1~10)</label>
+                <input type="number" id="uploadCropCount" min="1" max="10" value="3" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; text-align:center;">
+            </div>
+            <div style="flex:1;">
+                <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">작성연월일시</label>
+                <input type="text" id="uploadTimestamp" readonly style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#64748b; font-size:13px; text-align:center;">
+            </div>
+        </div>
+        <div id="uploadPreviewNames" style="background:#0a1628; border-radius:6px; padding:10px 14px; margin-bottom:16px; min-height:30px;">
+            <p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideUploadModal()">취소</button>
+            <button class="btn-confirm" onclick="executeUpload()">생성 및 코드화</button>
+        </div>
+    </div>
+</div>
+<div class="crop-modal" id="codeResultModal">
+    <div class="crop-modal-box" style="width:560px; max-height:80vh; overflow-y:auto;">
+        <h3>코드화 완료</h3>
+        <p>아래 코드를 복사하여 사용하세요. <span style="color:#f59e0b;">■</span> 고정 영역 / <span style="color:#93c5fd;">■</span> 동적 영역</p>
+        <pre id="codeResultHighlight" style="width:100%; min-height:200px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; font-size:11px; font-family:monospace; line-height:1.8; margin:16px 0; overflow-x:auto; white-space:pre-wrap; word-break:break-all;"></pre>
+        <textarea id="codeResultArea" readonly style="display:none;"></textarea>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideCodeResult()">닫기</button>
+            <button class="btn-confirm" onclick="copyCode()">📋 코드 복사</button>
+        </div>
+    </div>
 </div>
 <div class="crop-modal" id="cropModal">
     <div class="crop-modal-box">
@@ -243,6 +302,35 @@ EMMA,124cm / 23kg,130 size</textarea>
         </div>
     </div>
 </div>
+
+<!-- 컬러 선택 모달 -->
+<div class="crop-modal" id="colorModal">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto;">
+        <h3 id="colorModalTitle">컬러 선택</h3>
+        <p>작업할 컬러를 선택하거나, 새 컬러를 추가하세요.</p>
+        <div id="colorList" style="margin:16px 0; text-align:left;"></div>
+        <div style="text-align:left; margin:16px 0; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">새 컬러코드 (3글자, 예: BLK, YEL, TTL)</label>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="newColorCode" maxlength="3" placeholder="BLK" style="flex:1; padding:8px 10px; background:#16213e; border:1px solid #1e3a5f; border-radius:4px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+                <button class="btn-confirm" onclick="addNewColor()" style="padding:8px 14px; font-size:12px;">추가</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 버전 선택 모달 -->
+<div class="crop-modal" id="versionModal">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto;">
+        <h3>기존 작업물 발견</h3>
+        <p>불러올 버전을 선택하거나, 새로 만들 수 있습니다.</p>
+        <div id="versionList" style="margin:16px 0; text-align:left;"></div>
+        <div class="crop-modal-btns">
+            <button class="btn-confirm" onclick="createNew()">새로 만들기</button>
+        </div>
+    </div>
+</div>
+
 </div>
 
 <input type="file" id="hiddenFileInput" accept="image/*" style="display:none">
@@ -490,11 +578,144 @@ function render() {
             ${checkRow('신축성',['좋음','약간있음','없음'], val('checkStretch'))}
             ${checkRow('안감',['있음','부분안감','없음'], val('checkLining'))}
         </div>
+    </section>
+
+    <section style="width:100%; display:flex; flex-direction:column; align-items:center;">
+        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg" style="width:100%; height:auto; display:block;">
+        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg" style="width:100%; height:auto; display:block;">
     </section>`;
 }
 
 function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
 function hideCropModal() { document.getElementById('cropModal').classList.remove('show'); }
+function getTimestamp() {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    return `${yy}${mm}${dd}${hh}${mi}`;
+}
+
+function showUploadModal() {
+    document.getElementById('uploadModal').classList.add('show');
+    document.getElementById('uploadTimestamp').value = getTimestamp();
+    updateUploadPreview();
+}
+function hideUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+
+function updateUploadPreview() {
+    const code = document.getElementById('uploadCode').value.trim() || getFullCode();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    const ver = currentVersion || 1;
+    const el = document.getElementById('uploadPreviewNames');
+    if (!code) {
+        el.innerHTML = '<p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>';
+        return;
+    }
+    let names = [];
+    for (let i = 1; i <= count; i++) { names.push(`${code}_${ver}_${i}_${ts}.png`); }
+    el.innerHTML = names.map(n => `<div style="color:#93c5fd; font-size:12px; margin-bottom:3px;">📄 ${n}</div>`).join('');
+}
+
+function hideCodeResult() { document.getElementById('codeResultModal').classList.remove('show'); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function copyCode() {
+    const text = document.getElementById('codeResultArea').value;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('코드가 클립보드에 복사되었습니다.');
+    }).catch(() => {
+        // fallback
+        const area = document.getElementById('codeResultArea');
+        area.style.display = 'block';
+        area.select();
+        document.execCommand('copy');
+        area.style.display = 'none';
+        alert('코드가 클립보드에 복사되었습니다.');
+    });
+}
+
+async function executeUpload() {
+    const code = document.getElementById('uploadCode').value.trim();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const author = document.getElementById('uploadAuthor').value;
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (count < 1 || count > 10) { alert('분할 수는 1~10 사이로 입력하세요.'); return; }
+    hideUploadModal();
+
+    const btn = document.querySelector('.btn-upload');
+    btn.style.opacity = '0.5'; btn.style.pointerEvents = 'none'; btn.textContent = '⏳ 생성 중...';
+
+    try {
+        const el = document.getElementById('preview-container');
+        const fullCanvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', width: 800, windowWidth: 800 });
+        const fullW = fullCanvas.width;
+        const fullH = fullCanvas.height;
+        const sliceH = Math.ceil(fullH / count);
+
+        // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
+        const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+        const ver = currentVersion || 1;
+        let imageUrls = [];
+        for (let i = 0; i < count; i++) {
+            imageUrls.push(`${baseUrl}/${code}_${ver}_${i + 1}_${ts}.jpg`);
+        }
+
+        // ZIP 다운로드
+        if (count === 1) {
+            const a = document.createElement('a');
+            a.download = `${code}_${ver}_1_${ts}.png`;
+            a.href = fullCanvas.toDataURL('image/png');
+            a.click();
+        } else {
+            const zip = new JSZip();
+            for (let i = 0; i < count; i++) {
+                const cropCanvas = document.createElement('canvas');
+                cropCanvas.width = fullW;
+                const thisH = Math.min(sliceH, fullH - i * sliceH);
+                cropCanvas.height = thisH;
+                const ctx = cropCanvas.getContext('2d');
+                ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
+                const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
+                zip.file(`${code}_${ver}_${i + 1}_${ts}.png`, blob);
+            }
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.download = `${code}_${ver}_${ts}.zip`;
+            a.href = URL.createObjectURL(zipBlob);
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // 코드화 결과 생성
+        let htmlCode = '';
+        // 고정 상단 (다른 색상으로 표시용 주석)
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+        // 동적 이미지
+        imageUrls.forEach(url => {
+            htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
+        });
+        // 고정 하단
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+        htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
+
+        document.getElementById('codeResultArea').value = htmlCode;
+        // 하이라이트 버전
+        const highlighted = htmlCode.split('\n').map((line, i, arr) => {
+            if (i === 0 || i === arr.length - 1 || i === arr.length - 2) {
+                return `<span style="color:#f59e0b;">${escHtml(line)}</span>`;
+            }
+            return `<span style="color:#93c5fd;">${escHtml(line)}</span>`;
+        }).join('\n');
+        document.getElementById('codeResultHighlight').innerHTML = highlighted;
+        document.getElementById('codeResultModal').classList.add('show');
+
+    } catch(e) { alert('오류: ' + e.message); }
+    btn.style.opacity = '1'; btn.style.pointerEvents = 'auto'; btn.textContent = '🚀 서버 업로드 및 코드화';
+}
 
 async function startDownload() {
     const count = parseInt(document.getElementById('cropCount').value) || 1;
@@ -548,6 +769,246 @@ addSlot('modelcut');
 addSlot('detailcut');
 addSlot('sizechart');
 render();
+
+// 업로드 모달 실시간 미리보기
+document.getElementById('uploadCode').addEventListener('input', updateUploadPreview);
+document.getElementById('uploadCropCount').addEventListener('input', updateUploadPreview);
+
+// ===== 품번 조회 / 버전 관리 =====
+let currentCode = '';
+let currentColor = '';
+let currentVersion = 0;
+
+function getFullCode() { return currentColor ? `${currentCode}_${currentColor}` : currentCode; }
+
+function updateCodeDisplay() {
+    const el = document.getElementById('currentCodeDisplay');
+    if (currentCode) {
+        el.style.display = 'block';
+        document.getElementById('currentCodeText').textContent = getFullCode();
+        document.getElementById('currentVerText').textContent = currentVersion > 0 ? `ver. ${currentVersion}` : 'new';
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function getStorageKey(code) { return `odp_detail_${code}`; }
+
+function getColorsForCode(code) {
+    // localStorage에서 해당 품번의 모든 컬러 키를 찾음
+    const prefix = `odp_detail_${code}_`;
+    const colors = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(prefix)) {
+            const color = key.replace(prefix, '');
+            colors.push(color);
+        }
+    }
+    return colors;
+}
+
+function getSavedVersions(code) {
+    const raw = localStorage.getItem(getStorageKey(code));
+    if (!raw) return [];
+    try { return JSON.parse(raw); } catch(e) { return []; }
+}
+
+function saveCurrentVersion(code, ts) {
+    const versions = getSavedVersions(code);
+    const formData = {
+        ts: ts,
+        engTitle: val('engTitle'),
+        korTitle: val('korTitle'),
+        desc1: val('desc1'),
+        desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'),
+        modelInfo: val('modelInfo'),
+        sizes: val('sizes'),
+        ages: val('ages'),
+        heights: val('heights'),
+        weights: val('weights'),
+        shoulder: val('shoulder'),
+        chest: val('chest'),
+        sleeve: val('sleeve'),
+        totalLength: val('totalLength'),
+        checkFit: val('checkFit'),
+        checkThick: val('checkThick'),
+        checkStretch: val('checkStretch'),
+        checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(code), JSON.stringify(versions));
+}
+
+function loadVersion(versionData) {
+    document.getElementById('engTitle').value = versionData.engTitle || '';
+    document.getElementById('korTitle').value = versionData.korTitle || '';
+    document.getElementById('desc1').value = versionData.desc1 || '';
+    document.getElementById('desc2').value = versionData.desc2 || '';
+    document.getElementById('fabricInfo').value = versionData.fabricInfo || '';
+    document.getElementById('modelInfo').value = versionData.modelInfo || '';
+    document.getElementById('sizes').value = versionData.sizes || '';
+    document.getElementById('ages').value = versionData.ages || '';
+    document.getElementById('heights').value = versionData.heights || '';
+    document.getElementById('weights').value = versionData.weights || '';
+    document.getElementById('shoulder').value = versionData.shoulder || '';
+    document.getElementById('chest').value = versionData.chest || '';
+    document.getElementById('sleeve').value = versionData.sleeve || '';
+    document.getElementById('totalLength').value = versionData.totalLength || '';
+    document.getElementById('checkFit').value = versionData.checkFit || '0';
+    document.getElementById('checkThick').value = versionData.checkThick || '0';
+    document.getElementById('checkStretch').value = versionData.checkStretch || '2';
+    document.getElementById('checkLining').value = versionData.checkLining || '0';
+    render();
+}
+
+function unlockEditor() {
+    const el = document.getElementById('editorArea');
+    el.style.opacity = '1';
+    el.style.pointerEvents = 'auto';
+}
+
+function doLookup() {
+    const code = document.getElementById('lookupCode').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    currentCode = code;
+
+    // 해당 품번의 컬러 목록 조회
+    const colors = getColorsForCode(code);
+    if (colors.length > 0) {
+        document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${code} — ${colors.length}개 컬러 발견</span>`;
+    } else {
+        document.getElementById('lookupStatus').innerHTML = `<span style="color:#f59e0b;">새 품번입니다. 컬러를 추가하세요.</span>`;
+    }
+    showColorModal(code, colors);
+}
+
+function showColorModal(code, colors) {
+    document.getElementById('colorModalTitle').textContent = `${code} - 컬러 선택`;
+    const listEl = document.getElementById('colorList');
+    if (colors.length === 0) {
+        listEl.innerHTML = '<p style="color:#64748b; font-size:12px; padding:8px 0;">등록된 컬러가 없습니다. 아래에서 새 컬러를 추가하세요.</p>';
+    } else {
+        listEl.innerHTML = colors.map(color => {
+            const fullKey = `${code}_${color}`;
+            const versions = getSavedVersions(fullKey);
+            return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectColor('${color}')">
+                <div>
+                    <div style="color:#e6f1ff; font-size:13px; font-weight:600;">${code}_${color}</div>
+                    <div style="color:#8892b0; font-size:11px; margin-top:2px;">${versions.length}개 버전</div>
+                </div>
+                <span style="color:#4a9eff; font-size:14px;">→</span>
+            </div>`;
+        }).join('');
+    }
+    document.getElementById('newColorCode').value = '';
+    document.getElementById('colorModal').classList.add('show');
+}
+
+function selectColor(color) {
+    currentColor = color;
+    document.getElementById('colorModal').classList.remove('show');
+    const fullKey = getFullCode();
+    document.getElementById('uploadCode').value = fullKey;
+    updateUploadPreview();
+    unlockEditor();
+
+    const versions = getSavedVersions(fullKey);
+    if (versions.length === 0) {
+        currentVersion = 1;
+        updateCodeDisplay();
+    } else {
+        showVersionModal(fullKey, versions);
+    }
+}
+
+function addNewColor() {
+    const color = document.getElementById('newColorCode').value.trim();
+    if (!color || color.length !== 3) { alert('컬러코드는 영문 대문자 3글자로 입력하세요.'); return; }
+    currentColor = color;
+    document.getElementById('colorModal').classList.remove('show');
+    const fullKey = getFullCode();
+    document.getElementById('uploadCode').value = fullKey;
+    currentVersion = 1;
+    updateCodeDisplay();
+    updateUploadPreview();
+    unlockEditor();
+}
+
+function showVersionModal(fullCode, versions) {
+    const listEl = document.getElementById('versionList');
+    listEl.innerHTML = versions.map((v, i) => {
+        const label = v.ts || '(시간 미상)';
+        return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectVersion('${fullCode}',${i})">
+            <div>
+                <div style="color:#e6f1ff; font-size:13px; font-weight:500;">버전 ${i + 1}</div>
+                <div style="color:#8892b0; font-size:11px; margin-top:2px;">작성: ${label} · ${v.korTitle || ''}</div>
+            </div>
+            <span style="color:#4a9eff; font-size:14px;">→</span>
+        </div>`;
+    }).join('');
+    document.getElementById('versionModal').classList.add('show');
+}
+
+function selectVersion(fullCode, idx) {
+    const versions = getSavedVersions(fullCode);
+    if (versions[idx]) {
+        loadVersion(versions[idx]);
+        currentVersion = idx + 1;
+    }
+    updateCodeDisplay();
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+function createNew() {
+    const fullCode = getFullCode();
+    const versions = getSavedVersions(fullCode);
+    currentVersion = versions.length + 1;
+    updateCodeDisplay();
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+// executeUpload 후 자동 저장
+const origExecuteUpload = executeUpload;
+executeUpload = async function() {
+    await origExecuteUpload();
+    const fullCode = getFullCode() || document.getElementById('uploadCode').value.trim();
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    if (fullCode) { saveCurrentVersion(fullCode, ts); }
+};
+
+// Enter 키로 조회
+document.getElementById('lookupCode').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLookup();
+});
+
+// 테스트용 더미 데이터 (HR12341234)
+(function seedTestData() {
+    const testCode = 'HR12341234';
+    // BLK 컬러
+    const blkKey = getStorageKey(`${testCode}_BLK`);
+    if (!localStorage.getItem(blkKey)) {
+        localStorage.setItem(blkKey, JSON.stringify([
+            { ts: '2505201430', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (블랙)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n3oz 패딩을 퀼팅한 원단의 안감으로\n보온성이 좋습니다.', fabricInfo: '겉감 : 나일론 100%\n안감 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' },
+            { ts: '2505221015', engTitle: 'Kids Varsity Jacket V2', korTitle: '키즈 바시티 자켓 블랙 (수정)', desc1: '아웃도어 프로덕츠 키즈의\n인기 바시티 점퍼입니다.', desc2: '넉넉한 핏으로 제작되었습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '1', checkThick: '1', checkStretch: '1', checkLining: '0' }
+        ]));
+    }
+    // NVY 컬러
+    const nvyKey = getStorageKey(`${testCode}_NVY`);
+    if (!localStorage.getItem(nvyKey)) {
+        localStorage.setItem(nvyKey, JSON.stringify([
+            { ts: '2505251100', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (네이비)', desc1: '아웃도어 프로덕츠 키즈의\n대표 바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n보온성이 좋습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size\nALEXANDER,126cm / 25.5kg,130 size\nEMMA,124cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+        ]));
+    }
+    // TTL (전체컬러)
+    const ttlKey = getStorageKey(`${testCode}_TTL`);
+    if (!localStorage.getItem(ttlKey)) {
+        localStorage.setItem(ttlKey, JSON.stringify([
+            { ts: '2505241800', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (전체)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '전체 컬러 통합 상세입니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+        ]));
+    }
+})();
 </script>
 </body>
 </html>
