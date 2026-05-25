@@ -304,8 +304,9 @@ EMMA,124cm / 23kg,130 size</textarea>
 </div>
 
 <!-- 컬러 선택 모달 -->
-<div class="crop-modal" id="colorModal">
-    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto;">
+<div class="crop-modal" id="colorModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto; position:relative;">
+        <button onclick="document.getElementById('colorModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
         <h3 id="colorModalTitle">컬러 선택</h3>
         <p>작업할 컬러를 선택하거나, 새 컬러를 추가하세요.</p>
         <div id="colorList" style="margin:16px 0; text-align:left;"></div>
