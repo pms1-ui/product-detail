@@ -1172,32 +1172,32 @@ function renderExplorer() {
         el.innerHTML = `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`;
         return;
     }
-    el.innerHTML = items.map((item, idx) => {
-        const verList = item.versions.map((v, i) => {
-            const savedAt = v.savedAt || '';
-            return `<div style="padding:8px 12px; margin:4px 0; background:#16213e; border-radius:5px; display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <span style="color:#e6f1ff; font-size:12px; font-weight:500;">ver.${i+1}</span>
-                    <span style="color:#64748b; font-size:11px; margin-left:8px;">${v.ts || ''} · ${v.korTitle||''}</span>
-                    ${savedAt ? `<span style="color:#4a9eff; font-size:10px; margin-left:6px;">최종저장: ${savedAt}</span>` : ''}
-                </div>
-                <div style="display:flex; gap:6px;">
-                    <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:4px 10px; background:#14297E; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">코드</button>
-                    <button onclick="openVersionForEdit('${item.fullCode}',${i})" style="padding:4px 10px; background:#0f766e; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">상세</button>
-                </div>
-            </div>`;
-        }).join('');
-        return `<div style="margin-bottom:10px; padding:14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="toggleItemVersions('expVer${idx}', this)">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="exp-toggle" style="color:#64748b; font-size:12px; transition:transform 0.2s; display:inline-block;">▶</span>
-                    <span style="color:#e6f1ff; font-size:13px; font-weight:600;">${item.fullCode}</span>
-                </div>
-                <span style="color:#4a9eff; font-size:11px;">${item.versions.length}개 버전</span>
-            </div>
-            <div id="expVer${idx}" style="display:none; margin-top:8px;">${verList}</div>
-        </div>`;
-    }).join('');
+    el.innerHTML = items.length === 0
+        ? `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`
+        : `<table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead><tr style="border-bottom:1px solid #1e3a5f;">
+                <th style="text-align:left; padding:8px 10px; color:#8892b0; font-weight:500;">품번</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">버전</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">상품명</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">최종저장</th>
+                <th style="text-align:right; padding:8px 10px; color:#8892b0; font-weight:500;"></th>
+            </tr></thead>
+            <tbody>${items.map(item => {
+                return item.versions.map((v, i) => {
+                    const savedAt = v.savedAt || '-';
+                    return `<tr style="border-bottom:1px solid #1e3a5f22;">
+                        <td style="padding:10px 10px; color:#e6f1ff; font-weight:600;">${i===0 ? item.fullCode : ''}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#4a9eff;">ver.${i+1}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#cbd5e1;">${v.korTitle||''}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#64748b; font-size:11px;">${savedAt}</td>
+                        <td style="padding:10px 10px; text-align:right;">
+                            <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:3px 8px; background:#14297E; color:white; border:none; border-radius:3px; font-size:10px; cursor:pointer; margin-right:4px;">코드</button>
+                            <button onclick="openVersionForEdit('${item.fullCode}',${i})" style="padding:3px 8px; background:#0f766e; color:white; border:none; border-radius:3px; font-size:10px; cursor:pointer;">상세</button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            }).join('')}</tbody>
+        </table>`;
 }
 
 function openVersionForEdit(fullCode, verIdx) {
