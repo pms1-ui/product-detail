@@ -592,7 +592,6 @@ function copyCode() {
 async function executeUpload() {
     const code = document.getElementById('uploadCode').value.trim();
     const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
-    const brand = document.getElementById('uploadBrand').value;
     const author = document.getElementById('uploadAuthor').value;
     const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
     if (!code) { alert('품번을 입력하세요.'); return; }
