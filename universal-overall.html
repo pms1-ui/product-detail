@@ -145,7 +145,10 @@
         <div id="currentCodeDisplay" style="display:none; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:6px 14px; font-size:13px; color:#e6f1ff; font-weight:600; letter-spacing:0.5px; display:none; align-items:center; gap:12px;">
             <span><span id="currentCodeText"></span><span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span></span>
             <button id="viewCodeBtn" onclick="showCodeResult()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">코드 보기</button>
-            <button id="saveBtn" onclick="saveCurrentWork()" style="display:none; padding:4px 10px; background:#0f766e; color:white; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">저장</button>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                <button id="saveBtn" onclick="saveCurrentWork()" style="display:none; padding:4px 10px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px; cursor:default; font-weight:500; opacity:0.6;">저장됨</button>
+                <span id="lastSavedTime" style="font-size:9px; color:#64748b; font-weight:400;"></span>
+            </div>
         </div>
     </div>
     <div class="brand-tabs">
@@ -839,8 +842,10 @@ function saveCurrentWork() {
     if (!fullCode) { alert('품번을 먼저 선택하세요.'); return; }
     const versions = getSavedVersions(fullCode);
     const idx = currentVersion - 1;
+    const savedAt = getFullTimestamp();
     const formData = {
         ts: (versions[idx] && versions[idx].ts) || getTimestamp(),
+        savedAt: savedAt,
         engTitle: val('engTitle'),
         korTitle: val('korTitle'),
         desc1: val('desc1'),
@@ -866,12 +871,47 @@ function saveCurrentWork() {
         versions.push(formData);
     }
     localStorage.setItem(getStorageKey(fullCode), JSON.stringify(versions));
-    // 버튼 피드백
-    const btn = document.getElementById('saveBtn');
-    btn.textContent = '✓ 저장됨';
-    btn.style.background = '#166534';
-    setTimeout(() => { btn.textContent = '저장'; btn.style.background = '#0f766e'; }, 2000);
+    markSaved(savedAt);
 }
+
+function getFullTimestamp() {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    return `${yy}.${mm}.${dd} ${hh}:${mi}:${ss}`;
+}
+
+function markSaved(timeStr) {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '저장됨';
+    btn.style.background = '#64748b';
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+    document.getElementById('lastSavedTime').textContent = timeStr;
+}
+
+function markUnsaved() {
+    const btn = document.getElementById('saveBtn');
+    if (!btn || btn.style.display === 'none') return;
+    btn.textContent = '저장';
+    btn.style.background = '#0f766e';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.onclick = saveCurrentWork;
+}
+
+// 변경 감지: 사이드바 입력 시 저장 버튼 활성화
+document.addEventListener('input', function(e) {
+    if (e.target.closest('#editorArea')) { markUnsaved(); }
+});
+document.addEventListener('change', function(e) {
+    if (e.target.closest('#editorArea')) { markUnsaved(); }
+});
 
 function loadVersion(versionData) {
     document.getElementById('engTitle').value = versionData.engTitle || '';
@@ -984,10 +1024,12 @@ function showVersionModal(fullCode, versions) {
     const listEl = document.getElementById('versionList');
     listEl.innerHTML = versions.map((v, i) => {
         const label = v.ts || '(시간 미상)';
+        const savedAt = v.savedAt ? `<span style="color:#4a9eff; font-size:10px;">최종저장: ${v.savedAt}</span>` : '';
         return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectVersion('${fullCode}',${i})">
             <div>
                 <div style="color:#e6f1ff; font-size:13px; font-weight:500;">버전 ${i + 1}</div>
                 <div style="color:#8892b0; font-size:11px; margin-top:2px;">작성: ${label} · ${v.korTitle || ''}</div>
+                ${savedAt ? `<div style="margin-top:2px;">${savedAt}</div>` : ''}
             </div>
             <span style="color:#4a9eff; font-size:14px;">→</span>
         </div>`;
@@ -1000,6 +1042,9 @@ function selectVersion(fullCode, idx) {
     if (versions[idx]) {
         loadVersion(versions[idx]);
         currentVersion = idx + 1;
+        if (versions[idx].savedAt) {
+            markSaved(versions[idx].savedAt);
+        }
     }
     updateCodeDisplay();
     document.getElementById('versionModal').classList.remove('show');
@@ -1129,10 +1174,12 @@ function renderExplorer() {
     }
     el.innerHTML = items.map((item, idx) => {
         const verList = item.versions.map((v, i) => {
+            const savedAt = v.savedAt || '';
             return `<div style="padding:8px 12px; margin:4px 0; background:#16213e; border-radius:5px; display:flex; justify-content:space-between; align-items:center;">
                 <div>
                     <span style="color:#e6f1ff; font-size:12px; font-weight:500;">ver.${i+1}</span>
                     <span style="color:#64748b; font-size:11px; margin-left:8px;">${v.ts || ''} · ${v.korTitle||''}</span>
+                    ${savedAt ? `<span style="color:#4a9eff; font-size:10px; margin-left:6px;">최종저장: ${savedAt}</span>` : ''}
                 </div>
                 <div style="display:flex; gap:6px;">
                     <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:4px 10px; background:#14297E; color:white; border:none; border-radius:4px; font-size:10px; cursor:pointer;">코드</button>
