@@ -235,9 +235,9 @@
     <div class="input-group">
         <label>안감</label>
         <select id="lining" onchange="render()">
-            <option value="안감없음" selected>안감없음</option>
-            <option value="부분안감">부분안감</option>
-            <option value="안감있음">안감있음</option>
+            <option value="없음" selected>없음</option>
+            <option value="부분">부분</option>
+            <option value="있음">있음</option>
         </select>
     </div>
     <div class="input-group">
@@ -1396,7 +1396,7 @@ ${mainImgHtml}
             ${productInfoRow('두께감', ['얇음','보통','두꺼움'], val('thick'))}
             ${productInfoRow('비침', ['있음','보통','없음'], val('transparency'))}
             ${productInfoRow('촉감', ['부드러움','보통','뻣뻣함'], val('texture'))}
-            ${productInfoRow('안감', ['안감없음','부분안감','안감있음'], val('lining'))}
+            ${productInfoRow('안감', ['없음','부분','있음'], val('lining'))}
             ${productInfoRow('신축성', ['없음','보통','있음'], val('stretch'))}
             ${seasonRow('계절', getSeasons('shirtSeason'))}
         </div>
