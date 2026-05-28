@@ -247,12 +247,12 @@ MODEL : 173cm 51kg / S size</textarea>
         </select>
     </div>
     <div class="input-group">
-        <label>계절</label>
-        <select id="season" onchange="render()">
-            <option value="봄/가을">봄/가을</option>
-            <option value="여름" selected>여름</option>
-            <option value="겨울">겨울</option>
-        </select>
+        <label>계절 (복수 선택 가능)</label>
+        <div style="display:flex;gap:12px;margin-top:4px;">
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="shirtSeasonSS" onchange="render()" style="width:14px;height:14px;"> 봄/가을</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="shirtSeasonSU" onchange="render()" checked style="width:14px;height:14px;"> 여름</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="shirtSeasonFW" onchange="render()" style="width:14px;height:14px;"> 겨울</label>
+        </div>
     </div>
 
     <div class="sec-head"><span>WASHING TIP</span><button class="btn-add" onclick="addWashItem()">+</button></div>
@@ -375,7 +375,14 @@ MODEL : 173cm 51kg / S size</textarea>
     <div class="input-group"><label>촉감</label><select id="bagTexture" onchange="render()"><option value="부드러움" selected>부드러움</option><option value="보통">보통</option><option value="뻣뻣함">뻣뻣함</option></select></div>
     <div class="input-group"><label>안감</label><select id="bagLining" onchange="render()"><option value="없음">없음</option><option value="부분">부분</option><option value="있음" selected>있음</option></select></div>
     <div class="input-group"><label>신축성</label><select id="bagStretch" onchange="render()"><option value="없음" selected>없음</option><option value="보통">보통</option><option value="있음">있음</option></select></div>
-    <div class="input-group"><label>계절</label><select id="bagSeason" onchange="render()"><option value="봄/가을" selected>봄/가을</option><option value="여름">여름</option><option value="겨울">겨울</option></select></div>
+    <div class="input-group">
+        <label>계절 (복수 선택 가능)</label>
+        <div style="display:flex;gap:12px;margin-top:4px;">
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="bagSeasonSS" onchange="render()" style="width:14px;height:14px;"> 봄/가을</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="bagSeasonSU" onchange="render()" checked style="width:14px;height:14px;"> 여름</label>
+            <label style="display:flex;align-items:center;gap:6px;color:#ccd6f6;font-size:12px;cursor:pointer;"><input type="checkbox" id="bagSeasonFW" onchange="render()" style="width:14px;height:14px;"> 겨울</label>
+        </div>
+    </div>
 
     <div class="sec-head"><span>WASHING TIP</span><button class="btn-add" onclick="addWashItem()">+</button></div>
     <div id="washItemsListBag"></div>
@@ -949,6 +956,30 @@ function productInfoRow(label, opts, selected) {
     </div>`;
 }
 
+function seasonRow(label, selectedArr) {
+    const opts = ['봄/가을', '여름', '겨울'];
+    const items = opts.map((o, i) => {
+        const isSelected = selectedArr.includes(o);
+        const box = isSelected
+            ? `<span style="display:inline-block;width:22px;height:22px;background:#000;border-radius:2px;flex-shrink:0;"></span>`
+            : `<span style="display:inline-block;width:22px;height:22px;background:#fff;border:1px solid #ccc;border-radius:2px;flex-shrink:0;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:12px;padding-left:${i===0?'30px':'40px'};">${box}<span style="font-size:28px;font-weight:400;color:#292929;">${o}</span></div>`;
+    }).join('');
+    return `<div style="display:flex;align-items:center;height:92px;border-bottom:1px solid #e0e0e0;">
+        <div style="width:190px;font-size:28px;font-weight:700;color:#292929;text-align:center;">${label}</div>
+        <div style="width:1px;height:43px;background:#e0e0e0;"></div>
+        ${items}
+    </div>`;
+}
+
+function getSeasons(prefix) {
+    const sel = [];
+    if (document.getElementById(prefix+'SS') && document.getElementById(prefix+'SS').checked) sel.push('봄/가을');
+    if (document.getElementById(prefix+'SU') && document.getElementById(prefix+'SU').checked) sel.push('여름');
+    if (document.getElementById(prefix+'FW') && document.getElementById(prefix+'FW').checked) sel.push('겨울');
+    return sel;
+}
+
 // ===== SIZE TABLE 렌더링 =====
 function sizeTable() {
     const sizes = val('sizes').split(',').map(s => s.trim()).filter(Boolean);
@@ -1028,9 +1059,9 @@ function renderBag() {
         detailNotice: `<div style="width:800px;background:#fff;padding:40px 40px 0;"><div style="font-size:26px;font-weight:400;color:#292929;line-height:1.8;">${(val('bagDetailNotice')||'').replace(/\n/g,'<br>')}</div></div>`,
         fabric: (()=>{const ft=val('bagFabricText');if(!ft&&!bagFabricSrc)return '';return `<div style="width:800px;background:#fff;padding:100px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">FABRIC INFO</div><div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('bagFabric',0)">${bagFabricSrc?`<img src="${bagFabricSrc}" style="width:800px;height:auto;display:block;">`:''}</div>${ft?`<div style="text-align:center;font-size:30px;font-weight:400;color:#292929;margin-top:30px;padding:0 60px;line-height:1.7;">${ft.replace(/\n/g,'<br>')}</div>`:''}</div>`;})(),
         size: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">SIZE INFO</div><div style="padding:0 65px;"><table style="width:100%;border-collapse:collapse;font-size:28px;"><thead><tr style="border-bottom:1px solid #292929;"><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;">SIZE(cm)</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">a. 가로</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">b. 세로</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">c. 폭</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">d. 손잡이</th></tr></thead><tbody>${bagSizeRows}</tbody></table><div style="font-size:23px;font-weight:400;color:#292929;margin-top:20px;text-align:center;">*실측은 측정 방법에 따라 1~3cm 정도의 오차가 있을 수 있습니다.</div></div></div>`,
-        product: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">PRODUCT INFO</div><div style="padding:0 65px;"><div style="width:100%;">${productInfoRow('두께감',['얇음','보통','두꺼움'],val('bagThick'))}${productInfoRow('비침',['있음','보통','없음'],val('bagTransparency'))}${productInfoRow('촉감',['부드러움','보통','뻣뻣함'],val('bagTexture'))}${productInfoRow('안감',['없음','부분','있음'],val('bagLining'))}${productInfoRow('신축성',['없음','보통','있음'],val('bagStretch'))}${productInfoRow('계절',['봄/가을','여름','겨울'],val('bagSeason'))}</div></div></div>`,
-        washing: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">WASHING TIP</div><div style="padding:0 65px;"><div style="width:100%;">${data.washItems.map((w,i)=>`<div style="display:flex;align-items:center;height:200px;${i<data.washItems.length-1?'border-bottom:1px solid #e0e0e0;':''}"><div style="width:200px;display:flex;justify-content:center;"><div style="width:120px;height:120px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center;">${w.img.src?`<img src="${w.img.src}" style="width:88px;height:88px;object-fit:contain;">`:'<div style="width:88px;height:88px;background:#ccc;display:flex;align-items:center;justify-content:center;"><span style="color:#fff;font-size:10px;text-align:center;">88x88</span></div>'}</div></div><div><div style="font-size:28px;font-weight:700;color:#292929;margin-bottom:10px;">${w.title}</div><div style="font-size:24px;font-weight:400;color:#292929;max-width:450px;">${w.desc}</div></div></div>`).join('')}</div></div></div>`,
-        info: `<div style="width:800px;background:#fff;padding:200px 0 100px;"><div style="padding:0 65px;"><div style="width:100%;background:#f4f4f4;height:78px;display:flex;align-items:center;justify-content:center;"><span style="font-size:26px;font-weight:700;color:#292929;">상품정보 제공고시</span></div><div style="border-bottom:1px solid #e0e0e0;"></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제품 소재</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoMaterial')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">색상</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoColor')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조사</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoManufacturer')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">치수</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoMeasurement')}</div><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조국</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoCountry')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조연월</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoMfgDate')}</div><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">세탁/취급 주의사항</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoWashing')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">품질보증기준</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoWarranty')}</div></div><div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">A/S 연락처</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoAs')}</div></div></div></div>`
+        product: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">PRODUCT INFO</div><div style="padding:0 65px;"><div style="width:100%;">${productInfoRow('두께감',['얇음','보통','두꺼움'],val('bagThick'))}${productInfoRow('비침',['있음','보통','없음'],val('bagTransparency'))}${productInfoRow('촉감',['부드러움','보통','뻣뻣함'],val('bagTexture'))}${productInfoRow('안감',['없음','부분','있음'],val('bagLining'))}${productInfoRow('신축성',['없음','보통','있음'],val('bagStretch'))}${seasonRow('계절',getSeasons('bagSeason'))}</div></div></div>`,
+        washing: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">WASHING TIP</div><div style="padding:0 65px;"><div style="width:100%;">${data.washItems.map((w,i)=>`<div style="display:flex;align-items:center;min-height:200px;padding:20px 0;${i<data.washItems.length-1?'border-bottom:1px solid #e0e0e0;':''}"><div style="width:200px;flex-shrink:0;display:flex;justify-content:center;"><div style="width:120px;height:120px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center;">${w.img.src?`<img src="${w.img.src}" style="width:88px;height:88px;object-fit:contain;">`:'<div style="width:88px;height:88px;background:#ccc;display:flex;align-items:center;justify-content:center;"><span style="color:#fff;font-size:10px;text-align:center;">88x88</span></div>'}</div></div><div><div style="font-size:28px;font-weight:700;color:#292929;margin-bottom:10px;">${w.title}</div><div style="font-size:24px;font-weight:400;color:#292929;max-width:450px;line-height:1.6;">${(w.desc||'').replace(/\n/g,'<br>')}</div></div></div>`).join('')}</div></div></div>`,
+        info: `<div style="width:800px;background:#fff;padding:200px 0 100px;"><div style="padding:0 65px;"><div style="width:100%;background:#f4f4f4;height:78px;display:flex;align-items:center;justify-content:center;"><span style="font-size:26px;font-weight:700;color:#292929;">상품정보 제공고시</span></div><div style="border-bottom:1px solid #e0e0e0;"></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제품 소재</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoMaterial')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">색상</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoColor')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조사</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoManufacturer')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">치수</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoMeasurement')||'').replace(/\n/g,'<br>')}</div><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조국</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoCountry')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조연월</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoMfgDate')||'').replace(/\n/g,'<br>')}</div><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">세탁/취급 주의사항</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoWashing')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">품질보증기준</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoWarranty')||'').replace(/\n/g,'<br>')}</div></div><div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;"><div style="width:220px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">A/S 연락처</div><div style="width:1px;background:#e0e0e0;align-self:stretch;"></div><div style="padding:0 0 0 30px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('bagInfoAs')||'').replace(/\n/g,'<br>')}</div></div></div></div>`
     };
 
     document.getElementById('preview-container').innerHTML =
@@ -1114,8 +1145,8 @@ function render() {
 
     // WASHING TIP (data.washItems 기반)
     const washHtml = data.washItems.map((w, i) => `
-        <div style="display:flex;align-items:center;height:200px;${i<data.washItems.length-1?'border-bottom:1px solid #e0e0e0;':''}">
-            <div style="width:200px;display:flex;justify-content:center;">
+        <div style="display:flex;align-items:center;min-height:200px;padding:20px 0;${i<data.washItems.length-1?'border-bottom:1px solid #e0e0e0;':''}">
+            <div style="width:200px;flex-shrink:0;display:flex;justify-content:center;">
                 <div style="width:120px;height:120px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center;overflow:hidden;">
                     ${w.img.src
                         ? `<img src="${w.img.src}" style="width:88px;height:88px;object-fit:contain;">`
@@ -1125,7 +1156,7 @@ function render() {
             </div>
             <div>
                 <div style="font-size:28px;font-weight:700;color:#292929;margin-bottom:10px;">${w.title}</div>
-                <div style="font-size:24px;font-weight:400;color:#292929;max-width:594px;">${w.desc}</div>
+                <div style="font-size:24px;font-weight:400;color:#292929;max-width:594px;line-height:1.6;">${(w.desc||'').replace(/\n/g,'<br>')}</div>
             </div>
         </div>`).join('');
 
@@ -1192,7 +1223,7 @@ function render() {
             ${productInfoRow('촉감', ['부드러움','보통','뻣뻣함'], val('texture'))}
             ${productInfoRow('안감', ['안감없음','부분안감','안감있음'], val('lining'))}
             ${productInfoRow('신축성', ['없음','보통','있음'], val('stretch'))}
-            ${productInfoRow('계절', ['봄/가을','여름','겨울'], val('season'))}
+            ${seasonRow('계절', getSeasons('shirtSeason'))}
         </div>
     </div>
 </div>`,
@@ -1206,46 +1237,46 @@ function render() {
             <span style="font-size:26px;font-weight:700;color:#292929;">상품정보 제공고시</span>
         </div>
         <div style="border-bottom:1px solid #e0e0e0;"></div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제품 소재</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;">${val('infoMaterial')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제품 소재</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoMaterial')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">색상</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;">${val('infoColor')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">색상</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoColor')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조사</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;">${val('infoManufacturer')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조사</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoManufacturer')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">치수</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('infoMeasurement')}</div>
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조국</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('infoCountry')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">치수</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoMeasurement')||'').replace(/\n/g,'<br>')}</div>
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조국</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoCountry')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조연월</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('infoMfgDate')}</div>
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">세탁/취급 주의사항</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('infoWashing')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">제조연월</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoMfgDate')||'').replace(/\n/g,'<br>')}</div>
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">세탁/취급 주의사항</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoWashing')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">품질보증기준</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('infoWarranty')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">품질보증기준</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoWarranty')||'').replace(/\n/g,'<br>')}</div>
         </div>
-        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;">
-            <div style="width:180px;font-size:20px;font-weight:700;color:#292929;text-align:center;">A/S 연락처</div>
-            <div style="width:1px;height:29px;background:#e0e0e0;"></div>
-            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;">${val('infoAs')}</div>
+        <div style="display:flex;align-items:flex-start;min-height:64px;padding:12px 0;border-bottom:1px solid #e0e0e0;">
+            <div style="width:180px;flex-shrink:0;font-size:20px;font-weight:700;color:#292929;text-align:center;padding-top:2px;">A/S 연락처</div>
+            <div style="width:1px;background:#e0e0e0;align-self:stretch;"></div>
+            <div style="padding-left:20px;font-size:20px;font-weight:400;color:#292929;flex:1;line-height:1.6;">${(val('infoAs')||'').replace(/\n/g,'<br>')}</div>
         </div>
     </div>
 </div>`
