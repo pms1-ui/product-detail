@@ -248,10 +248,23 @@ EMMA,124cm / 23kg,130 size</textarea>
     <div class="input-group"><label>두께감</label><select id="checkThick" onchange="render()"><option value="0" selected>두꺼움</option><option value="1">적당함</option><option value="2">얇음</option></select></div>
     <div class="input-group"><label>신축성</label><select id="checkStretch" onchange="render()"><option value="0">좋음</option><option value="1">약간있음</option><option value="2" selected>없음</option></select></div>
     <div class="input-group"><label>안감</label><select id="checkLining" onchange="render()"><option value="0" selected>있음</option><option value="1">부분안감</option><option value="2">없음</option></select></div>
+
+    <div class="sec-head"><span>섹션 순서 변경</span></div>
+    <div id="odSectionOrder" style="margin-bottom:8px;"></div>
     </div><!-- /editorArea -->
 </div>
 
-<div class="preview-panel">
+<div class="preview-panel" style="position:relative;">
+    <!-- 섹션 순서 패널 (우상단 고정) -->
+    <div id="sectionOrderWidget" style="position:fixed;top:110px;right:28px;z-index:500;background:#16213e;border:1px solid #1e3a5f;border-radius:8px;padding:10px 12px;min-width:200px;max-width:240px;box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:pointer;" onclick="toggleSectionPanel()">
+            <span style="color:#ccd6f6;font-size:11px;font-weight:600;letter-spacing:0.3px;">📋 섹션 순서</span>
+            <span id="sectionPanelToggleIcon" style="color:#8892b0;font-size:12px;">▲</span>
+        </div>
+        <div id="sectionPanelBody">
+            <div id="odSectionOrderWidget"></div>
+        </div>
+    </div>
     <div id="preview-container"></div>
 </div>
 <div class="download-floating">
@@ -496,6 +509,53 @@ function getSrc(key, idx, fallback) {
     return (data[key][idx] && data[key][idx].src) ? data[key][idx].src : fallback;
 }
 
+// ===== 섹션 순서 변경 =====
+let odSectionOrder = ['intro','modelcut','detail','kc','model','sizeGuide','productSize','checkPoint'];
+const OD_SECTION_LABELS = {
+    intro: '인트로 (히어로+소개+설명)',
+    modelcut: '모델컷',
+    detail: 'Detail Point',
+    kc: 'KC 안전인증마크',
+    model: 'Model Size',
+    sizeGuide: 'Size Guide',
+    productSize: 'Product Size',
+    checkPoint: 'Check Point'
+};
+
+function renderOdSectionOrder() {
+    const html = odSectionOrder.map((sec, i) => `
+        <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:#0a1628;border:1px solid #1e3a5f;border-radius:5px;margin-bottom:4px;">
+            <span style="flex:1;font-size:11px;color:#ccd6f6;">${OD_SECTION_LABELS[sec]||sec}</span>
+            <button onclick="moveOdSection(${i},-1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===0?'disabled':''}>↑</button>
+            <button onclick="moveOdSection(${i},1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===odSectionOrder.length-1?'disabled':''}>↓</button>
+        </div>`).join('');
+    const el = document.getElementById('odSectionOrder');
+    if (el) el.innerHTML = html;
+    const w = document.getElementById('odSectionOrderWidget');
+    if (w) w.innerHTML = html;
+}
+
+function moveOdSection(idx, dir) {
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= odSectionOrder.length) return;
+    [odSectionOrder[idx], odSectionOrder[newIdx]] = [odSectionOrder[newIdx], odSectionOrder[idx]];
+    renderOdSectionOrder();
+    render();
+}
+
+function toggleSectionPanel() {
+    const body = document.getElementById('sectionPanelBody');
+    const icon = document.getElementById('sectionPanelToggleIcon');
+    if (!body) return;
+    if (body.style.display === 'none') {
+        body.style.display = 'block';
+        icon.textContent = '▲';
+    } else {
+        body.style.display = 'none';
+        icon.textContent = '▼';
+    }
+}
+
 function checkRow(label, opts, active) {
     const txts = opts.map((o,i)=>`<span class="${i==active?'active':''}">${o}</span>`).join('');
     const dots = opts.map((_,i)=>`<div class="check-slider-dot ${i==active?'active':''}"></div>`).join('');
@@ -579,8 +639,8 @@ function render() {
     let pRows = '';
     sizes.forEach((s,i) => { pRows += `<tr class="table-data-row"><td>${s}</td><td>${sh[i]||''}</td><td>${ch[i]||''}</td><td>${sl[i]||''}</td><td>${tl[i]||''}</td></tr>`; });
 
-    document.getElementById('preview-container').innerHTML = `
-    <section class="intro-section">
+    const odSectionHtmlMap = {
+        intro: `<section class="intro-section">
         ${heroHtml}
         <div class="intro-text-area">
             <div style="display:flex;flex-direction:column;gap:50px;align-items:center;">
@@ -593,11 +653,10 @@ function render() {
                 <p>${nl2br(val('desc2'))}</p>
             </div>
         </div>
-        <div class="product-images">${modelcutHtml}</div>
-        <div class="color-notice">제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="detail-section">
+    </section>`,
+        modelcut: `<div class="product-images">${modelcutHtml}</div>
+    <div class="color-notice">제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>`,
+        detail: `<section class="detail-section">
         <div class="section-divider"></div>
         <h3 class="section-title">Detail Point</h3>
         <p class="section-subtitle" style="font-weight:400;">제품 상세 특징</p>
@@ -607,25 +666,22 @@ function render() {
             <div class="detail-notice-title">디테일한 특징을 확인해주세요!</div>
             <div class="detail-notice-desc">사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
         </div>
-    </section>
-
-    <section class="kc-section">
+    </section>`,
+        kc: `<section class="kc-section">
         <div class="kc-badge-box">
             <img src="https://placehold.co/94x143">
             <div class="kc-text"><div class="kc-title">KC안전인증마크</div>
             <div class="kc-desc">FITI시험연구원의 품질안전검사 합격 판정을 받아<br>믿을 수 있는 제품입니다.</div></div>
         </div>
-    </section>
-
-    <section class="model-section">
+    </section>`,
+        model: `<section class="model-section">
         <div class="section-divider"></div>
         <h3 class="section-title">Model Size</h3>
         <p class="section-subtitle" style="font-weight:500;">모델 사이즈</p>
         <div class="model-row">${modelRow1}</div>
         <div class="model-row">${modelRow2}</div>
-    </section>
-
-    <section class="size-section">
+    </section>`,
+        sizeGuide: `<section class="size-section">
         <div class="section-divider"></div>
         <h3 class="section-title">Size Guide</h3>
         <p class="section-subtitle" style="font-weight:500;">사이즈 가이드</p>
@@ -635,9 +691,8 @@ function render() {
             <tr class="table-data-row"><td><span style="font-size:26px;">체중</span><br><span style="font-size:24px;">(kg)</span></td>${wgtR}</tr>
         </tbody></table></div>
         <div class="size-notice">평균 사이즈표로 체형과 제품에 따라 다소 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="size-section">
+    </section>`,
+        productSize: `<section class="size-section">
         <div class="section-divider"></div>
         <h3 class="section-title">Product Size</h3>
         <p class="section-subtitle" style="font-weight:500;">상품 사이즈</p>
@@ -645,9 +700,8 @@ function render() {
         <div class="unit-text">(cm)</div>
         <div class="table-container"><table><thead><tr><th>치수항목</th><th>어깨너비</th><th>가슴둘레</th><th>소매길이</th><th>총장</th></tr></thead>
         <tbody>${pRows}</tbody></table></div>
-    </section>
-
-    <section class="check-section">
+    </section>`,
+        checkPoint: `<section class="check-section">
         <div class="section-divider"></div>
         <h3 class="section-title">Check Point</h3>
         <p class="section-subtitle" style="font-weight:500;">체크 포인트</p>
@@ -657,9 +711,12 @@ function render() {
             ${checkRow('신축성',['좋음','약간있음','없음'], val('checkStretch'))}
             ${checkRow('안감',['있음','부분안감','없음'], val('checkLining'))}
         </div>
-    </section>
+    </section>`
+    };
 
-    <section style="width:100%; display:flex; flex-direction:column; align-items:center;">
+    document.getElementById('preview-container').innerHTML =
+        odSectionOrder.map(sec => odSectionHtmlMap[sec] || '').join('') +
+        `<section style="width:100%; display:flex; flex-direction:column; align-items:center;">
         <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg" style="width:100%; height:auto; display:block;">
         <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg" style="width:100%; height:auto; display:block;">
     </section>`;
@@ -809,6 +866,7 @@ addSlot('intro');
 addSlot('modelcut');
 addSlot('detailcut');
 addSlot('sizechart');
+renderOdSectionOrder();
 render();
 
 // 업로드 모달 실시간 미리보기
