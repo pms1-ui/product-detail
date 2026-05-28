@@ -137,17 +137,6 @@
     <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcutImg')">+</button></div>
     <div class="file-slots" id="modelcutImgSlots"></div>
 
-    <div class="sec-head"><span>④ 모델 정보</span><button class="btn-add" onclick="addShirtModel()" id="btnAddShirtModel">+</button></div>
-    <div class="input-group">
-        <label>섹션 타이틀</label>
-        <input type="text" id="shirtModelTitle" value="MODEL" oninput="render()">
-    </div>
-    <div class="input-group">
-        <label>섹션 서브타이틀 (줄바꿈으로 추가 가능)</label>
-        <textarea id="shirtModelSubtitle" rows="2" oninput="render()">모델 정보</textarea>
-    </div>
-    <div id="shirtModelItems"></div>
-
     <div class="sec-head"><span>⑤ 상품 메인 이미지</span><button class="btn-add" onclick="addSlot('mainImg')">+</button></div>
     <div class="file-slots" id="mainImgSlots"></div>
 
@@ -172,13 +161,24 @@
     <div class="sec-head"><span>⑧ 디테일 이미지</span><button class="btn-add" onclick="addSlot('detailImg')">+</button></div>
     <div class="file-slots" id="detailImgSlots"></div>
 
-    <div class="sec-head"><span>⑨ 원단 정보</span></div>
+    <div class="sec-head"><span>⑨ 모델 정보</span><button class="btn-add" onclick="addShirtModel()" id="btnAddShirtModel">+</button></div>
+    <div class="input-group">
+        <label>섹션 타이틀</label>
+        <input type="text" id="shirtModelTitle" value="MODEL" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>섹션 서브타이틀 (줄바꿈으로 추가 가능)</label>
+        <textarea id="shirtModelSubtitle" rows="2" oninput="render()">모델 정보</textarea>
+    </div>
+    <div id="shirtModelItems"></div>
+
+    <div class="sec-head"><span>⑩ 원단 정보</span></div>
     <div class="input-group">
         <label>원단 구성 텍스트</label>
         <input type="text" id="fabricText" value="POLYESTER 72%  |  COTTON 24%  |  LINEN 4%" oninput="render()">
     </div>
 
-    <div class="sec-head"><span>⑩ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('fabricImg')">+</button></div>
+    <div class="sec-head"><span>⑪ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('fabricImg')">+</button></div>
     <div class="file-slots" id="fabricImgSlots"></div>
 
     <div class="sec-head"><span>⑪ SIZE GUIDE</span></div>
@@ -642,7 +642,7 @@ let bagSectionOrder = ['intro','notice','pd','detail','detailNotice','model','fa
 let bagHiddenSections = new Set();
 
 // SHIRT 섹션 순서
-let shirtSectionOrder = ['intro','modelcut','model','top','detail','fabric','size','product','washing','info'];
+let shirtSectionOrder = ['intro','modelcut','top','detail','model','fabric','size','product','washing','info'];
 let shirtHiddenSections = new Set();
 const SHIRT_SECTION_LABELS = {
     intro: '인트로 이미지', modelcut: '모델컷',
