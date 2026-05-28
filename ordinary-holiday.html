@@ -355,8 +355,18 @@ MODEL : 173cm 51kg / S size</textarea>
 *제품의 디테일컷이 실제 제품과 가장 흡사합니다.</textarea>
     </div>
 
-    <div class="sec-head"><span>⑦ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('bagFabric')">+</button></div>
-    <div class="file-slots" id="bagFabricSlots"></div>
+    <div class="sec-head"><span>⑦ Model Size</span><button class="btn-add" onclick="addBagModel()" id="btnAddBagModel">+</button></div>
+    <div class="input-group">
+        <label>섹션 타이틀</label>
+        <input type="text" id="bagModelTitle" value="Model Size" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>섹션 서브타이틀</label>
+        <input type="text" id="bagModelSubtitle" value="모델 사이즈" oninput="render()">
+    </div>
+    <div id="bagModelItems"></div>
+
+    <div class="sec-head"><span>⑧ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('bagFabric')">+</button></div>    <div class="file-slots" id="bagFabricSlots"></div>
     <div class="input-group">
         <label>원단 텍스트</label>
         <textarea id="bagFabricText" rows="3" oninput="render()">COTTON : 100%</textarea>
@@ -604,6 +614,7 @@ const data = {
     bagDetail: [],
     bagFabric: [],
     bagColors: [], // [{img:{src,name}, colorName:'GRAY'}]
+    bagModels: [], // [{img:{src,name}, name:'', info:''}]
     // WASHING TIP (SHIRT & BAG 공통)
     washItems: [
         { img: {src:'오디너리세탁이미지/단독손세탁.png', name:'단독손세탁.png'}, title: '단독 손세탁', desc: '본 제품은 단독 손세탁을 권장합니다.' },
@@ -616,7 +627,7 @@ const data = {
 };
 
 // BAG 섹션 순서 (렌더링 순서 제어)
-let bagSectionOrder = ['intro','notice','pd','detail','detailNotice','fabric','size','product','washing','info'];
+let bagSectionOrder = ['intro','notice','pd','detail','detailNotice','model','fabric','size','product','washing','info'];
 
 // SHIRT 섹션 순서
 let shirtSectionOrder = ['intro','model1','caption','model2','top','detail','fabric','size','product','washing','info'];
@@ -791,8 +802,49 @@ function renderBagColorItems() {
     const btn = document.getElementById('btnAddBagColor');
     if (btn) btn.style.display = data.bagColors.length >= 6 ? 'none' : 'inline-flex';
 }
-function imgClickBagColor(idx) {
-    const input = document.getElementById('hiddenFileInput');
+// ===== BAG 모델 관리 =====
+function addBagModel() {
+    data.bagModels.push({ img: { src: '', name: '' }, name: '', info: '' });
+    renderBagModelItems();
+    render();
+}
+
+function removeBagModel(idx) {
+    data.bagModels.splice(idx, 1);
+    renderBagModelItems();
+    render();
+}
+
+function handleBagModelFile(input, idx) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        data.bagModels[idx].img = { src: e.target.result, name: f.name };
+        renderBagModelItems();
+        render();
+    };
+    r.readAsDataURL(f);
+}
+
+function renderBagModelItems() {
+    const container = document.getElementById('bagModelItems');
+    if (!container) return;
+    container.innerHTML = data.bagModels.map((m, i) => `
+        <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;padding:10px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="color:#4a9eff;font-size:11px;font-weight:600;">모델 ${i+1}</span>
+                <button onclick="removeBagModel(${i})" style="width:20px;height:20px;background:transparent;color:#e74c3c;border:1px solid #e74c3c;border-radius:4px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>
+            ${m.img.src
+                ? `<div class="file-row"><span class="file-name-display">${m.img.name}</span><button class="btn-del" onclick="data.bagModels[${i}].img={src:'',name:''};renderBagModelItems();render()">✕</button></div>`
+                : `<div class="file-row"><input type="file" accept="image/*" onchange="handleBagModelFile(this,${i})"></div>`
+            }
+            <input type="text" placeholder="이름 (예: JANE)" value="${m.name.replace(/"/g,'&quot;')}" oninput="data.bagModels[${i}].name=this.value;render()" style="width:100%;padding:7px 10px;background:#16213e;border:1px solid #1e3a5f;border-radius:5px;color:#e6f1ff;font-size:12px;outline:none;margin-top:6px;margin-bottom:4px;">
+            <input type="text" placeholder="정보 (예: 165cm 50kg / FREE size)" value="${m.info.replace(/"/g,'&quot;')}" oninput="data.bagModels[${i}].info=this.value;render()" style="width:100%;padding:7px 10px;background:#16213e;border:1px solid #1e3a5f;border-radius:5px;color:#e6f1ff;font-size:12px;outline:none;">
+        </div>`).join('');
+}
+
+function imgClickBagColor(idx) {    const input = document.getElementById('hiddenFileInput');
     input.onchange = function() {
         const f = this.files[0]; if (!f) return;
         const r = new FileReader();
@@ -807,10 +859,26 @@ function imgClickBagColor(idx) {
     input.click();
 }
 
+function imgClickBagModel(idx) {
+    const input = document.getElementById('hiddenFileInput');
+    input.onchange = function() {
+        const f = this.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = e => {
+            data.bagModels[idx].img = { src: e.target.result, name: f.name };
+            renderBagModelItems();
+            render();
+        };
+        r.readAsDataURL(f);
+        this.value = '';
+    };
+    input.click();
+}
+
 const BAG_SECTION_LABELS = {
     intro: '인트로 이미지', notice: '공지 텍스트',
     pd: '상품컷', detail: '디테일 이미지', detailNotice: '디테일 주의 텍스트',
-    fabric: 'FABRIC INFO', size: 'SIZE INFO', product: 'PRODUCT INFO',
+    model: 'Model Size', fabric: 'FABRIC INFO', size: 'SIZE INFO', product: 'PRODUCT INFO',
     washing: 'WASHING TIP', info: '상품정보 제공고시'
 };
 
@@ -1057,6 +1125,33 @@ function renderBag() {
         pd: mkImgs('bagPd','#868686'),
         detail: `<div style="width:800px;background:#fff;padding:100px 0 0;"><div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">DETAIL</div><div style="display:flex;flex-direction:column;align-items:center;gap:0;">${mkImgs('bagDetail','#898989')}</div></div>`,
         detailNotice: `<div style="width:800px;background:#fff;padding:40px 40px 0;"><div style="font-size:26px;font-weight:400;color:#292929;line-height:1.8;">${(val('bagDetailNotice')||'').replace(/\n/g,'<br>')}</div></div>`,
+        model: (()=>{
+            if (data.bagModels.length === 0) return '';
+            const modelTitle = val('bagModelTitle') || 'Model Size';
+            const modelSubtitle = val('bagModelSubtitle') || '모델 사이즈';
+            const bgColors = ['#A34D4D','#4D6FA3','#4DA36F','#A3934D','#7B4DA3','#4DA3A3'];
+            const cards = data.bagModels.map((m, i) => {
+                const bg = bgColors[i % bgColors.length];
+                const thumb = m.img.src
+                    ? `<img src="${m.img.src}" style="width:100%;height:100%;object-fit:cover;">`
+                    : '';
+                return `<div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                    <div style="width:220px;height:220px;border-radius:50%;overflow:hidden;background:${bg};cursor:pointer;flex-shrink:0;" onclick="imgClickBagModel(${i})">${thumb}</div>
+                    <div style="font-size:29px;font-weight:600;color:#121212;letter-spacing:1.45px;text-transform:uppercase;">${m.name||''}</div>
+                    <div style="font-size:25px;color:#494949;font-weight:500;line-height:1.5;">${(m.info||'').replace(/\n/g,'<br>')}</div>
+                </div>`;
+            });
+            const rows = [];
+            for (let i = 0; i < cards.length; i += 3) {
+                rows.push(`<div style="display:flex;justify-content:center;gap:20px;margin-bottom:30px;flex-wrap:wrap;">${cards.slice(i,i+3).join('')}</div>`);
+            }
+            return `<div style="width:800px;background:#fff;padding:100px 0 0;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:60px;height:6px;background:#14297E;margin:0 auto 30px;"></div>
+                <div style="text-align:center;font-size:62px;font-weight:600;color:#121212;margin-bottom:10px;">${modelTitle}</div>
+                <div style="text-align:center;font-size:35px;font-weight:500;color:#121212;margin-bottom:50px;">${modelSubtitle}</div>
+                ${rows.join('')}
+            </div>`;
+        })(),
         fabric: (()=>{const ft=val('bagFabricText');if(!ft&&!bagFabricSrc)return '';return `<div style="width:800px;background:#fff;padding:100px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">FABRIC INFO</div><div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('bagFabric',0)">${bagFabricSrc?`<img src="${bagFabricSrc}" style="width:800px;height:auto;display:block;">`:''}</div>${ft?`<div style="text-align:center;font-size:30px;font-weight:400;color:#292929;margin-top:30px;padding:0 60px;line-height:1.7;">${ft.replace(/\n/g,'<br>')}</div>`:''}</div>`;})(),
         size: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">SIZE INFO</div><div style="padding:0 65px;"><table style="width:100%;border-collapse:collapse;font-size:28px;"><thead><tr style="border-bottom:1px solid #292929;"><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;">SIZE(cm)</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">a. 가로</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">b. 세로</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">c. 폭</th><th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">d. 손잡이</th></tr></thead><tbody>${bagSizeRows}</tbody></table><div style="font-size:23px;font-weight:400;color:#292929;margin-top:20px;text-align:center;">*실측은 측정 방법에 따라 1~3cm 정도의 오차가 있을 수 있습니다.</div></div></div>`,
         product: `<div style="width:800px;background:#fff;padding:200px 0 0;"><div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">PRODUCT INFO</div><div style="padding:0 65px;"><div style="width:100%;">${productInfoRow('두께감',['얇음','보통','두꺼움'],val('bagThick'))}${productInfoRow('비침',['있음','보통','없음'],val('bagTransparency'))}${productInfoRow('촉감',['부드러움','보통','뻣뻣함'],val('bagTexture'))}${productInfoRow('안감',['없음','부분','있음'],val('bagLining'))}${productInfoRow('신축성',['없음','보통','있음'],val('bagStretch'))}${seasonRow('계절',getSeasons('bagSeason'))}</div></div></div>`,
@@ -1944,6 +2039,7 @@ addSlot('bagFabric');
 renderShirtSectionOrder();
 renderBagSectionOrder();
 renderBagColorItems();
+renderBagModelItems();
 renderWashItems();
 render();
 </script>
