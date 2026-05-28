@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상품 상세 페이지 생성기</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
+        body { background: #1a1a2e; min-height: 100vh; }
+        .app-header { background: #16213e; padding: 14px 30px; border-bottom: 1px solid #0f3460; display: flex; flex-direction: column; gap: 10px; }
+        .app-header-top { display: flex; align-items: center; justify-content: space-between; }
+        .app-header h1 { color: white; font-size: 18px; font-weight: 600; }
+        .app-header p { color: #8892b0; font-size: 12px; }
+        .brand-tabs { display: flex; gap: 4px; }
+        .brand-tab { padding: 8px 16px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; color: #8892b0; font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; text-decoration: none; }
+        .brand-tab:hover { border-color: #4a9eff; color: #ccd6f6; }
+        .brand-tab.active { background: #14297E; border-color: #14297E; color: white; font-weight: 600; }
+        .app-layout { display: flex; height: calc(100vh - 90px); }
+        /* 좌측 */
+        .input-panel { width: 380px; background: #16213e; overflow-y: auto; padding: 24px 20px; border-right: 1px solid #0f3460; flex-shrink: 0; }
+        .input-panel::-webkit-scrollbar { width: 5px; }
+        .input-panel::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; color: #8892b0; font-size: 11px; font-weight: 500; margin-bottom: 6px; letter-spacing: 0.3px; }
+        .input-group input[type="text"], .input-group textarea, .input-group select {
+            width: 100%; padding: 10px 12px; background: #0a1628; border: 1px solid #1e3a5f;
+            border-radius: 6px; color: #e6f1ff; font-size: 13px; outline: none; transition: border 0.2s; }
+        .input-group input[type="text"]:focus, .input-group textarea:focus, .input-group select:focus { border-color: #4a9eff; box-shadow: 0 0 0 2px rgba(74,158,255,0.1); }
+        .input-group textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+        .input-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238892b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+        .sec-head { color: #ccd6f6; font-size: 12px; font-weight: 600; margin: 28px 0 12px; padding: 8px 0; border-bottom: 1px solid #1e3a5f; display: flex; align-items: center; justify-content: space-between; letter-spacing: 0.3px; }
+        .sec-head:first-child { margin-top: 0; }
+        .sec-head span { display: flex; align-items: center; gap: 6px; }
+        .btn-add { width: 24px; height: 24px; background: transparent; color: #4a9eff; border: 1.5px solid #4a9eff; border-radius: 5px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.15s; }
+        .btn-add:hover { background: #4a9eff; color: white; }
+        .file-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; padding: 6px 10px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; transition: border 0.15s; }
+        .file-row:hover { border-color: #3a6a9f; }
+        .file-row input[type="file"] { flex: 1; font-size: 11px; color: #8892b0; }
+        .file-row input[type="file"]::file-selector-button { padding: 4px 10px; background: #1e3a5f; color: #ccd6f6; border: none; border-radius: 4px; font-size: 11px; cursor: pointer; margin-right: 8px; transition: background 0.15s; }
+        .file-row input[type="file"]::file-selector-button:hover { background: #2a4a7f; }
+        .file-row .file-name-display { flex: 1; font-size: 12px; color: #a8b2d1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .file-row .btn-del { display: none; width: 20px; height: 20px; background: transparent; color: #e74c3c; border: 1px solid #e74c3c; border-radius: 4px; font-size: 11px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; }
+        .file-row:hover .btn-del { display: flex; }
+        .file-row .btn-del:hover { background: #e74c3c; color: white; }
+        .file-slots { margin-bottom: 8px; }
+        /* 우측 */
+        .preview-panel { flex: 1; overflow-y: auto; background: #e8e8e8; padding: 20px 20px 80px; display: flex; flex-direction: column; align-items: center; position: relative; }
+        .download-floating { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+        .btn-download { padding: 12px 24px; background: #14297E; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(20,41,126,0.4); transition: all 0.15s; }
+        .btn-download:hover { background: #1a3599; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(20,41,126,0.5); }
+        .btn-download.loading { opacity: 0.5; pointer-events: none; }
+        .btn-upload { padding: 12px 24px; background: #0f766e; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(15,118,110,0.4); transition: all 0.15s; }
+        .btn-upload:hover { background: #0d9488; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,118,110,0.5); }
+        .btn-explorer { padding: 12px 24px; background: #6b21a8; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 16px rgba(107,33,168,0.4); transition: all 0.15s; }
+        .btn-explorer:hover { background: #7c3aed; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(107,33,168,0.5); }
+        /* 분할 모달 */
+        .crop-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
+        .crop-modal.show { display: flex; }
+        .crop-modal-box { background: #16213e; border: 1px solid #1e3a5f; border-radius: 12px; padding: 30px; width: 340px; text-align: center; }
+        .crop-modal-box h3 { color: #e6f1ff; font-size: 16px; margin-bottom: 8px; }
+        .crop-modal-box p { color: #8892b0; font-size: 12px; margin-bottom: 20px; }
+        .crop-modal-box input { width: 80px; padding: 10px; background: #0a1628; border: 1px solid #1e3a5f; border-radius: 6px; color: white; font-size: 18px; text-align: center; outline: none; }
+        .crop-modal-box input:focus { border-color: #4a9eff; }
+        .crop-modal-btns { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        .crop-modal-btns button { padding: 10px 20px; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .crop-modal-btns .btn-confirm { background: #14297E; color: white; }
+        .crop-modal-btns .btn-confirm:hover { background: #1a3599; }
+        .crop-modal-btns .btn-cancel { background: #1e3a5f; color: #ccd6f6; }
+        .crop-modal-btns .btn-cancel:hover { background: #2a4a7f; }
+
+        /* 미리보기 800px 고정 */
+        #preview-container { width: 800px; background: white; }
+        #preview-container * { box-sizing: border-box; }
+        #preview-container .section-divider { width: 60px; height: 6px; background: #14297E; margin: 0 auto 30px; }
+        #preview-container .section-title { text-align: center; font-size: 62px; font-weight: 600; color: #121212; margin-bottom: 10px; }
+        #preview-container .section-subtitle { text-align: center; font-size: 35px; font-weight: 500; color: #121212; margin-bottom: 50px; }
+        #preview-container .intro-section { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 150px 0 0 0; }
+        #preview-container .main-hero { width: 100%; height: auto; display: block; cursor: pointer; }
+        #preview-container .intro-text-area { width: 100%; padding: 200px 75px; display: flex; flex-direction: column; align-items: center; gap: 80px; }
+        #preview-container .eng-title { text-align: center; font-size: 30px; color: #979797; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; }
+        #preview-container .kor-title { text-align: center; font-size: 70px; color: #121212; font-weight: 700; line-height: 1.2; }
+        #preview-container .intro-images { width: 100%; overflow: hidden; }
+        #preview-container .intro-images img { width: 100%; height: auto; display: block; cursor: pointer; }
+        #preview-container .description-box { text-align: center; display: flex; flex-direction: column; gap: 80px; }
+        #preview-container .description-box p { font-size: 35px; color: #121212; font-weight: 400; line-height: 1.4; }
+        #preview-container .product-images { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+        #preview-container .product-img { width: 100%; height: auto; display: block; cursor: pointer; }
+        #preview-container .color-notice { width: 100%; padding: 30px; font-size: 25px; color: #555555; font-weight: 500; line-height: 1.6; }
+        #preview-container .detail-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        #preview-container .fabric-box { width: 100%; background: #F4F4F4; padding: 62px; text-align: center; margin-bottom: 80px; }
+        #preview-container .fabric-box .label { font-size: 35px; font-weight: 600; color: #121212; }
+        #preview-container .fabric-box .value { font-size: 35px; font-weight: 400; color: #121212; }
+        #preview-container .detail-images { width: 100%; display: flex; flex-direction: column; gap: 100px; }
+        #preview-container .detail-img { width: 100%; height: auto; background: #F4F4F4; display: block; cursor: pointer; }
+        #preview-container .detail-notice { width: 100%; padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+        #preview-container .detail-notice-title { font-size: 25px; font-weight: 500; color: #121212; }
+        #preview-container .detail-notice-desc { font-size: 25px; font-weight: 500; color: #555555; }
+        #preview-container .kc-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        #preview-container .kc-badge-box { width: 100%; background: #F7F7F7; padding: 50px 40px; display: flex; align-items: center; gap: 30px; justify-content: center; }
+        #preview-container .kc-badge-box img { width: 80px; height: auto; }
+        #preview-container .kc-text { text-align: left; }
+        #preview-container .kc-title { color: #2D3895; font-size: 36px; font-weight: 600; margin-bottom: 12px; }
+        #preview-container .kc-desc { color: #121212; font-size: 27px; font-weight: 400; line-height: 1.7; }
+        #preview-container .model-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        #preview-container .model-row { display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        #preview-container .model-card { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        #preview-container .model-thumb { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; background: #A34D4D; cursor: pointer; }
+        #preview-container .model-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        #preview-container .model-thumb.light-bg { background: #F1F1F1; }
+        #preview-container .model-name { font-size: 29px; font-weight: 600; color: #121212; letter-spacing: 1.45px; text-transform: uppercase; }
+        #preview-container .model-info { font-size: 25px; color: #494949; font-weight: 500; line-height: 1.5; }
+        #preview-container .size-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        #preview-container .size-notice { font-size: 25px; color: #555555; font-weight: 500; text-align: center; margin-top: 20px; }
+        #preview-container .table-container { width: 100%; }
+        #preview-container table { width: 100%; border-collapse: collapse; text-align: center; }
+        #preview-container th { background: #14297E; color: white; font-size: 28px; font-weight: 600; padding: 28px 15px; border: none; }
+        #preview-container td { padding: 28px 15px; font-size: 25px; border: none; color: #121212; font-weight: 400; }
+        #preview-container tr td:first-child { background: #E5E5E5; font-weight: 500; font-size: 26px; }
+        #preview-container .table-data-row td { background: #F4F4F4; }
+        #preview-container .unit-text { width: 100%; text-align: right; font-size: 30px; color: #121212; margin-bottom: 10px; padding-right: 20px; }
+        #preview-container .size-illustration { width: 80%; margin: 0 auto 40px; opacity: 0.45; cursor: pointer; }
+        #preview-container .size-illustration img { width: 100%; height: auto; }
+        #preview-container .check-section { width: 100%; padding: 100px 0; display: flex; flex-direction: column; align-items: center; }
+        #preview-container .check-area { width: 100%; display: flex; flex-direction: column; gap: 4px; }
+        #preview-container .check-row { display: flex; align-items: stretch; }
+        #preview-container .check-label { width: 20%; background: #E5E5E5; color: #121212; font-size: 30px; font-weight: 500; display: flex; align-items: center; justify-content: center; padding: 40px 10px; }
+        #preview-container .check-options-wrap { width: 80%; background: #F4F4F4; display: flex; flex-direction: column; justify-content: center; padding: 25px 30px; }
+        #preview-container .check-options-text { display: flex; justify-content: space-between; margin-bottom: 15px; }
+        #preview-container .check-options-text span { font-size: 30px; font-weight: 500; color: #939393; }
+        #preview-container .check-options-text span.active { color: #121212; }
+        #preview-container .check-slider { position: relative; height: 25px; display: flex; align-items: center; }
+        #preview-container .check-slider-line { position: absolute; left: 10px; right: 10px; height: 3px; background: #C7C7C7; }
+        #preview-container .check-slider-dots { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
+        #preview-container .check-slider-dot { width: 18px; height: 18px; background: #C7C7C7; border-radius: 50%; }
+        #preview-container .check-slider-dot.active { width: 25px; height: 25px; background: #121212; }
+    </style>
+</head>
+<body>
+<div class="app-header">
+    <div class="app-header-top">
+        <h1>상품 상세 페이지 생성기</h1>
+        <div style="position:relative;">
+            <div id="currentCodeDisplay" style="display:none; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:6px 14px; font-size:13px; color:#e6f1ff; font-weight:600; letter-spacing:0.5px; align-items:center; gap:12px;">
+                <span><span id="currentCodeText"></span><span id="currentVerText" style="color:#4a9eff; margin-left:8px; font-weight:500;"></span></span>
+                <button id="viewCodeBtn" onclick="showCodeResult()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">코드 보기</button>
+                <div style="display:flex; gap:4px;">
+                    <button id="saveBtn" onclick="saveCurrentWork()" style="display:none; padding:4px 10px; background:#64748b; color:white; border:none; border-radius:4px; font-size:11px; cursor:default; font-weight:500; opacity:0.6;">저장됨</button>
+                    <button id="saveAsBtn" onclick="showSaveAsModal()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#93c5fd; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">다른 품번으로 저장</button>
+                    <button id="copyToBtn" onclick="showCopyToModal()" style="display:none; padding:4px 10px; background:#1e3a5f; color:#f59e0b; border:none; border-radius:4px; font-size:11px; cursor:pointer; font-weight:500;">복사</button>
+                </div>
+            </div>
+            <span id="lastSavedTime" style="position:absolute; right:0; bottom:-14px; font-size:9px; color:#ffffff; font-weight:400;"></span>
+        </div>
+    </div>
+    <div class="brand-tabs">
+        <a class="brand-tab" href="/outdoorproducts.html">아웃도어프로덕츠</a>
+        <a class="brand-tab active" href="/ordinary-holiday.html">오디너리홀리데이</a>
+    </div>
+</div>
+<div class="app-layout">
+<div class="input-panel">
+    <!-- 품번 조회 영역 -->
+    <div style="margin-bottom:20px; padding:16px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
+        <label style="display:block; color:#ccd6f6; font-size:12px; font-weight:600; margin-bottom:8px;">품번 조회</label>
+        <div style="display:flex; gap:8px;">
+            <input type="text" id="lookupCode" placeholder="OD251ILS72" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <button onclick="doLookup()" style="padding:10px 16px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">조회</button>
+        </div>
+        <div id="lookupStatus" style="margin-top:8px; font-size:11px; color:#64748b;">품번을 입력하고 조회하세요.</div>
+    </div>
+
+    <!-- 나머지 입력 영역 (품번 조회 전 비활성) -->
+    <div id="editorArea" style="opacity:0.3; pointer-events:none;">
+    <div class="sec-head"><span>① 메인 히어로 이미지</span><button class="btn-add" onclick="addSlot('hero')">+</button></div>
+    <div class="file-slots" id="heroSlots"></div>
+
+    <div class="sec-head"><span>② 상품명 / 설명</span></div>
+    <div class="input-group">
+        <label>영문 상품명</label>
+        <input type="text" id="engTitle" value="Front Graphic Sweatshirt" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>한글 상품명</label>
+        <input type="text" id="korTitle" value="전면 그래픽 맨투맨" oninput="render()">
+    </div>
+    <div class="sec-head"><span>소개 이미지</span><button class="btn-add" onclick="addSlot('intro')">+</button></div>
+    <div class="file-slots" id="introSlots"></div>
+    <div class="input-group">
+        <label>짧은 소개</label>
+        <textarea id="desc1" oninput="render()">아웃도어 프로덕츠 키즈의
+바시티 패딩 점퍼입니다.</textarea>
+    </div>
+    <div class="input-group">
+        <label>상세 설명</label>
+        <textarea id="desc2" rows="6" oninput="render()">여유 있는 핏으로 제작되었으며,
+3oz 패딩을 퀼팅한 원단의 안감으로
+보온성이 좋아 쌀쌀한 환절기 아이템으로
+좋은 점퍼입니다.
+소매의 배색 라인과 등판의 바시티 그래픽으로
+포인트를 준 점퍼 스타일이며,
+등하교 룩, 외출 룩 등 다양한 코디가 가능한
+실용적인 아우터입니다.</textarea>
+    </div>
+
+    <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcut')">+</button></div>
+    <div class="file-slots" id="modelcutSlots"></div>
+
+    <div class="sec-head"><span>④ Detail Point</span></div>
+    <div class="input-group">
+        <label>원단 구성 (FABRIC)</label>
+        <textarea id="fabricInfo" rows="2" oninput="render()">겉감, 배색 : 나일론 100%
+안감, 충전재 : 폴리에스터 100%</textarea>
+    </div>
+    <div class="sec-head"><span>디테일컷</span><button class="btn-add" onclick="addSlot('detailcut')">+</button></div>
+    <div class="file-slots" id="detailcutSlots"></div>
+
+    <div class="sec-head"><span>⑤ 모델 사이즈</span></div>
+    <div class="input-group">
+        <label>모델 정보 (이름,키/몸무게,사이즈)</label>
+        <textarea id="modelInfo" rows="5" oninput="render()">DANIELLE,127cm / 23kg,130 size
+RUBY,126cm / 23kg,130 size
+RUKA,130cm / 24kg,130 size
+ALEXANDER,126cm / 25.5kg,130 size
+EMMA,124cm / 23kg,130 size</textarea>
+    </div>
+    <div class="sec-head"><span>모델 썸네일</span><button class="btn-add" onclick="addSlot('modelthumb')">+</button></div>
+    <div class="file-slots" id="modelthumbSlots"></div>
+
+    <div class="sec-head"><span>⑥ Size Guide</span></div>
+    <div class="input-group"><label>사이즈</label><input type="text" id="sizes" value="120,130,145,155,165" oninput="render()"></div>
+    <div class="input-group"><label>나이</label><input type="text" id="ages" value="5-6,7-8,9-10,11-12,13-14" oninput="render()"></div>
+    <div class="input-group"><label>신장</label><input type="text" id="heights" value="110-120,120-130,130-140,140-150,150-160" oninput="render()"></div>
+    <div class="input-group"><label>체중</label><input type="text" id="weights" value="20-25,25-30,30-35,35-40,40-45" oninput="render()"></div>
+
+    <div class="sec-head"><span>⑦ Product Size</span></div>
+    <div class="input-group"><label>어깨너비</label><input type="text" id="shoulder" value="44.1,46.5,49.1,51.7,54.3" oninput="render()"></div>
+    <div class="input-group"><label>가슴둘레</label><input type="text" id="chest" value="95,100,105.5,111,116.5" oninput="render()"></div>
+    <div class="input-group"><label>소매길이</label><input type="text" id="sleeve" value="40.1,43.5,46.8,50.1,53.4" oninput="render()"></div>
+    <div class="input-group"><label>총장</label><input type="text" id="totalLength" value="48.5,52.5,56.5,60.5,64.5" oninput="render()"></div>
+    <div class="sec-head"><span>도식화 이미지</span><button class="btn-add" onclick="addSlot('sizechart')">+</button></div>
+    <div class="file-slots" id="sizechartSlots"></div>
+
+    <div class="sec-head"><span>⑧ Check Point</span></div>
+    <div class="input-group"><label>핏</label><select id="checkFit" onchange="render()"><option value="0" selected>크게나옴</option><option value="1">정사이즈</option><option value="2">작게나옴</option></select></div>
+    <div class="input-group"><label>두께감</label><select id="checkThick" onchange="render()"><option value="0" selected>두꺼움</option><option value="1">적당함</option><option value="2">얇음</option></select></div>
+    <div class="input-group"><label>신축성</label><select id="checkStretch" onchange="render()"><option value="0">좋음</option><option value="1">약간있음</option><option value="2" selected>없음</option></select></div>
+    <div class="input-group"><label>안감</label><select id="checkLining" onchange="render()"><option value="0" selected>있음</option><option value="1">부분안감</option><option value="2">없음</option></select></div>
+    </div><!-- /editorArea -->
+</div>
+
+<div class="preview-panel">
+    <div id="preview-container"></div>
+</div>
+<div class="download-floating">
+    <button class="btn-upload" onclick="showUploadModal()">🚀 서버 업로드 및 코드화</button>
+    <button class="btn-download" onclick="showCropModal()">📥 이미지로 다운로드 (PNG)</button>
+    <button class="btn-explorer" onclick="showExplorer()">📁 품번 전체보기</button>
+</div>
+<div class="crop-modal" id="uploadModal">
+    <div class="crop-modal-box">
+        <h3>서버 업로드 및 코드화</h3>
+        <p>품번을 입력하면 파일명이 자동 생성됩니다.</p>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">작성자</label>
+            <input type="text" id="uploadAuthor" value="박명수" readonly style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#64748b; font-size:13px;">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="uploadCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
+        </div>
+        <div style="text-align:left; margin-bottom:16px; display:flex; gap:12px;">
+            <div style="flex:1;">
+                <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">분할 수 (1~10)</label>
+                <input type="number" id="uploadCropCount" min="1" max="10" value="3" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; text-align:center;">
+            </div>
+            <div style="flex:1;">
+                <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">작성연월일시</label>
+                <input type="text" id="uploadTimestamp" readonly style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#64748b; font-size:13px; text-align:center;">
+            </div>
+        </div>
+        <div id="uploadPreviewNames" style="background:#0a1628; border-radius:6px; padding:10px 14px; margin-bottom:16px; min-height:30px;">
+            <p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideUploadModal()">취소</button>
+            <button class="btn-confirm" onclick="executeUpload()">생성 및 코드화</button>
+        </div>
+    </div>
+</div>
+<div class="crop-modal" id="codeResultModal">
+    <div class="crop-modal-box" style="width:560px; max-height:80vh; overflow-y:auto;">
+        <h3>코드화 완료</h3>
+        <p>아래 코드를 복사하여 사용하세요. <span style="color:#f59e0b;">■</span> 고정 영역 / <span style="color:#93c5fd;">■</span> 동적 영역</p>
+        <pre id="codeResultHighlight" style="width:100%; min-height:200px; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; font-size:11px; font-family:monospace; line-height:1.8; margin:16px 0; overflow-x:auto; white-space:pre-wrap; word-break:break-all;"></pre>
+        <textarea id="codeResultArea" readonly style="display:none;"></textarea>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideCodeResult()">닫기</button>
+            <button class="btn-confirm" onclick="copyCode()">📋 코드 복사</button>
+        </div>
+    </div>
+</div>
+<div class="crop-modal" id="cropModal">
+    <div class="crop-modal-box">
+        <h3>이미지 분할 다운로드</h3>
+        <p>세로를 몇 장으로 나눌지 입력하세요 (1~10)<br>2장 이상이면 ZIP으로 다운로드됩니다.</p>
+        <input type="number" id="cropCount" min="1" max="10" value="1">
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="hideCropModal()">취소</button>
+            <button class="btn-confirm" onclick="startDownload()">다운로드</button>
+        </div>
+    </div>
+</div>
+
+<!-- 다른 품번으로 저장 모달 -->
+<div class="crop-modal" id="saveAsModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:380px; position:relative;">
+        <button onclick="document.getElementById('saveAsModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+        <h3 style="margin-bottom:6px;">다른 품번으로 저장</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 저장합니다. (현재 품번도 유지됨)</p>
+        <div style="text-align:left; margin-bottom:12px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="saveAsCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
+            <input type="text" id="saveAsColor" maxlength="3" placeholder="BLK" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="document.getElementById('saveAsModal').classList.remove('show')">취소</button>
+            <button class="btn-confirm" onclick="executeSaveAs()">저장</button>
+        </div>
+    </div>
+</div>
+
+<!-- 복사 모달 -->
+<div class="crop-modal" id="copyToModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:380px; position:relative;">
+        <button onclick="document.getElementById('copyToModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;">✕</button>
+        <h3 style="margin-bottom:6px;">복사</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 복사합니다. 복사 후 해당 품번으로 전환됩니다.</p>
+        <div style="text-align:left; margin-bottom:12px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
+            <input type="text" id="copyToCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+        </div>
+        <div style="text-align:left; margin-bottom:16px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
+            <input type="text" id="copyToColor" maxlength="3" placeholder="BLK" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+        </div>
+        <div class="crop-modal-btns">
+            <button class="btn-cancel" onclick="document.getElementById('copyToModal').classList.remove('show')">취소</button>
+            <button class="btn-confirm" onclick="executeCopyTo()">복사 및 전환</button>
+        </div>
+    </div>
+</div>
+
+<!-- 파일 탐색기 모달 -->
+<div class="crop-modal" id="explorerModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:640px; max-height:85vh; overflow-y:auto; position:relative; text-align:left;">
+        <button onclick="document.getElementById('explorerModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
+        <h3 style="margin-bottom:6px;">📁 품번 전체보기</h3>
+        <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">시즌 폴더 → 품번(컬러) → 버전</p>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+            <input type="text" id="explorerSearch" placeholder="품번 검색..." oninput="renderExplorer()" style="flex:1; padding:8px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:12px; outline:none; text-transform:uppercase;">
+            <button onclick="toggleExplorerSort()" id="explorerSortBtn" style="padding:8px 12px; background:#1e3a5f; color:#ccd6f6; border:none; border-radius:6px; font-size:11px; cursor:pointer; white-space:nowrap;">↑ 오름차순</button>
+        </div>
+        <!-- 폴더 탭 -->
+        <div style="display:flex; gap:4px; margin-bottom:16px;" id="folderTabs"></div>
+        <div id="explorerContent" style="min-height:200px;"></div>
+    </div>
+</div>
+
+<!-- 파일 미리보기 모달 -->
+<div class="crop-modal" id="filePreviewModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:500px; max-height:85vh; overflow-y:auto; position:relative;">
+        <button onclick="document.getElementById('filePreviewModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
+        <h3 id="filePreviewTitle" style="margin-bottom:12px;"></h3>
+        <div id="filePreviewBody"></div>
+    </div>
+</div>
+
+<!-- 컬러 선택 모달 -->
+<div class="crop-modal" id="colorModal" onclick="if(event.target===this)this.classList.remove('show')">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto; position:relative;">
+        <button onclick="document.getElementById('colorModal').classList.remove('show')" style="position:absolute; top:12px; right:12px; width:28px; height:28px; background:transparent; border:1px solid #1e3a5f; border-radius:6px; color:#8892b0; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center;" onmouseover="this.style.borderColor='#e74c3c';this.style.color='#e74c3c'" onmouseout="this.style.borderColor='#1e3a5f';this.style.color='#8892b0'">✕</button>
+        <h3 id="colorModalTitle">컬러 선택</h3>
+        <p>작업할 컬러를 선택하거나, 새 컬러를 추가하세요.</p>
+        <div id="colorList" style="margin:16px 0; text-align:left;"></div>
+        <div style="text-align:left; margin:16px 0; padding:12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px;">
+            <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">새 컬러코드 (3글자, 예: BLK, YEL, TTL)</label>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="newColorCode" maxlength="3" placeholder="BLK" style="flex:1; padding:8px 10px; background:#16213e; border:1px solid #1e3a5f; border-radius:4px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z]/g,'')">
+                <button class="btn-confirm" onclick="addNewColor()" style="padding:8px 14px; font-size:12px;">추가</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 버전 선택 모달 -->
+<div class="crop-modal" id="versionModal">
+    <div class="crop-modal-box" style="width:440px; max-height:70vh; overflow-y:auto;">
+        <h3>기존 작업물 발견</h3>
+        <p>불러올 버전을 선택하거나, 새로 만들 수 있습니다.</p>
+        <div id="versionList" style="margin:16px 0; text-align:left;"></div>
+        <div class="crop-modal-btns">
+            <button class="btn-confirm" onclick="createNew()">새로 만들기</button>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<input type="file" id="hiddenFileInput" accept="image/*" style="display:none">
+
+<script>
+// 데이터: 각 키는 {src, name} 배열
+const data = {
+    hero: [], intro: [], modelcut: [], detailcut: [], modelthumb: [], sizechart: []
+};
+
+// 슬롯 추가 (좌측 + 버튼)
+function addSlot(key) {
+    const idx = data[key].length;
+    data[key].push({ src: '', name: '' });
+    renderSlots(key);
+    render();
+}
+
+// 슬롯 삭제
+function removeSlot(key, idx) {
+    data[key].splice(idx, 1);
+    renderSlots(key);
+    render();
+}
+
+// 파일 선택 처리
+function handleFile(input, key, idx) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        data[key][idx] = { src: e.target.result, name: f.name };
+        renderSlots(key);
+        render();
+    };
+    r.readAsDataURL(f);
+}
+
+// 좌측 슬롯 렌더링
+function renderSlots(key) {
+    const container = document.getElementById(key + 'Slots');
+    if (!container) return;
+    container.innerHTML = data[key].map((item, i) => {
+        if (item.src) {
+            return `<div class="file-row">
+                <span class="file-name-display">${item.name}</span>
+                <button class="btn-del" onclick="removeSlot('${key}',${i})">✕</button>
+            </div>`;
+        } else {
+            return `<div class="file-row">
+                <input type="file" accept="image/*" onchange="handleFile(this,'${key}',${i})">
+                <button class="btn-del" onclick="removeSlot('${key}',${i})">✕</button>
+            </div>`;
+        }
+    }).join('');
+}
+
+// 우측 이미지 클릭 → 파일 선택 → 교체
+let clickTarget = null;
+function imgClick(key, idx) {
+    clickTarget = { key, idx };
+    const input = document.getElementById('hiddenFileInput');
+    input.onchange = function() {
+        const f = this.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = e => {
+            // 슬롯이 없으면 추가
+            while (data[clickTarget.key].length <= clickTarget.idx) {
+                data[clickTarget.key].push({ src: '', name: '' });
+            }
+            data[clickTarget.key][clickTarget.idx] = { src: e.target.result, name: f.name };
+            renderSlots(clickTarget.key);
+            render();
+        };
+        r.readAsDataURL(f);
+        this.value = '';
+    };
+    input.click();
+}
+
+function nl2br(s) { return s.replace(/\n/g, '<br>'); }
+function val(id) { return document.getElementById(id).value; }
+function split(id) { return val(id).split(',').map(s => s.trim()); }
+function getSrc(key, idx, fallback) {
+    return (data[key][idx] && data[key][idx].src) ? data[key][idx].src : fallback;
+}
+
+function checkRow(label, opts, active) {
+    const txts = opts.map((o,i)=>`<span class="${i==active?'active':''}">${o}</span>`).join('');
+    const dots = opts.map((_,i)=>`<div class="check-slider-dot ${i==active?'active':''}"></div>`).join('');
+    return `<div class="check-row"><div class="check-label">${label}</div>
+        <div class="check-options-wrap"><div class="check-options-text">${txts}</div>
+        <div class="check-slider"><div class="check-slider-line"></div>
+        <div class="check-slider-dots">${dots}</div></div></div></div>`;
+}
+
+function render() {
+    // 히어로
+    let heroHtml = '';
+    if (data.hero.length > 0) {
+        heroHtml = data.hero.map((item, i) => {
+            const src = item.src || 'https://placehold.co/800x1106';
+            return `<img class="main-hero" src="${src}" onclick="imgClick('hero',${i})">`;
+        }).join('');
+    } else {
+        heroHtml = `<img class="main-hero" src="https://placehold.co/800x1106" onclick="imgClick('hero',0)">`;
+    }
+
+    // 소개 이미지
+    let introHtml = '';
+    if (data.intro.length > 0) {
+        introHtml = data.intro.map((item, i) => {
+            const src = item.src || 'https://placehold.co/800x451';
+            return `<img src="${src}" style="width:100%;cursor:pointer;" onclick="imgClick('intro',${i})">`;
+        }).join('');
+    } else {
+        introHtml = `<img src="https://placehold.co/800x451" style="width:100%;cursor:pointer;" onclick="imgClick('intro',0)">`;
+    }
+
+    // 모델컷
+    let modelcutHtml = '';
+    if (data.modelcut.length > 0) {
+        modelcutHtml = data.modelcut.map((item, i) => {
+            const src = item.src || 'https://placehold.co/800x1106';
+            return `<img class="product-img" src="${src}" onclick="imgClick('modelcut',${i})">`;
+        }).join('');
+    } else {
+        modelcutHtml = `<img class="product-img" src="https://placehold.co/800x1106" onclick="imgClick('modelcut',0)">`;
+    }
+
+    // 디테일컷
+    let detailHtml = '';
+    if (data.detailcut.length > 0) {
+        detailHtml = data.detailcut.map((item, i) => {
+            const src = item.src || 'https://placehold.co/800x600';
+            return `<img class="detail-img" src="${src}" onclick="imgClick('detailcut',${i})">`;
+        }).join('');
+    } else {
+        detailHtml = `<img class="detail-img" src="https://placehold.co/800x600" onclick="imgClick('detailcut',0)">`;
+    }
+
+    // 도식화
+    const sizeChartSrc = (data.sizechart[0] && data.sizechart[0].src) ? data.sizechart[0].src : 'https://placehold.co/620x637';
+
+    // 모델 정보
+    const models = val('modelInfo').trim().split('\n').filter(l => l.trim()).map(l => l.split(',').map(s=>s.trim()));
+    const modelRow1 = models.slice(0,3).map((m,i) => {
+        if (m.length < 2) return '';
+        const src = (data.modelthumb[i] && data.modelthumb[i].src) ? data.modelthumb[i].src : 'https://placehold.co/400x400';
+        return `<div class="model-card"><div class="model-thumb" onclick="imgClick('modelthumb',${i})"><img src="${src}"></div>
+            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
+    }).join('');
+    const modelRow2 = models.slice(3).map((m,i) => {
+        if (m.length < 2) return '';
+        const idx = i + 3;
+        const src = (data.modelthumb[idx] && data.modelthumb[idx].src) ? data.modelthumb[idx].src : 'https://placehold.co/400x400';
+        return `<div class="model-card"><div class="model-thumb light-bg" onclick="imgClick('modelthumb',${idx})"><img src="${src}"></div>
+            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
+    }).join('');
+
+    // 테이블
+    const sizes = split('sizes');
+    const sizeH = sizes.map(s=>`<th>${s}</th>`).join('');
+    const ageR = split('ages').map(a=>`<td>${a}</td>`).join('');
+    const hgtR = split('heights').map(h=>`<td>${h}</td>`).join('');
+    const wgtR = split('weights').map(w=>`<td>${w}</td>`).join('');
+    const sh=split('shoulder'), ch=split('chest'), sl=split('sleeve'), tl=split('totalLength');
+    let pRows = '';
+    sizes.forEach((s,i) => { pRows += `<tr class="table-data-row"><td>${s}</td><td>${sh[i]||''}</td><td>${ch[i]||''}</td><td>${sl[i]||''}</td><td>${tl[i]||''}</td></tr>`; });
+
+    document.getElementById('preview-container').innerHTML = `
+    <section class="intro-section">
+        ${heroHtml}
+        <div class="intro-text-area">
+            <div style="display:flex;flex-direction:column;gap:50px;align-items:center;">
+                <div class="eng-title">${val('engTitle')}</div>
+                <div class="kor-title">${val('korTitle')}</div>
+            </div>
+            <div class="intro-images">${introHtml}</div>
+            <div class="description-box">
+                <p>${nl2br(val('desc1'))}</p>
+                <p>${nl2br(val('desc2'))}</p>
+            </div>
+        </div>
+        <div class="product-images">${modelcutHtml}</div>
+        <div class="color-notice">제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
+    </section>
+
+    <section class="detail-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Detail Point</h3>
+        <p class="section-subtitle" style="font-weight:400;">제품 상세 특징</p>
+        <div class="fabric-box"><span class="label">FABRIC</span><br><span class="value">${nl2br(val('fabricInfo'))}</span></div>
+        <div class="detail-images">${detailHtml}</div>
+        <div class="detail-notice">
+            <div class="detail-notice-title">디테일한 특징을 확인해주세요!</div>
+            <div class="detail-notice-desc">사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
+        </div>
+    </section>
+
+    <section class="kc-section">
+        <div class="kc-badge-box">
+            <img src="https://placehold.co/94x143">
+            <div class="kc-text"><div class="kc-title">KC안전인증마크</div>
+            <div class="kc-desc">FITI시험연구원의 품질안전검사 합격 판정을 받아<br>믿을 수 있는 제품입니다.</div></div>
+        </div>
+    </section>
+
+    <section class="model-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Model Size</h3>
+        <p class="section-subtitle" style="font-weight:500;">모델 사이즈</p>
+        <div class="model-row">${modelRow1}</div>
+        <div class="model-row">${modelRow2}</div>
+    </section>
+
+    <section class="size-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Size Guide</h3>
+        <p class="section-subtitle" style="font-weight:500;">사이즈 가이드</p>
+        <div class="table-container"><table><thead><tr><th>사이즈</th>${sizeH}</tr></thead><tbody>
+            <tr class="table-data-row"><td><span style="font-size:26px;">나이</span><br><span style="font-size:24px;">(세)</span></td>${ageR}</tr>
+            <tr class="table-data-row"><td><span style="font-size:26px;">신장</span><br><span style="font-size:24px;">(cm)</span></td>${hgtR}</tr>
+            <tr class="table-data-row"><td><span style="font-size:26px;">체중</span><br><span style="font-size:24px;">(kg)</span></td>${wgtR}</tr>
+        </tbody></table></div>
+        <div class="size-notice">평균 사이즈표로 체형과 제품에 따라 다소 차이가 있을 수 있습니다.</div>
+    </section>
+
+    <section class="size-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Product Size</h3>
+        <p class="section-subtitle" style="font-weight:500;">상품 사이즈</p>
+        <div class="size-illustration" onclick="imgClick('sizechart',0)"><img src="${sizeChartSrc}"></div>
+        <div class="unit-text">(cm)</div>
+        <div class="table-container"><table><thead><tr><th>치수항목</th><th>어깨너비</th><th>가슴둘레</th><th>소매길이</th><th>총장</th></tr></thead>
+        <tbody>${pRows}</tbody></table></div>
+    </section>
+
+    <section class="check-section">
+        <div class="section-divider"></div>
+        <h3 class="section-title">Check Point</h3>
+        <p class="section-subtitle" style="font-weight:500;">체크 포인트</p>
+        <div class="check-area">
+            ${checkRow('핏',['크게나옴','정사이즈','작게나옴'], val('checkFit'))}
+            ${checkRow('두께감',['두꺼움','적당함','얇음'], val('checkThick'))}
+            ${checkRow('신축성',['좋음','약간있음','없음'], val('checkStretch'))}
+            ${checkRow('안감',['있음','부분안감','없음'], val('checkLining'))}
+        </div>
+    </section>
+
+    <section style="width:100%; display:flex; flex-direction:column; align-items:center;">
+        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg" style="width:100%; height:auto; display:block;">
+        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg" style="width:100%; height:auto; display:block;">
+    </section>`;
+}
+
+function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
+function hideCropModal() { document.getElementById('cropModal').classList.remove('show'); }
+function getTimestamp() {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    return `${yy}${mm}${dd}${hh}${mi}`;
+}
+
+function showUploadModal() {
+    document.getElementById('uploadModal').classList.add('show');
+    document.getElementById('uploadTimestamp').value = getTimestamp();
+    updateUploadPreview();
+}
+function hideUploadModal() { document.getElementById('uploadModal').classList.remove('show'); }
+
+function updateUploadPreview() {
+    const code = document.getElementById('uploadCode').value.trim() || getFullCode();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    const ver = currentVersion || 1;
+    const el = document.getElementById('uploadPreviewNames');
+    if (!code) {
+        el.innerHTML = '<p style="color:#64748b; font-size:11px;">품번 입력 시 파일명 미리보기가 표시됩니다.</p>';
+        return;
+    }
+    let names = [];
+    for (let i = 1; i <= count; i++) { names.push(`${code}_${ver}_${i}_${ts}.png`); }
+    el.innerHTML = names.map(n => `<div style="color:#93c5fd; font-size:12px; margin-bottom:3px;">📄 ${n}</div>`).join('');
+}
+
+function hideCodeResult() { document.getElementById('codeResultModal').classList.remove('show'); }
+function showCodeResult() { document.getElementById('codeResultModal').classList.add('show'); }
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function copyCode() {
+    const text = document.getElementById('codeResultArea').value;
+    navigator.clipboard.writeText(text).then(() => {
+        alert('코드가 클립보드에 복사되었습니다.');
+    }).catch(() => {
+        // fallback
+        const area = document.getElementById('codeResultArea');
+        area.style.display = 'block';
+        area.select();
+        document.execCommand('copy');
+        area.style.display = 'none';
+        alert('코드가 클립보드에 복사되었습니다.');
+    });
+}
+
+async function executeUpload() {
+    const code = document.getElementById('uploadCode').value.trim() || getFullCode();
+    const count = parseInt(document.getElementById('uploadCropCount').value) || 1;
+    const author = document.getElementById('uploadAuthor').value;
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (count < 1 || count > 10) { alert('분할 수는 1~10 사이로 입력하세요.'); return; }
+    hideUploadModal();
+
+    // 이미지 URL 생성 (나중에 실제 서버 업로드 시 교체)
+    const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+    const ver = currentVersion || 1;
+    let imageUrls = [];
+    for (let i = 0; i < count; i++) {
+        imageUrls.push(`${baseUrl}/${code}_${ver}_${i + 1}_${ts}.jpg`);
+    }
+
+    // 코드화 결과 생성
+    let htmlCode = '';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+    imageUrls.forEach(url => {
+        htmlCode += `<p align="center"><img title="" alt="" src="${url}"></p>\n`;
+    });
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
+
+    // 코드 저장 및 표시
+    document.getElementById('codeResultArea').value = htmlCode;
+    const highlighted = htmlCode.split('\n').map((line, i, arr) => {
+        if (i === 0 || i === arr.length - 1 || i === arr.length - 2) {
+            return `<span style="color:#f59e0b;">${escHtml(line)}</span>`;
+        }
+        return `<span style="color:#93c5fd;">${escHtml(line)}</span>`;
+    }).join('\n');
+    document.getElementById('codeResultHighlight').innerHTML = highlighted;
+    document.getElementById('codeResultModal').classList.add('show');
+
+    // 코드 보기 버튼 활성화
+    document.getElementById('viewCodeBtn').style.display = 'inline-block';
+}
+
+async function startDownload() {
+    const count = parseInt(document.getElementById('cropCount').value) || 1;
+    if (count < 1 || count > 10) { alert('1~10 사이 숫자를 입력하세요.'); return; }
+    hideCropModal();
+
+    const btn = document.querySelector('.btn-download');
+    btn.classList.add('loading'); btn.textContent = '⏳ 생성 중...';
+
+    try {
+        const el = document.getElementById('preview-container');
+        const fullCanvas = await html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: '#fff', width: 800, windowWidth: 800 });
+
+        const fullW = fullCanvas.width;
+        const fullH = fullCanvas.height;
+        const sliceH = Math.ceil(fullH / count);
+        const title = val('korTitle') || 'output';
+
+        if (count === 1) {
+            const a = document.createElement('a');
+            a.download = `상품상세_${title}.png`;
+            a.href = fullCanvas.toDataURL('image/png');
+            a.click();
+        } else {
+            const zip = new JSZip();
+            for (let i = 0; i < count; i++) {
+                const cropCanvas = document.createElement('canvas');
+                cropCanvas.width = fullW;
+                const thisH = Math.min(sliceH, fullH - i * sliceH);
+                cropCanvas.height = thisH;
+                const ctx = cropCanvas.getContext('2d');
+                ctx.drawImage(fullCanvas, 0, i * sliceH, fullW, thisH, 0, 0, fullW, thisH);
+                const blob = await new Promise(r => cropCanvas.toBlob(r, 'image/png'));
+                zip.file(`상품상세_${title}_${i + 1}.png`, blob);
+            }
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const a = document.createElement('a');
+            a.download = `상품상세_${title}.zip`;
+            a.href = URL.createObjectURL(zipBlob);
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+    } catch(e) { alert('오류: ' + e.message); }
+    btn.classList.remove('loading'); btn.textContent = '📥 이미지로 다운로드 (PNG)';
+}
+
+// 초기: 각 섹션에 기본 1개 슬롯
+addSlot('hero');
+addSlot('intro');
+addSlot('modelcut');
+addSlot('detailcut');
+addSlot('sizechart');
+render();
+
+// 업로드 모달 실시간 미리보기
+document.getElementById('uploadCode').addEventListener('input', updateUploadPreview);
+document.getElementById('uploadCropCount').addEventListener('input', updateUploadPreview);
+
+// ===== 품번 조회 / 버전 관리 =====
+let currentCode = '';
+let currentColor = '';
+let currentVersion = 0;
+
+function getFullCode() { return currentColor ? `${currentCode}_${currentColor}` : currentCode; }
+
+function updateCodeDisplay() {
+    const el = document.getElementById('currentCodeDisplay');
+    if (currentCode) {
+        el.style.display = 'flex';
+        document.getElementById('currentCodeText').textContent = getFullCode();
+        document.getElementById('currentVerText').textContent = currentVersion > 0 ? `ver. ${currentVersion}` : 'new';
+        document.getElementById('saveBtn').style.display = 'inline-block';
+        document.getElementById('saveAsBtn').style.display = 'inline-block';
+        document.getElementById('copyToBtn').style.display = 'inline-block';
+    } else {
+        el.style.display = 'none';
+    }
+}
+
+function getStorageKey(code) { return `odp_detail_${code}`; }
+
+function getColorsForCode(code) {
+    // localStorage에서 해당 품번의 모든 컬러 키를 찾음
+    const prefix = `odp_detail_${code}_`;
+    const colors = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(prefix)) {
+            const color = key.replace(prefix, '');
+            colors.push(color);
+        }
+    }
+    return colors;
+}
+
+function getSavedVersions(code) {
+    const raw = localStorage.getItem(getStorageKey(code));
+    if (!raw) return [];
+    try { return JSON.parse(raw); } catch(e) { return []; }
+}
+
+function saveCurrentVersion(code, ts) {
+    const versions = getSavedVersions(code);
+    const formData = {
+        ts: ts,
+        engTitle: val('engTitle'),
+        korTitle: val('korTitle'),
+        desc1: val('desc1'),
+        desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'),
+        modelInfo: val('modelInfo'),
+        sizes: val('sizes'),
+        ages: val('ages'),
+        heights: val('heights'),
+        weights: val('weights'),
+        shoulder: val('shoulder'),
+        chest: val('chest'),
+        sleeve: val('sleeve'),
+        totalLength: val('totalLength'),
+        checkFit: val('checkFit'),
+        checkThick: val('checkThick'),
+        checkStretch: val('checkStretch'),
+        checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(code), JSON.stringify(versions));
+}
+
+function saveCurrentWork() {
+    const fullCode = getFullCode();
+    if (!fullCode) { alert('품번을 먼저 선택하세요.'); return; }
+    const versions = getSavedVersions(fullCode);
+    const idx = currentVersion - 1;
+    const savedAt = getFullTimestamp();
+    const formData = {
+        ts: (versions[idx] && versions[idx].ts) || getTimestamp(),
+        savedAt: savedAt,
+        engTitle: val('engTitle'),
+        korTitle: val('korTitle'),
+        desc1: val('desc1'),
+        desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'),
+        modelInfo: val('modelInfo'),
+        sizes: val('sizes'),
+        ages: val('ages'),
+        heights: val('heights'),
+        weights: val('weights'),
+        shoulder: val('shoulder'),
+        chest: val('chest'),
+        sleeve: val('sleeve'),
+        totalLength: val('totalLength'),
+        checkFit: val('checkFit'),
+        checkThick: val('checkThick'),
+        checkStretch: val('checkStretch'),
+        checkLining: val('checkLining')
+    };
+    if (idx >= 0 && idx < versions.length) {
+        versions[idx] = formData;
+    } else {
+        versions.push(formData);
+    }
+    localStorage.setItem(getStorageKey(fullCode), JSON.stringify(versions));
+    markSaved(savedAt);
+}
+
+function getFullTimestamp() {
+    const now = new Date();
+    const yy = String(now.getFullYear()).slice(2);
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mi = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    return `${yy}.${mm}.${dd} ${hh}:${mi}:${ss}`;
+}
+
+function markSaved(timeStr) {
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = '저장됨';
+    btn.style.background = '#64748b';
+    btn.style.opacity = '0.6';
+    btn.style.cursor = 'default';
+    btn.onclick = null;
+    document.getElementById('lastSavedTime').textContent = timeStr;
+}
+
+function markUnsaved() {
+    const btn = document.getElementById('saveBtn');
+    if (!btn || btn.style.display === 'none') return;
+    btn.textContent = '저장';
+    btn.style.background = '#0f766e';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+    btn.onclick = saveCurrentWork;
+}
+
+// 변경 감지: 사이드바 입력 시 저장 버튼 활성화
+document.addEventListener('input', function(e) {
+    if (e.target.closest('#editorArea')) { markUnsaved(); }
+});
+document.addEventListener('change', function(e) {
+    if (e.target.closest('#editorArea')) { markUnsaved(); }
+});
+
+// 다른 품번으로 저장
+function showSaveAsModal() {
+    document.getElementById('saveAsCode').value = currentCode;
+    document.getElementById('saveAsColor').value = currentColor;
+    document.getElementById('saveAsModal').classList.add('show');
+}
+
+function executeSaveAs() {
+    const code = document.getElementById('saveAsCode').value.trim();
+    const color = document.getElementById('saveAsColor').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (!color || color.length !== 3) { alert('컬러코드 3글자를 입력하세요.'); return; }
+    const targetKey = `${code}_${color}`;
+    const versions = getSavedVersions(targetKey);
+    const savedAt = getFullTimestamp();
+    const formData = {
+        ts: getTimestamp(), savedAt: savedAt,
+        engTitle: val('engTitle'), korTitle: val('korTitle'), desc1: val('desc1'), desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'), modelInfo: val('modelInfo'), sizes: val('sizes'), ages: val('ages'),
+        heights: val('heights'), weights: val('weights'), shoulder: val('shoulder'), chest: val('chest'),
+        sleeve: val('sleeve'), totalLength: val('totalLength'), checkFit: val('checkFit'),
+        checkThick: val('checkThick'), checkStretch: val('checkStretch'), checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(targetKey), JSON.stringify(versions));
+    document.getElementById('saveAsModal').classList.remove('show');
+    alert(`${targetKey} ver.${versions.length}로 저장되었습니다.`);
+}
+
+// 복사 (복사 후 전환)
+function showCopyToModal() {
+    document.getElementById('copyToCode').value = currentCode;
+    document.getElementById('copyToColor').value = '';
+    document.getElementById('copyToModal').classList.add('show');
+}
+
+function executeCopyTo() {
+    const code = document.getElementById('copyToCode').value.trim();
+    const color = document.getElementById('copyToColor').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    if (!color || color.length !== 3) { alert('컬러코드 3글자를 입력하세요.'); return; }
+    const targetKey = `${code}_${color}`;
+    const versions = getSavedVersions(targetKey);
+    const savedAt = getFullTimestamp();
+    const formData = {
+        ts: getTimestamp(), savedAt: savedAt,
+        engTitle: val('engTitle'), korTitle: val('korTitle'), desc1: val('desc1'), desc2: val('desc2'),
+        fabricInfo: val('fabricInfo'), modelInfo: val('modelInfo'), sizes: val('sizes'), ages: val('ages'),
+        heights: val('heights'), weights: val('weights'), shoulder: val('shoulder'), chest: val('chest'),
+        sleeve: val('sleeve'), totalLength: val('totalLength'), checkFit: val('checkFit'),
+        checkThick: val('checkThick'), checkStretch: val('checkStretch'), checkLining: val('checkLining')
+    };
+    versions.push(formData);
+    localStorage.setItem(getStorageKey(targetKey), JSON.stringify(versions));
+    document.getElementById('copyToModal').classList.remove('show');
+    // 전환
+    currentCode = code;
+    currentColor = color;
+    currentVersion = versions.length;
+    document.getElementById('lookupCode').value = code;
+    document.getElementById('uploadCode').value = targetKey;
+    document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${targetKey} ver.${currentVersion} (복사됨)</span>`;
+    updateCodeDisplay();
+    updateUploadPreview();
+    markSaved(savedAt);
+}
+
+function loadVersion(versionData) {
+    document.getElementById('engTitle').value = versionData.engTitle || '';
+    document.getElementById('korTitle').value = versionData.korTitle || '';
+    document.getElementById('desc1').value = versionData.desc1 || '';
+    document.getElementById('desc2').value = versionData.desc2 || '';
+    document.getElementById('fabricInfo').value = versionData.fabricInfo || '';
+    document.getElementById('modelInfo').value = versionData.modelInfo || '';
+    document.getElementById('sizes').value = versionData.sizes || '';
+    document.getElementById('ages').value = versionData.ages || '';
+    document.getElementById('heights').value = versionData.heights || '';
+    document.getElementById('weights').value = versionData.weights || '';
+    document.getElementById('shoulder').value = versionData.shoulder || '';
+    document.getElementById('chest').value = versionData.chest || '';
+    document.getElementById('sleeve').value = versionData.sleeve || '';
+    document.getElementById('totalLength').value = versionData.totalLength || '';
+    document.getElementById('checkFit').value = versionData.checkFit || '0';
+    document.getElementById('checkThick').value = versionData.checkThick || '0';
+    document.getElementById('checkStretch').value = versionData.checkStretch || '2';
+    document.getElementById('checkLining').value = versionData.checkLining || '0';
+    render();
+}
+
+function unlockEditor() {
+    const el = document.getElementById('editorArea');
+    el.style.opacity = '1';
+    el.style.pointerEvents = 'auto';
+}
+
+function doLookup() {
+    const code = document.getElementById('lookupCode').value.trim();
+    if (!code) { alert('품번을 입력하세요.'); return; }
+    currentCode = code;
+
+    // 해당 품번의 컬러 목록 조회
+    const colors = getColorsForCode(code);
+    if (colors.length > 0) {
+        // TTL을 맨 앞으로 정렬
+        const sorted = colors.sort((a, b) => {
+            if (a === 'TTL') return -1;
+            if (b === 'TTL') return 1;
+            return a.localeCompare(b);
+        });
+        document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${sorted.join(' / ')}</span>`;
+    } else {
+        document.getElementById('lookupStatus').innerHTML = `<span style="color:#f59e0b;">새 품번입니다. 컬러를 추가하세요.</span>`;
+    }
+    showColorModal(code, colors);
+}
+
+function showColorModal(code, colors) {
+    // TTL을 맨 앞으로 정렬
+    const sorted = [...colors].sort((a, b) => {
+        if (a === 'TTL') return -1;
+        if (b === 'TTL') return 1;
+        return a.localeCompare(b);
+    });
+    document.getElementById('colorModalTitle').textContent = `${code} - 컬러 선택`;
+    const listEl = document.getElementById('colorList');
+    if (sorted.length === 0) {
+        listEl.innerHTML = '<p style="color:#64748b; font-size:12px; padding:8px 0;">등록된 컬러가 없습니다. 아래에서 새 컬러를 추가하세요.</p>';
+    } else {
+        listEl.innerHTML = sorted.map(color => {
+            const fullKey = `${code}_${color}`;
+            const versions = getSavedVersions(fullKey);
+            return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectColor('${color}')">
+                <div>
+                    <div style="color:#e6f1ff; font-size:13px; font-weight:600;">${code}_${color}</div>
+                    <div style="color:#8892b0; font-size:11px; margin-top:2px;">${versions.length}개 버전</div>
+                </div>
+                <span style="color:#4a9eff; font-size:14px;">→</span>
+            </div>`;
+        }).join('');
+    }
+    document.getElementById('newColorCode').value = '';
+    document.getElementById('colorModal').classList.add('show');
+}
+
+function selectColor(color) {
+    currentColor = color;
+    document.getElementById('colorModal').classList.remove('show');
+    const fullKey = getFullCode();
+    document.getElementById('uploadCode').value = fullKey;
+    updateUploadPreview();
+    unlockEditor();
+
+    const versions = getSavedVersions(fullKey);
+    if (versions.length === 0) {
+        currentVersion = 1;
+        updateCodeDisplay();
+    } else {
+        showVersionModal(fullKey, versions);
+    }
+}
+
+function addNewColor() {
+    const color = document.getElementById('newColorCode').value.trim();
+    if (!color || color.length !== 3) { alert('컬러코드는 영문 대문자 3글자로 입력하세요.'); return; }
+    currentColor = color;
+    document.getElementById('colorModal').classList.remove('show');
+    const fullKey = getFullCode();
+    document.getElementById('uploadCode').value = fullKey;
+    currentVersion = 1;
+    updateCodeDisplay();
+    updateUploadPreview();
+    unlockEditor();
+}
+
+function showVersionModal(fullCode, versions) {
+    const listEl = document.getElementById('versionList');
+    listEl.innerHTML = versions.map((v, i) => {
+        const label = v.ts || '(시간 미상)';
+        const savedAt = v.savedAt ? `<span style="color:#4a9eff; font-size:10px;">최종저장: ${v.savedAt}</span>` : '';
+        return `<div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; margin-bottom:6px; cursor:pointer; transition:border 0.15s;" onmouseover="this.style.borderColor='#4a9eff'" onmouseout="this.style.borderColor='#1e3a5f'" onclick="selectVersion('${fullCode}',${i})">
+            <div>
+                <div style="color:#e6f1ff; font-size:13px; font-weight:500;">버전 ${i + 1}</div>
+                <div style="color:#8892b0; font-size:11px; margin-top:2px;">작성: ${label} · ${v.korTitle || ''}</div>
+                ${savedAt ? `<div style="margin-top:2px;">${savedAt}</div>` : ''}
+            </div>
+            <span style="color:#4a9eff; font-size:14px;">→</span>
+        </div>`;
+    }).join('');
+    document.getElementById('versionModal').classList.add('show');
+}
+
+function selectVersion(fullCode, idx) {
+    const versions = getSavedVersions(fullCode);
+    if (versions[idx]) {
+        loadVersion(versions[idx]);
+        currentVersion = idx + 1;
+        if (versions[idx].savedAt) {
+            markSaved(versions[idx].savedAt);
+        }
+    }
+    updateCodeDisplay();
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+function createNew() {
+    const fullCode = getFullCode();
+    const versions = getSavedVersions(fullCode);
+    currentVersion = versions.length + 1;
+    updateCodeDisplay();
+    document.getElementById('versionModal').classList.remove('show');
+}
+
+// executeUpload 후 자동 저장
+const origExecuteUpload = executeUpload;
+executeUpload = async function() {
+    await origExecuteUpload();
+    const fullCode = getFullCode() || document.getElementById('uploadCode').value.trim();
+    const ts = document.getElementById('uploadTimestamp').value || getTimestamp();
+    if (fullCode) { saveCurrentVersion(fullCode, ts); }
+};
+
+// Enter 키로 조회
+document.getElementById('lookupCode').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') doLookup();
+});
+
+// 테스트용 더미 데이터 (OD251ILS72)
+(function seedTestData() {
+    const testCode = 'OD251ILS72';
+    // BLK 컬러
+    const blkKey = getStorageKey(`${testCode}_BLK`);
+    if (!localStorage.getItem(blkKey)) {
+        localStorage.setItem(blkKey, JSON.stringify([
+            { ts: '2505201430', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (블랙)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n3oz 패딩을 퀼팅한 원단의 안감으로\n보온성이 좋습니다.', fabricInfo: '겉감 : 나일론 100%\n안감 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' },
+            { ts: '2505221015', engTitle: 'Kids Varsity Jacket V2', korTitle: '키즈 바시티 자켓 블랙 (수정)', desc1: '아웃도어 프로덕츠 키즈의\n인기 바시티 점퍼입니다.', desc2: '넉넉한 핏으로 제작되었습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '1', checkThick: '1', checkStretch: '1', checkLining: '0' }
+        ]));
+    }
+    // NVY 컬러
+    const nvyKey = getStorageKey(`${testCode}_NVY`);
+    if (!localStorage.getItem(nvyKey)) {
+        localStorage.setItem(nvyKey, JSON.stringify([
+            { ts: '2505251100', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (네이비)', desc1: '아웃도어 프로덕츠 키즈의\n대표 바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n보온성이 좋습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size\nALEXANDER,126cm / 25.5kg,130 size\nEMMA,124cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+        ]));
+    }
+    // TTL (전체컬러)
+    const ttlKey = getStorageKey(`${testCode}_TTL`);
+    if (!localStorage.getItem(ttlKey)) {
+        localStorage.setItem(ttlKey, JSON.stringify([
+            { ts: '2505241800', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (전체)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '전체 컬러 통합 상세입니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+        ]));
+    }
+})();
+
+// ===== 파일 탐색기 =====
+let explorerSortAsc = true;
+let explorerFolder = '25SS';
+const FOLDERS = ['25SS', '25FW', '26SS', '26FW'];
+
+function showExplorer() {
+    document.getElementById('explorerModal').classList.add('show');
+    renderFolderTabs();
+    renderExplorer();
+}
+
+function toggleExplorerSort() {
+    explorerSortAsc = !explorerSortAsc;
+    document.getElementById('explorerSortBtn').textContent = explorerSortAsc ? '↑ 오름차순' : '↓ 내림차순';
+    renderExplorer();
+}
+
+function toggleItemVersions(id, headerEl) {
+    const el = document.getElementById(id);
+    const toggle = headerEl.querySelector('.exp-toggle');
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+        toggle.style.transform = 'rotate(90deg)';
+    } else {
+        el.style.display = 'none';
+        toggle.style.transform = 'rotate(0deg)';
+    }
+}
+
+function renderFolderTabs() {
+    document.getElementById('folderTabs').innerHTML = FOLDERS.map(f =>
+        `<button onclick="explorerFolder='${f}';renderFolderTabs();renderExplorer()" style="padding:7px 16px; background:${f===explorerFolder?'#14297E':'#1e3a5f'}; color:${f===explorerFolder?'white':'#8892b0'}; border:none; border-radius:5px; font-size:12px; font-weight:${f===explorerFolder?'600':'400'}; cursor:pointer;">📂 ${f}</button>`
+    ).join('');
+}
+
+function getAllItems() {
+    const prefix = 'odp_detail_';
+    const items = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith(prefix)) {
+            const fullCode = key.replace(prefix, '');
+            const versions = JSON.parse(localStorage.getItem(key));
+            // 시즌 판별: 버전의 ts에서 연도+월로 추정 (25xx = 26SS/FW 기준)
+            const season = getSeasonFromCode(fullCode, versions);
+            items.push({ fullCode, versions, season });
+        }
+    }
+    return items;
+}
+
+function getSeasonFromCode(fullCode, versions) {
+    // 품번에서 컬러코드 제거 (언더스코어 앞이 품번)
+    const code = fullCode.split('_')[0];
+    // 품번에서 숫자만 추출: 첫 2자리 = 연도, 3번째 = 시즌 (1~2=SS, 3~4=FW)
+    const yearDigits = code.replace(/[^0-9]/g, '');
+    if (yearDigits.length < 3) return '25SS';
+    const year = yearDigits.substring(0, 2);
+    const seasonDigit = parseInt(yearDigits[2]);
+    const season = (seasonDigit <= 2) ? 'SS' : 'FW';
+    return `${year}${season}`;
+}
+
+function renderExplorer() {
+    const search = (document.getElementById('explorerSearch').value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    let items = getAllItems().filter(it => it.season === explorerFolder);
+    if (search) { items = items.filter(it => it.fullCode.includes(search)); }
+    items.sort((a, b) => explorerSortAsc ? a.fullCode.localeCompare(b.fullCode) : b.fullCode.localeCompare(a.fullCode));
+
+    const el = document.getElementById('explorerContent');
+    if (items.length === 0) {
+        el.innerHTML = `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`;
+        return;
+    }
+    el.innerHTML = items.length === 0
+        ? `<p style="color:#64748b; font-size:12px; padding:30px 0; text-align:center;">📂 ${explorerFolder} 폴더에 저장된 품번이 없습니다.</p>`
+        : `<table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead><tr style="border-bottom:1px solid #1e3a5f;">
+                <th style="text-align:left; padding:8px 10px; color:#8892b0; font-weight:500;">품번</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">버전</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">상품명</th>
+                <th style="text-align:center; padding:8px 6px; color:#8892b0; font-weight:500;">최종저장</th>
+                <th style="text-align:right; padding:8px 10px; color:#8892b0; font-weight:500;"></th>
+            </tr></thead>
+            <tbody>${items.map(item => {
+                return item.versions.map((v, i) => {
+                    const savedAt = v.savedAt || '-';
+                    return `<tr style="border-bottom:1px solid #1e3a5f22;">
+                        <td style="padding:10px 10px; color:#e6f1ff; font-weight:600;">${i===0 ? item.fullCode : ''}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#4a9eff;">${i+1}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#cbd5e1;">${v.korTitle||''}</td>
+                        <td style="padding:10px 6px; text-align:center; color:#64748b; font-size:11px;">${savedAt}</td>
+                        <td style="padding:10px 10px; text-align:right;">
+                            <button onclick="showItemCode('${item.fullCode}',${i})" style="padding:3px 8px; background:#14297E; color:white; border:none; border-radius:3px; font-size:10px; cursor:pointer; margin-right:4px;">코드</button>
+                            <button onclick="openVersionForEdit('${item.fullCode}',${i})" style="padding:3px 8px; background:#0f766e; color:white; border:none; border-radius:3px; font-size:10px; cursor:pointer;">상세</button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            }).join('')}</tbody>
+        </table>`;
+}
+
+function openVersionForEdit(fullCode, verIdx) {
+    // 모달 닫기
+    document.getElementById('explorerModal').classList.remove('show');
+    // 품번/컬러 파싱
+    const parts = fullCode.split('_');
+    const code = parts[0];
+    const color = parts[1] || '';
+    // 상태 설정
+    currentCode = code;
+    currentColor = color;
+    currentVersion = verIdx + 1;
+    // 폼에 로드
+    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
+    if (versions[verIdx]) { loadVersion(versions[verIdx]); }
+    // UI 업데이트
+    document.getElementById('lookupCode').value = code;
+    document.getElementById('uploadCode').value = fullCode;
+    document.getElementById('lookupStatus').innerHTML = `<span style="color:#4a9eff;">✓ ${fullCode} ver.${currentVersion} 로드됨</span>`;
+    updateCodeDisplay();
+    updateUploadPreview();
+    unlockEditor();
+}
+
+function showItemCode(fullCode, verIdx) {
+    const versions = JSON.parse(localStorage.getItem(getStorageKey(fullCode)));
+    const v = versions[verIdx];
+    const ts = v.ts;
+    const ver = verIdx + 1;
+    const baseUrl = 'https://img.childy.kr/img/outdoor2026/odp26_SP';
+    const count = 3;
+    let htmlCode = '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg"></p>\n';
+    for (let i = 1; i <= count; i++) {
+        htmlCode += `<p align="center"><img title="" alt="" src="${baseUrl}/${fullCode}_${ver}_${i}_${ts}.jpg"></p>\n`;
+    }
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg"></p>\n';
+    htmlCode += '<p align="center"><img title="" alt="" src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg"></p>';
+
+    document.getElementById('filePreviewTitle').textContent = `${fullCode} ver.${ver} — 코드`;
+    document.getElementById('filePreviewBody').innerHTML = `
+        <pre style="background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; padding:12px; font-size:11px; font-family:monospace; line-height:1.8; white-space:pre-wrap; word-break:break-all; color:#93c5fd; max-height:400px; overflow-y:auto;">${escHtml(htmlCode)}</pre>
+        <div style="text-align:center; margin-top:12px;">
+            <button onclick="copyExplorerCode()" style="padding:8px 20px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; cursor:pointer;">📋 코드 복사</button>
+        </div>`;
+    document.getElementById('filePreviewModal').classList.add('show');
+}
+
+function copyExplorerCode() {
+    const pre = document.querySelector('#filePreviewBody pre');
+    const text = pre.textContent;
+    navigator.clipboard.writeText(text).then(() => alert('복사됨'));
+}
+</script>
+</body>
+</html>
