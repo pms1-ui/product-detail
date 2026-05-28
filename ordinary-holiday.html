@@ -137,12 +137,16 @@
     <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcutImg')">+</button></div>
     <div class="file-slots" id="modelcutImgSlots"></div>
 
-    <div class="sec-head"><span>④ 모델 캡션</span></div>
+    <div class="sec-head"><span>④ 모델 정보</span><button class="btn-add" onclick="addShirtModel()" id="btnAddShirtModel">+</button></div>
     <div class="input-group">
-        <label>모델 캡션 (줄바꿈 가능)</label>
-        <textarea id="modelCaption" rows="3" oninput="render()">LACE TRIMMING SHIRTS
-MODEL : 173cm 51kg / S size</textarea>
+        <label>섹션 타이틀</label>
+        <input type="text" id="shirtModelTitle" value="MODEL" oninput="render()">
     </div>
+    <div class="input-group">
+        <label>섹션 서브타이틀 (줄바꿈으로 추가 가능)</label>
+        <textarea id="shirtModelSubtitle" rows="2" oninput="render()">모델 정보</textarea>
+    </div>
+    <div id="shirtModelItems"></div>
 
     <div class="sec-head"><span>⑤ 상품 메인 이미지</span><button class="btn-add" onclick="addSlot('mainImg')">+</button></div>
     <div class="file-slots" id="mainImgSlots"></div>
@@ -353,14 +357,14 @@ MODEL : 173cm 51kg / S size</textarea>
 - 제품의 디테일컷이 실제 제품과 가장 흡사합니다.</textarea>
     </div>
 
-    <div class="sec-head"><span>⑦ Model Size</span><button class="btn-add" onclick="addBagModel()" id="btnAddBagModel">+</button></div>
+    <div class="sec-head"><span>⑦ 모델 정보</span><button class="btn-add" onclick="addBagModel()" id="btnAddBagModel">+</button></div>
     <div class="input-group">
         <label>섹션 타이틀</label>
-        <input type="text" id="bagModelTitle" value="Model Size" oninput="render()">
+        <input type="text" id="bagModelTitle" value="MODEL" oninput="render()">
     </div>
     <div class="input-group">
         <label>섹션 서브타이틀 (줄바꿈으로 추가 가능)</label>
-        <textarea id="bagModelSubtitle" rows="2" oninput="render()">모델 사이즈</textarea>
+        <textarea id="bagModelSubtitle" rows="2" oninput="render()">모델 정보</textarea>
     </div>
     <div id="bagModelItems"></div>
 
@@ -618,6 +622,10 @@ const data = {
         { img: { src: '', name: '' }, name: '', info: '' },
         { img: { src: '', name: '' }, name: '', info: '' }
     ], // [{img:{src,name}, name:'', info:''}]
+    shirtModels: [
+        { img: { src: '', name: '' }, name: '', info: '' },
+        { img: { src: '', name: '' }, name: '', info: '' }
+    ], // [{img:{src,name}, name:'', info:''}]
     // WASHING TIP (SHIRT & BAG 공통)
     washItems: [
         { img: {src:'오디너리세탁이미지/단독손세탁.png', name:'단독손세탁.png'}, title: '단독 손세탁', desc: '본 제품은 단독 손세탁을 권장합니다.' },
@@ -631,27 +639,38 @@ const data = {
 
 // BAG 섹션 순서 (렌더링 순서 제어)
 let bagSectionOrder = ['intro','notice','pd','detail','detailNotice','model','fabric','size','product','washing','info'];
+let bagHiddenSections = new Set();
 
 // SHIRT 섹션 순서
-let shirtSectionOrder = ['intro','modelcut','top','detail','fabric','size','product','washing','info'];
+let shirtSectionOrder = ['intro','modelcut','model','top','detail','fabric','size','product','washing','info'];
+let shirtHiddenSections = new Set();
 const SHIRT_SECTION_LABELS = {
-    intro: '인트로 이미지', modelcut: '모델컷 (캡션 포함)',
-    top: '상품 정보 (TOP)', detail: 'DETAIL',
+    intro: '인트로 이미지', modelcut: '모델컷',
+    model: '모델 정보', top: '상품 정보 (TOP)', detail: 'DETAIL',
     fabric: 'FABRIC INFO', size: 'SIZE GUIDE', product: 'PRODUCT INFO',
     washing: 'WASHING TIP', info: '상품정보 제공고시'
 };
 
 function renderShirtSectionOrder() {
-    const html = shirtSectionOrder.map((sec, i) => `
-        <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:#0a1628;border:1px solid #1e3a5f;border-radius:5px;margin-bottom:4px;">
-            <span style="flex:1;font-size:11px;color:#ccd6f6;">${SHIRT_SECTION_LABELS[sec]||sec}</span>
+    const html = shirtSectionOrder.map((sec, i) => {
+        const hidden = shirtHiddenSections.has(sec);
+        return `<div style="display:flex;align-items:center;gap:4px;padding:5px 8px;background:#0a1628;border:1px solid ${hidden?'#374151':'#1e3a5f'};border-radius:5px;margin-bottom:4px;opacity:${hidden?'0.5':'1'};">
+            <span style="flex:1;font-size:11px;color:${hidden?'#6b7280':'#ccd6f6'};">${SHIRT_SECTION_LABELS[sec]||sec}</span>
             <button onclick="moveShirtSection(${i},-1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===0?'disabled':''}>↑</button>
             <button onclick="moveShirtSection(${i},1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===shirtSectionOrder.length-1?'disabled':''}>↓</button>
-        </div>`).join('');
+            <button onclick="toggleShirtSection('${sec}')" style="width:32px;height:20px;background:${hidden?'#374151':'#1e3a5f'};color:${hidden?'#9ca3af':'#ccd6f6'};border:none;border-radius:3px;cursor:pointer;font-size:9px;">${hidden?'표시':'숨김'}</button>
+        </div>`;
+    }).join('');
     const el = document.getElementById('shirtSectionOrder');
     if (el) el.innerHTML = html;
     const w = document.getElementById('shirtSectionOrderWidget');
     if (w) w.innerHTML = html;
+}
+function toggleShirtSection(sec) {
+    if (shirtHiddenSections.has(sec)) shirtHiddenSections.delete(sec);
+    else shirtHiddenSections.add(sec);
+    renderShirtSectionOrder();
+    render();
 }
 
 function moveShirtSection(idx, dir) {
@@ -878,6 +897,53 @@ function imgClickBagModel(idx) {
     input.click();
 }
 
+// ===== SHIRT 모델 관리 =====
+function addShirtModel() {
+    data.shirtModels.push({ img: { src: '', name: '' }, name: '', info: '' });
+    renderShirtModelItems();
+    render();
+}
+function removeShirtModel(idx) {
+    data.shirtModels.splice(idx, 1);
+    renderShirtModelItems();
+    render();
+}
+function handleShirtModelFile(input, idx) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = e => { data.shirtModels[idx].img = { src: e.target.result, name: f.name }; renderShirtModelItems(); render(); };
+    r.readAsDataURL(f);
+}
+function renderShirtModelItems() {
+    const container = document.getElementById('shirtModelItems');
+    if (!container) return;
+    container.innerHTML = data.shirtModels.map((m, i) => `
+        <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;padding:10px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="color:#4a9eff;font-size:11px;font-weight:600;">모델 ${i+1}</span>
+                <button onclick="removeShirtModel(${i})" style="width:20px;height:20px;background:transparent;color:#e74c3c;border:1px solid #e74c3c;border-radius:4px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>
+            ${m.img.src
+                ? `<div class="file-row"><span class="file-name-display">${m.img.name}</span><button class="btn-del" onclick="data.shirtModels[${i}].img={src:'',name:''};renderShirtModelItems();render()">✕</button></div>`
+                : `<div class="file-row"><input type="file" accept="image/*" onchange="handleShirtModelFile(this,${i})"></div>`
+            }
+            <input type="text" placeholder="이름 (예: JANE)" value="${m.name.replace(/"/g,'&quot;')}" oninput="data.shirtModels[${i}].name=this.value;render()" style="width:100%;padding:7px 10px;background:#16213e;border:1px solid #1e3a5f;border-radius:5px;color:#e6f1ff;font-size:12px;outline:none;margin-top:6px;margin-bottom:4px;">
+            <input type="text" placeholder="정보 (예: 165cm 50kg / S size)" value="${m.info.replace(/"/g,'&quot;')}" oninput="data.shirtModels[${i}].info=this.value;render()" style="width:100%;padding:7px 10px;background:#16213e;border:1px solid #1e3a5f;border-radius:5px;color:#e6f1ff;font-size:12px;outline:none;">
+        </div>`).join('');
+}
+function imgClickShirtModel(idx) {
+    const input = document.getElementById('hiddenFileInput');
+    input.onchange = function() {
+        const f = this.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = e => { data.shirtModels[idx].img = { src: e.target.result, name: f.name }; renderShirtModelItems(); render(); };
+        r.readAsDataURL(f);
+        this.value = '';
+    };
+    input.click();
+}
+
+// ===== BAG 섹션 순서 =====
 const BAG_SECTION_LABELS = {
     intro: '인트로 이미지', notice: '공지 텍스트',
     pd: '상품컷', detail: '디테일 이미지', detailNotice: '디테일 주의 텍스트',
@@ -886,16 +952,25 @@ const BAG_SECTION_LABELS = {
 };
 
 function renderBagSectionOrder() {
-    const html = bagSectionOrder.map((sec, i) => `
-        <div style="display:flex;align-items:center;gap:6px;padding:5px 8px;background:#0a1628;border:1px solid #1e3a5f;border-radius:5px;margin-bottom:4px;">
-            <span style="flex:1;font-size:11px;color:#ccd6f6;">${BAG_SECTION_LABELS[sec] || sec}</span>
+    const html = bagSectionOrder.map((sec, i) => {
+        const hidden = bagHiddenSections.has(sec);
+        return `<div style="display:flex;align-items:center;gap:4px;padding:5px 8px;background:#0a1628;border:1px solid ${hidden?'#374151':'#1e3a5f'};border-radius:5px;margin-bottom:4px;opacity:${hidden?'0.5':'1'};">
+            <span style="flex:1;font-size:11px;color:${hidden?'#6b7280':'#ccd6f6'};">${BAG_SECTION_LABELS[sec] || sec}</span>
             <button onclick="moveBagSection(${i},-1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===0?'disabled':''}>↑</button>
             <button onclick="moveBagSection(${i},1)" style="width:20px;height:20px;background:#1e3a5f;color:#ccd6f6;border:none;border-radius:3px;cursor:pointer;font-size:11px;" ${i===bagSectionOrder.length-1?'disabled':''}>↓</button>
-        </div>`).join('');
+            <button onclick="toggleBagSection('${sec}')" style="width:32px;height:20px;background:${hidden?'#374151':'#1e3a5f'};color:${hidden?'#9ca3af':'#ccd6f6'};border:none;border-radius:3px;cursor:pointer;font-size:9px;">${hidden?'표시':'숨김'}</button>
+        </div>`;
+    }).join('');
     const el = document.getElementById('bagSectionOrder');
     if (el) el.innerHTML = html;
     const w = document.getElementById('bagSectionOrderWidget');
     if (w) w.innerHTML = html;
+}
+function toggleBagSection(sec) {
+    if (bagHiddenSections.has(sec)) bagHiddenSections.delete(sec);
+    else bagHiddenSections.add(sec);
+    renderBagSectionOrder();
+    render();
 }
 
 function moveBagSection(idx, dir) {
@@ -1164,7 +1239,7 @@ function renderBag() {
 
     document.getElementById('preview-container').innerHTML =
         '<div style="width:800px;background:#fff;font-family:\'Apple SD Gothic Neo\',\'Noto Sans KR\',sans-serif;">' +
-        bagSectionOrder.map(sec => sectionHtmlMap[sec] || '').join('') +
+        bagSectionOrder.filter(sec => !bagHiddenSections.has(sec)).map(sec => sectionHtmlMap[sec] || '').join('') +
         '</div>';
 }
 function render() {
@@ -1254,10 +1329,32 @@ function render() {
 </div>
 ${introImgsHtml}
 </div>`,
-        modelcut: `<div style="width:800px;">${modelcutHtml}</div>
-<div style="position:relative;width:800px;min-height:224px;padding:70px 140px;">
-    <div style="font-size:31px;font-weight:700;color:#292929;line-height:1.4;">${nl2br(val('modelCaption'))}</div>
-</div>`,
+        modelcut: `<div style="width:800px;">${modelcutHtml}</div>`,
+        model: (()=>{
+            if (data.shirtModels.length === 0) return '';
+            const modelTitle = val('shirtModelTitle') || 'MODEL';
+            const modelSubtitle = val('shirtModelSubtitle') || '모델 정보';
+            const bgColors = ['#A34D4D','#4D6FA3','#4DA36F','#A3934D','#7B4DA3','#4DA3A3'];
+            const cards = data.shirtModels.map((m, i) => {
+                const bg = bgColors[i % bgColors.length];
+                const thumb = m.img.src ? `<img src="${m.img.src}" style="width:100%;height:100%;object-fit:cover;">` : '';
+                return `<div style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;">
+                    <div style="width:220px;height:220px;border-radius:50%;overflow:hidden;background:${bg};cursor:pointer;flex-shrink:0;" onclick="imgClickShirtModel(${i})">${thumb}</div>
+                    <div style="font-size:29px;font-weight:600;color:#121212;letter-spacing:1.45px;text-transform:uppercase;">${m.name||''}</div>
+                    <div style="font-size:25px;color:#494949;font-weight:500;line-height:1.5;">${(m.info||'').replace(/\n/g,'<br>')}</div>
+                </div>`;
+            });
+            const rows = [];
+            for (let i = 0; i < cards.length; i += 3) {
+                rows.push(`<div style="display:flex;justify-content:center;gap:20px;margin-bottom:30px;flex-wrap:wrap;">${cards.slice(i,i+3).join('')}</div>`);
+            }
+            return `<div style="width:800px;background:#fff;padding:100px 0 0;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:60px;height:6px;background:#14297E;margin:0 auto 30px;"></div>
+                <div style="text-align:center;font-size:62px;font-weight:600;color:#121212;margin-bottom:10px;">${modelTitle}</div>
+                <div style="text-align:center;font-size:35px;font-weight:500;color:#121212;margin-bottom:50px;">${modelSubtitle.replace(/\n/g,'<br>')}</div>
+                ${rows.join('')}
+            </div>`;
+        })(),
         top: `<div style="width:800px;background:#fff;padding:200px 0 0;">
 ${mainImgHtml}
     <div style="padding:60px 60px 0;">
@@ -1362,7 +1459,7 @@ ${mainImgHtml}
 
     document.getElementById('preview-container').innerHTML =
         '<div style="width:800px;background:#fff;font-family:\'Apple SD Gothic Neo\',\'Noto Sans KR\',sans-serif;">' +
-        shirtSectionOrder.map(sec => shirtSectionHtmlMap[sec] || '').join('') +
+        shirtSectionOrder.filter(sec => !shirtHiddenSections.has(sec)).map(sec => shirtSectionHtmlMap[sec] || '').join('') +
         '</div>';
 }
 
@@ -2021,6 +2118,7 @@ renderShirtSectionOrder();
 renderBagSectionOrder();
 renderBagColorItems();
 renderBagModelItems();
+renderShirtModelItems();
 renderWashItems();
 render();
 </script>
