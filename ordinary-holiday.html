@@ -300,11 +300,28 @@ MODEL : 173cm 51kg / S size</textarea>
     <!-- BAG 전용 사이드바 -->
     <div id="sidebarBag" style="display:none;">
 
-    <div class="sec-head"><span>① 인트로 이미지</span><button class="btn-add" onclick="addSlot('bagIntro')">+</button></div>
-    <div class="file-slots" id="bagIntroSlots"></div>
+    <div class="sec-head"><span>① 인트로 섹션</span></div>
+    <div class="input-group">
+        <label>인트로 이미지</label>
+        <div class="file-slots" id="bagIntroSlots"></div>
+        <button class="btn-add" onclick="addSlot('bagIntro')" style="margin-top:4px; width:100%; padding:6px; background:transparent; border:1px dashed #1e3a5f; border-radius:5px; color:#4a9eff; font-size:11px; cursor:pointer;">+ 이미지 추가</button>
+    </div>
+    <div class="input-group">
+        <label>영문 상품명 (예: LEOPARD SHOULDER BAG)</label>
+        <input type="text" id="bagEngTitle" value="LEOPARD SHOULDER BAG" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>한글 상품명 (예: 레오파드 숄더백)</label>
+        <input type="text" id="bagKorTitle" value="레오파드 숄더백" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>상품 설명</label>
+        <textarea id="bagDesc" rows="4" oninput="render()">레오파드 패턴의 숄더백입니다.
+넓은 수납공간과 조절 가능한 스트랩으로 편리하게 착용할 수 있습니다.</textarea>
+    </div>
 
-    <div class="sec-head"><span>② 상품컷 TOP</span><button class="btn-add" onclick="addSlot('bagTop')">+</button></div>
-    <div class="file-slots" id="bagTopSlots"></div>
+    <div class="sec-head"><span>② 컬러별 상품 이미지</span><button class="btn-add" onclick="addBagColor()" id="btnAddBagColor">+</button></div>
+    <div id="bagColorItems"></div>
 
     <div class="sec-head"><span>③ 공지 텍스트 (비우면 미표시)</span></div>
     <div class="input-group">
@@ -560,7 +577,8 @@ const data = {
     bagTop: [],
     bagPd: [],
     bagDetail: [],
-    bagFabric: []
+    bagFabric: [],
+    bagColors: [] // [{img:{src,name}, colorName:'GRAY'}]
 };
 
 // BAG 섹션 순서 (렌더링 순서 제어)
@@ -617,7 +635,65 @@ function renderSlots(key) {
     }).join('');
 }
 
-// ===== BAG 섹션 순서 UI =====
+// ===== BAG 컬러 관리 =====
+function addBagColor() {
+    data.bagColors.push({ img: { src: '', name: '' }, colorName: '' });
+    renderBagColorItems();
+    render();
+}
+
+function removeBagColor(idx) {
+    data.bagColors.splice(idx, 1);
+    renderBagColorItems();
+    render();
+}
+
+function handleBagColorFile(input, idx) {
+    const f = input.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = e => {
+        data.bagColors[idx].img = { src: e.target.result, name: f.name };
+        renderBagColorItems();
+        render();
+    };
+    r.readAsDataURL(f);
+}
+
+function renderBagColorItems() {
+    const container = document.getElementById('bagColorItems');
+    container.innerHTML = data.bagColors.map((c, i) => `
+        <div style="background:#0a1628;border:1px solid #1e3a5f;border-radius:6px;padding:10px;margin-bottom:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span style="color:#4a9eff;font-size:11px;font-weight:600;">컬러 ${i+1}</span>
+                <button onclick="removeBagColor(${i})" style="width:20px;height:20px;background:transparent;color:#e74c3c;border:1px solid #e74c3c;border-radius:4px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+            </div>
+            ${c.img.src
+                ? `<div class="file-row"><span class="file-name-display">${c.img.name}</span><button class="btn-del" onclick="data.bagColors[${i}].img={src:'',name:''};renderBagColorItems();render()">✕</button></div>`
+                : `<div class="file-row"><input type="file" accept="image/*" onchange="handleBagColorFile(this,${i})"></div>`
+            }
+            <div style="margin-top:6px;">
+                <input type="text" placeholder="컬러명 (예: GRAY)" value="${c.colorName}" oninput="data.bagColors[${i}].colorName=this.value;render()" style="width:100%;padding:8px 10px;background:#16213e;border:1px solid #1e3a5f;border-radius:6px;color:#e6f1ff;font-size:12px;outline:none;">
+            </div>
+        </div>`).join('');
+    const btn = document.getElementById('btnAddBagColor');
+    if (btn) btn.style.display = data.bagColors.length >= 6 ? 'none' : 'inline-flex';
+}
+function imgClickBagColor(idx) {
+    const input = document.getElementById('hiddenFileInput');
+    input.onchange = function() {
+        const f = this.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = e => {
+            data.bagColors[idx].img = { src: e.target.result, name: f.name };
+            renderBagColorItems();
+            render();
+        };
+        r.readAsDataURL(f);
+        this.value = '';
+    };
+    input.click();
+}
+
 const BAG_SECTION_LABELS = {
     intro: '인트로 이미지', top: '상품컷 TOP', notice: '공지 텍스트',
     pd: '상품컷', detail: '디테일 이미지', detailNotice: '디테일 주의 텍스트',
@@ -808,8 +884,25 @@ function renderBag() {
     ];
 
     const sectionHtmlMap = {
-        intro: mkImgs('bagIntro',985,'#eee'),
-        top: mkImgs('bagTop',2150,'#eee'),
+        intro: `<div style="width:1000px;background:#fff;">
+            ${mkImgs('bagIntro',985,'#f0f0f0')}
+            <div style="width:1000px;padding:80px 65px 100px;background:#fff;text-align:center;">
+                <div style="font-size:24px;font-weight:500;color:#979797;letter-spacing:2px;margin-bottom:20px;font-family:'Pretendard',sans-serif;">${val('bagEngTitle')||'LEOPARD SHOULDER BAG'}</div>
+                <div style="font-size:60px;font-weight:700;color:#292929;margin-bottom:40px;font-family:'Pretendard',sans-serif;">${val('bagKorTitle')||'레오파드 숄더백'}</div>
+                <div style="width:1px;height:60px;background:#e0e0e0;margin:0 auto 40px;"></div>
+                <div style="font-size:30px;font-weight:400;color:#292929;line-height:1.8;font-family:'Pretendard',sans-serif;">${(val('bagDesc')||'').replace(/\n/g,'<br>')}</div>
+            </div>
+        </div>`,
+        top: data.bagColors.length > 0 ? `<div style="width:1000px;background:#fff;padding:60px 0 100px;">
+            <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:0;">
+                ${data.bagColors.map((c,i) => `<div style="width:500px;text-align:center;padding:40px 30px;">
+                    <div style="width:440px;height:440px;background:#f5f5f5;overflow:hidden;display:flex;align-items:center;justify-content:center;margin:0 auto;cursor:pointer;" onclick="imgClickBagColor(${i})">
+                        ${c.img.src ? `<img src="${c.img.src}" style="width:100%;height:100%;object-fit:cover;">` : '<span style="color:#aaa;font-size:14px;">+ 컬러 이미지</span>'}
+                    </div>
+                    <div style="font-size:28px;font-weight:500;color:#292929;margin-top:20px;font-family:\'Pretendard\',sans-serif;">${c.colorName||'컬러명'}</div>
+                </div>`).join('')}
+            </div>
+        </div>` : '',
         notice: noticeTitle ? `<div style="width:1000px;background:#fff;padding:40px;"><div style="background:#f6f6f6;padding:60px 56px;border-radius:4px;"><div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:40px;"><div style="width:41px;height:41px;border-radius:50%;background:#292929;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:700;">!</div><span style="font-size:38px;font-weight:700;color:#121212;">${noticeTitle}</span></div><div style="font-size:30px;font-weight:600;color:#979797;text-align:center;line-height:1.6;">${noticeText}</div></div></div>` : '',
         pd: mkImgs('bagPd',1270,'#868686'),
         detail: `<div style="width:1000px;background:#fff;padding:100px 40px 0;"><div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">DETAIL</div><div>${mkImgs('bagDetail',581,'#898989')}</div></div>`,
@@ -1711,6 +1804,7 @@ addSlot('bagPd');
 addSlot('bagDetail');
 addSlot('bagFabric');
 renderBagSectionOrder();
+renderBagColorItems();
 render();
 </script>
 </body>
