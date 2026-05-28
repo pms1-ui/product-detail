@@ -100,6 +100,14 @@
 </div>
 <div class="app-layout">
 <div class="input-panel">
+    <!-- 복종 선택 -->
+    <div style="margin-bottom:16px; padding:14px 16px; background:#0f1f3d; border:1px solid #2a4a7f; border-radius:8px;">
+        <label style="display:block; color:#f59e0b; font-size:12px; font-weight:600; margin-bottom:8px;">복종 선택</label>
+        <select id="categorySelect" onchange="switchCategory()" style="width:100%; padding:10px 12px; background:#0a1628; border:1px solid #2a4a7f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; appearance:none; background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%238892b0%22 d=%22M6 8L1 3h10z%22/%3E%3C/svg%3E'); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px;">
+            <option value="shirt">의류 (SHIRT)</option>
+            <option value="bag">가방 (BAG)</option>
+        </select>
+    </div>
     <!-- 품번 조회 영역 -->
     <div style="margin-bottom:20px; padding:16px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
         <label style="display:block; color:#ccd6f6; font-size:12px; font-weight:600; margin-bottom:8px;">품번 조회</label>
@@ -112,6 +120,8 @@
 
     <!-- 나머지 입력 영역 (품번 조회 전 비활성) -->
     <div id="editorArea" style="opacity:0.3; pointer-events:none;">
+    <!-- SHIRT 전용 사이드바 -->
+    <div id="sidebarShirt">
 
     <div class="sec-head"><span>① 인트로 이미지</span><button class="btn-add" onclick="addSlot('introImg')">+</button></div>
     <div class="file-slots" id="introImgSlots"></div>
@@ -284,6 +294,105 @@ MODEL : 173cm 51kg / S size</textarea>
         <label>A/S 연락처</label>
         <input type="text" id="infoAs" value="(주)차일디 070-4138-2632" oninput="render()">
     </div>
+
+    </div><!-- /sidebarShirt -->
+
+    <!-- BAG 전용 사이드바 -->
+    <div id="sidebarBag" style="display:none;">
+    <div class="sec-head"><span>① 인트로 이미지</span><button class="btn-add" onclick="addSlot('bagIntro')">+</button></div>
+    <div class="file-slots" id="bagIntroSlots"></div>
+
+    <div class="sec-head"><span>② 상품컷 TOP (메인)</span><button class="btn-add" onclick="addSlot('bagTop')">+</button></div>
+    <div class="file-slots" id="bagTopSlots"></div>
+
+    <div class="sec-head"><span>③ 공지 텍스트 (선택)</span></div>
+    <div class="input-group">
+        <label>공지 제목 (비우면 미표시)</label>
+        <input type="text" id="bagNoticeTitle" value="확인 부탁드립니다" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>공지 내용</label>
+        <textarea id="bagNoticeText" rows="3" oninput="render()">해당 제품은 디자인 리뉴얼로 인해 금속 와펜이 변경되었습니다. 자세한 사항은 하단의 제품컷 이미지 참고 부탁드립니다.</textarea>
+    </div>
+
+    <div class="sec-head"><span>④ 상품컷 그룹 1</span><button class="btn-add" onclick="addSlot('bagPd1')">+</button></div>
+    <div class="file-slots" id="bagPd1Slots"></div>
+
+    <div class="sec-head"><span>⑤ 상품컷 그룹 2</span><button class="btn-add" onclick="addSlot('bagPd2')">+</button></div>
+    <div class="file-slots" id="bagPd2Slots"></div>
+
+    <div class="sec-head"><span>⑥ 상품컷 그룹 3</span><button class="btn-add" onclick="addSlot('bagPd3')">+</button></div>
+    <div class="file-slots" id="bagPd3Slots"></div>
+
+    <div class="sec-head"><span>⑦ 디테일 상단 이미지 (1~3장)</span><button class="btn-add" onclick="addSlot('bagDetailTop')">+</button></div>
+    <div class="file-slots" id="bagDetailTopSlots"></div>
+
+    <div class="sec-head"><span>⑧ 디테일 메인 이미지 (2장)</span><button class="btn-add" onclick="addSlot('bagDetailMain')">+</button></div>
+    <div class="file-slots" id="bagDetailMainSlots"></div>
+
+    <div class="sec-head"><span>⑨ 디테일 서브 이미지</span><button class="btn-add" onclick="addSlot('bagDetailSub')">+</button></div>
+    <div class="file-slots" id="bagDetailSubSlots"></div>
+
+    <div class="sec-head"><span>⑩ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('bagFabric')">+</button></div>
+    <div class="file-slots" id="bagFabricSlots"></div>
+    <div class="input-group">
+        <label>원단 텍스트</label>
+        <input type="text" id="bagFabricText" value="COTTON : 100%" oninput="render()">
+    </div>
+
+    <div class="sec-head"><span>⑪ SIZE INFO</span></div>
+    <div class="input-group">
+        <label>사이즈 항목 (쉼표 구분)</label>
+        <input type="text" id="bagSizes" value="ONE SIZE" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>a. 가로 값들</label>
+        <input type="text" id="bagWidth" value="30" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>b. 세로 값들</label>
+        <input type="text" id="bagHeight" value="25" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>c. 폭 값들</label>
+        <input type="text" id="bagDepth" value="10" oninput="render()">
+    </div>
+    <div class="input-group">
+        <label>d. 손잡이 값들</label>
+        <input type="text" id="bagHandle" value="30" oninput="render()">
+    </div>
+
+    <div class="sec-head"><span>⑫ PRODUCT INFO</span></div>
+    <div class="input-group"><label>두께감</label>
+        <select id="bagThick" onchange="render()"><option value="얇음" selected>얇음</option><option value="보통">보통</option><option value="두꺼움">두꺼움</option></select>
+    </div>
+    <div class="input-group"><label>비침</label>
+        <select id="bagTransparency" onchange="render()"><option value="있음">있음</option><option value="보통" selected>보통</option><option value="없음">없음</option></select>
+    </div>
+    <div class="input-group"><label>촉감</label>
+        <select id="bagTexture" onchange="render()"><option value="부드러움" selected>부드러움</option><option value="보통">보통</option><option value="뻣뻣함">뻣뻣함</option></select>
+    </div>
+    <div class="input-group"><label>안감</label>
+        <select id="bagLining" onchange="render()"><option value="안감없음">안감없음</option><option value="부분안감">부분안감</option><option value="안감있음" selected>안감있음</option></select>
+    </div>
+    <div class="input-group"><label>신축성</label>
+        <select id="bagStretch" onchange="render()"><option value="없음" selected>없음</option><option value="보통">보통</option><option value="있음">있음</option></select>
+    </div>
+    <div class="input-group"><label>계절</label>
+        <select id="bagSeason" onchange="render()"><option value="봄/가을" selected>봄/가을</option><option value="여름">여름</option><option value="겨울">겨울</option></select>
+    </div>
+
+    <div class="sec-head"><span>⑬ 상품정보 제공고시</span></div>
+    <div class="input-group"><label>제품 소재</label><input type="text" id="bagInfoMaterial" value="COTTON 100%" oninput="render()"></div>
+    <div class="input-group"><label>색상</label><input type="text" id="bagInfoColor" value="GRAY, IVORY, BROWN" oninput="render()"></div>
+    <div class="input-group"><label>제조사</label><input type="text" id="bagInfoManufacturer" value="ORDINARY HOLIDAY / WONDER PLACE" oninput="render()"></div>
+    <div class="input-group"><label>치수</label><input type="text" id="bagInfoMeasurement" value="상세 설명 참조" oninput="render()"></div>
+    <div class="input-group"><label>제조국</label><input type="text" id="bagInfoCountry" value="중국" oninput="render()"></div>
+    <div class="input-group"><label>제조연월</label><input type="text" id="bagInfoMfgDate" value="2025.03" oninput="render()"></div>
+    <div class="input-group"><label>세탁/취급 주의사항</label><input type="text" id="bagInfoWashing" value="상세 설명 참조" oninput="render()"></div>
+    <div class="input-group"><label>품질보증기준</label><input type="text" id="bagInfoWarranty" value="구매일로부터 6개월간 / 그 외 기준은 관련법 및 소비자 분쟁해결 규정에 따름" oninput="render()"></div>
+    <div class="input-group"><label>A/S 연락처</label><input type="text" id="bagInfoAs" value="(주)차일디 070-4138-2632" oninput="render()"></div>
+    </div><!-- /sidebarBag -->
 
     </div><!-- /editorArea -->
 </div>
@@ -459,6 +568,7 @@ MODEL : 173cm 51kg / S size</textarea>
 <script>
 // ===== 데이터 구조 =====
 const data = {
+    // SHIRT
     introImg: [],
     model1Img: [],
     model2Img: [],
@@ -466,8 +576,27 @@ const data = {
     detailTop: [],
     detailSub: [],
     fabricImg: [],
-    colors: [] // [{img:{src,name}, name:'WHITE'}]
+    colors: [],
+    // BAG
+    bagIntro: [],
+    bagTop: [],
+    bagPd1: [],
+    bagPd2: [],
+    bagPd3: [],
+    bagDetailTop: [],
+    bagDetailMain: [],
+    bagDetailSub: [],
+    bagFabric: []
 };
+
+let currentCategory = 'shirt'; // 'shirt' | 'bag'
+
+function switchCategory() {
+    currentCategory = document.getElementById('categorySelect').value;
+    document.getElementById('sidebarShirt').style.display = currentCategory === 'shirt' ? '' : 'none';
+    document.getElementById('sidebarBag').style.display = currentCategory === 'bag' ? '' : 'none';
+    render();
+}
 
 // ===== 슬롯 관리 =====
 function addSlot(key) {
@@ -649,7 +778,146 @@ function sizeTable() {
 }
 
 // ===== RENDER =====
+function renderBag() {
+    const bagIntroHtml = data.bagIntro.length > 0
+        ? data.bagIntro.map((item,i) => `<div style="width:1000px;overflow:hidden;cursor:pointer;" onclick="imgClick('bagIntro',${i})">${item.src?`<img src="${item.src}" style="width:100%;display:block;">`:`<div style="width:1000px;height:985px;background:#eee;display:flex;align-items:center;justify-content:center;"><span style="color:#aaa;">+ 인트로 이미지</span></div>`}</div>`).join('')
+        : `<div style="width:1000px;height:985px;background:#eee;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="imgClick('bagIntro',0)"><span style="color:#aaa;">+ 인트로 이미지</span></div>`;
+
+    const bagTopHtml = data.bagTop.length > 0
+        ? data.bagTop.map((item,i) => `<div style="width:1000px;overflow:hidden;cursor:pointer;" onclick="imgClick('bagTop',${i})">${item.src?`<img src="${item.src}" style="width:100%;display:block;">`:`<div style="width:1000px;height:2150px;background:#eee;display:flex;align-items:center;justify-content:center;"><span style="color:#aaa;">+ 상품컷 TOP</span></div>`}</div>`).join('')
+        : `<div style="width:1000px;height:2150px;background:#eee;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="imgClick('bagTop',0)"><span style="color:#aaa;">+ 상품컷 TOP</span></div>`;
+
+    const noticeTitle = val('bagNoticeTitle');
+    const noticeText = val('bagNoticeText');
+    const noticeHtml = noticeTitle ? `
+    <div style="width:1000px;background:#fff;padding:40px;">
+        <div style="background:#f6f6f6;padding:60px 56px;border-radius:4px;">
+            <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:40px;">
+                <div style="width:41px;height:41px;border-radius:50%;background:#292929;display:flex;align-items:center;justify-content:center;color:white;font-size:20px;font-weight:700;">!</div>
+                <span style="font-size:38px;font-weight:700;color:#121212;">${noticeTitle}</span>
+            </div>
+            <div style="font-size:30px;font-weight:600;color:#979797;text-align:center;line-height:1.6;">${noticeText}</div>
+        </div>
+    </div>` : '';
+
+    const mkPdGroup = (key) => data[key].length > 0
+        ? data[key].map((item,i) => `<div style="width:1000px;overflow:hidden;cursor:pointer;" onclick="imgClick('${key}',${i})">${item.src?`<img src="${item.src}" style="width:100%;display:block;">`:`<div style="width:1000px;height:1270px;background:#868686;display:flex;align-items:center;justify-content:center;"><span style="color:#ccc;">+ 상품컷</span></div>`}</div>`).join('')
+        : `<div style="width:1000px;height:1270px;background:#868686;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="imgClick('${key}',0)"><span style="color:#ccc;">+ 상품컷 추가</span></div>`;
+
+    const bagDetailTopHtml = data.bagDetailTop.length > 0
+        ? data.bagDetailTop.map((item,i) => `<div style="width:1000px;overflow:hidden;cursor:pointer;" onclick="imgClick('bagDetailTop',${i})">${item.src?`<img src="${item.src}" style="width:100%;display:block;">`:`<div style="width:1000px;height:2365px;background:#eee;display:flex;align-items:center;justify-content:center;"><span style="color:#aaa;">+ 디테일 상단</span></div>`}</div>`).join('')
+        : `<div style="width:1000px;height:2365px;background:#eee;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="imgClick('bagDetailTop',0)"><span style="color:#aaa;">+ 디테일 상단 이미지</span></div>`;
+
+    const bagDetailMainHtml = data.bagDetailMain.length > 0
+        ? data.bagDetailMain.map((item,i) => `<div style="width:920px;height:1030px;background:#898989;overflow:hidden;margin:0 40px;cursor:pointer;" onclick="imgClick('bagDetailMain',${i})">${item.src?`<img src="${item.src}" style="width:100%;height:auto;object-fit:cover;">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span style="color:#ccc;">+ 디테일 메인 ${i+1}</span></div>`}</div>`).join('')
+        : `<div style="width:920px;height:1030px;background:#898989;display:flex;align-items:center;justify-content:center;margin:0 40px;cursor:pointer;" onclick="imgClick('bagDetailMain',0)"><span style="color:#ccc;">+ 디테일 메인 이미지</span></div>`;
+
+    const bagDetailSubHtml = data.bagDetailSub.length > 0
+        ? data.bagDetailSub.map((item,i) => `<div style="width:920px;height:581px;background:#898989;overflow:hidden;cursor:pointer;" onclick="imgClick('bagDetailSub',${i})">${item.src?`<img src="${item.src}" style="width:100%;height:auto;object-fit:cover;">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span style="color:#ccc;">+ 디테일 서브</span></div>`}</div>`).join('')
+        : `<div style="width:920px;height:581px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="imgClick('bagDetailSub',0)"><span style="color:#ccc;">+ 디테일 서브 이미지</span></div>`;
+
+    const bagFabricSrc = data.bagFabric[0] && data.bagFabric[0].src ? data.bagFabric[0].src : '';
+    const bagFabricImgHtml = `<div style="width:920px;height:581px;background:#898989;overflow:hidden;cursor:pointer;" onclick="imgClick('bagFabric',0)">${bagFabricSrc?`<img src="${bagFabricSrc}" style="width:100%;height:auto;object-fit:cover;">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"><span style="color:#ccc;">+ FABRIC INFO 이미지</span></div>`}</div>`;
+
+    // SIZE TABLE (BAG)
+    const bagSizes = val('bagSizes').split(',').map(s=>s.trim()).filter(Boolean);
+    const bagW = val('bagWidth').split(',').map(s=>s.trim());
+    const bagH = val('bagHeight').split(',').map(s=>s.trim());
+    const bagD = val('bagDepth').split(',').map(s=>s.trim());
+    const bagHnd = val('bagHandle').split(',').map(s=>s.trim());
+    const bagSizeRows = bagSizes.map((sz,i) => `<tr style="border-bottom:1px solid #e0e0e0;">
+        <td style="padding:25px 0;font-weight:700;color:#292929;text-align:center;">${sz}</td>
+        <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${bagW[i]||''}</td>
+        <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${bagH[i]||''}</td>
+        <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${bagD[i]||''}</td>
+        <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${bagHnd[i]||''}</td>
+    </tr>`).join('');
+
+    const bagWashItems = [
+        { title: '세탁 금지', desc: '오엠 부분만 부드러운 천으로 닦아내도록 합니다. 물에 젖었을 경우 통풍이 잘 되는 그늘에서 건조합니다.' },
+        { title: '기계 건조 금지', desc: '상품 수축 및 변질 차원에서 건조기 사용을 지양합니다.' },
+        { title: '액체세제 이용', desc: '가루세제 사용 시 변색 가능성 높아 액체세제 이용을 권장합니다.' },
+        { title: '나염 열처리 금지', desc: '손상 및 변형 방지를 위해 나염 부분 열을 가하는 것을 지양합니다.' },
+        { title: '제품 손상 방지', desc: '제품 손상 방지 차원에서 뒤집어서 세탁하는 것을 권장합니다.' },
+        { title: '라벨 확인', desc: '제품 안쪽 부착된 취급주의 라벨을 반드시 확인 후 사용하는 것을 권장합니다.' }
+    ];
+    const bagWashHtml = bagWashItems.map((w,i) => `
+        <div style="display:flex;align-items:center;height:200px;${i<5?'border-bottom:1px solid #e0e0e0;':''}">
+            <div style="width:200px;display:flex;justify-content:center;"><div style="width:120px;height:120px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center;"><img src="https://placehold.co/88x88" style="width:88px;height:88px;object-fit:contain;"></div></div>
+            <div><div style="font-size:28px;font-weight:700;color:#292929;margin-bottom:10px;">${w.title}</div><div style="font-size:24px;font-weight:400;color:#292929;max-width:594px;">${w.desc}</div></div>
+        </div>`).join('');
+
+    document.getElementById('preview-container').innerHTML = `
+<div style="width:1000px;background:#fff;font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;">
+${bagIntroHtml}
+<div style="width:1000px;">${bagTopHtml}</div>
+${noticeHtml}
+<div style="width:1000px;">${mkPdGroup('bagPd1')}</div>
+<div style="width:1000px;">${mkPdGroup('bagPd2')}</div>
+<div style="width:1000px;">${mkPdGroup('bagPd3')}</div>
+<div style="width:1000px;background:#fff;">${bagDetailTopHtml}</div>
+<div style="width:1000px;background:#fff;padding:0 0 0 0;">${bagDetailMainHtml}</div>
+<div style="width:1000px;background:#fff;padding:100px 40px 0;">
+    <div style="padding:150px 31px 0;">
+        <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">DETAIL</div>
+        <div style="display:flex;flex-direction:column;gap:0;">${bagDetailSubHtml}</div>
+        <div style="font-size:26px;font-weight:400;color:#292929;margin-top:40px;padding:0 80px;">*제품 색상은 사용자의 모니터 해상도에 따라 다소 차이가 있을 수 있습니다.<br>*제품의 디테일컷이 실제 제품과 가장 흡사합니다.</div>
+    </div>
+    <div style="padding:100px 31px 0;">
+        <div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">FABRIC INFO</div>
+        ${bagFabricImgHtml}
+        <div style="text-align:center;font-size:30px;font-weight:700;color:#292929;margin-top:30px;">${val('bagFabricText')}</div>
+    </div>
+</div>
+<div style="width:1000px;background:#fff;padding:200px 0 0;">
+    <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">SIZE INFO</div>
+    <div style="padding:0 65px;">
+        <table style="width:870px;border-collapse:collapse;font-size:28px;">
+            <thead><tr style="border-bottom:1px solid #292929;">
+                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;">SIZE(cm)</th>
+                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">a. 가로</th>
+                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">b. 세로</th>
+                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">c. 폭</th>
+                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">d. 손잡이</th>
+            </tr></thead>
+            <tbody>${bagSizeRows}</tbody>
+        </table>
+        <div style="font-size:23px;font-weight:400;color:#292929;margin-top:20px;text-align:center;">*실측은 측정 방법에 따라 1~3cm 정도의 오차가 있을 수 있습니다.</div>
+    </div>
+</div>
+<div style="width:1000px;background:#fff;padding:200px 0 0;">
+    <div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">PRODUCT INFO</div>
+    <div style="padding:0 65px;"><div style="width:870px;">
+        ${productInfoRow('두께감',['얇음','보통','두꺼움'],val('bagThick'))}
+        ${productInfoRow('비침',['있음','보통','없음'],val('bagTransparency'))}
+        ${productInfoRow('촉감',['부드러움','보통','뻣뻣함'],val('bagTexture'))}
+        ${productInfoRow('안감',['안감없음','부분안감','안감있음'],val('bagLining'))}
+        ${productInfoRow('신축성',['없음','보통','있음'],val('bagStretch'))}
+        ${productInfoRow('계절',['봄/가을','여름','겨울'],val('bagSeason'))}
+    </div></div>
+</div>
+<div style="width:1000px;background:#fff;padding:200px 0 0;">
+    <div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">WASHING TIP</div>
+    <div style="padding:0 65px;"><div style="width:870px;">${bagWashHtml}</div></div>
+</div>
+<div style="width:1000px;background:#fff;padding:200px 0 100px;">
+    <div style="padding:0 65px;">
+        <div style="width:870px;background:#f4f4f4;height:78px;display:flex;align-items:center;justify-content:center;"><span style="font-size:26px;font-weight:700;color:#292929;">상품정보 제공고시</span></div>
+        <div style="border-bottom:1px solid #e0e0e0;"></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제품 소재</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;">${val('bagInfoMaterial')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">색상</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;">${val('bagInfoColor')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조사</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;">${val('bagInfoManufacturer')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">치수</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoMeasurement')}</div><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조국</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoCountry')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">제조연월</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoMfgDate')}</div><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">세탁/취급 주의사항</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;flex:1;">${val('bagInfoWashing')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">품질보증기준</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;">${val('bagInfoWarranty')}</div></div>
+        <div style="display:flex;align-items:center;height:64px;border-bottom:1px solid #e0e0e0;"><div style="width:220px;font-size:20px;font-weight:700;color:#292929;text-align:center;">A/S 연락처</div><div style="width:1px;height:29px;background:#e0e0e0;"></div><div style="padding-left:30px;font-size:20px;font-weight:400;color:#292929;">${val('bagInfoAs')}</div></div>
+    </div>
+</div>
+</div>`;
+}
+
 function render() {
+    if (currentCategory === 'bag') { renderBag(); return; }
     // INTRO 섹션
     const introImgsHtml = data.introImg.length > 0
         ? data.introImg.map((item, i) => `<div style="width:1000px;height:1250px;background:#292929;overflow:hidden;position:relative;cursor:pointer;" onclick="imgClick('introImg',${i})">
@@ -1527,6 +1795,13 @@ addSlot('mainImg');
 addSlot('detailTop');
 addSlot('detailSub');
 addSlot('fabricImg');
+addSlot('bagIntro');
+addSlot('bagTop');
+addSlot('bagPd1');
+addSlot('bagDetailTop');
+addSlot('bagDetailMain');
+addSlot('bagDetailSub');
+addSlot('bagFabric');
 render();
 </script>
 </body>
