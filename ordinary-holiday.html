@@ -166,7 +166,7 @@
     <div style="margin-bottom:20px; padding:16px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
         <label style="display:block; color:#ccd6f6; font-size:12px; font-weight:600; margin-bottom:8px;">품번 조회</label>
         <div style="display:flex; gap:8px;">
-            <input type="text" id="lookupCode" placeholder="OD251ILS72" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="lookupCode" placeholder="OH12345678" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
             <button onclick="doLookup()" style="padding:10px 16px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">조회</button>
         </div>
         <div id="lookupStatus" style="margin-top:8px; font-size:11px; color:#64748b;">품번을 입력하고 조회하세요.</div>
@@ -174,80 +174,23 @@
 
     <!-- 나머지 입력 영역 (품번 조회 전 비활성) -->
     <div id="editorArea" style="opacity:0.3; pointer-events:none;">
-    <div class="sec-head"><span>① 메인 히어로 이미지</span><button class="btn-add" onclick="addSlot('hero')">+</button></div>
+    <div class="sec-head"><span>① 인트로 이미지</span><button class="btn-add" onclick="addSlot('hero')">+</button></div>
     <div class="file-slots" id="heroSlots"></div>
 
-    <div class="sec-head"><span>② 상품명 / 설명</span></div>
-    <div class="input-group">
-        <label>영문 상품명</label>
-        <input type="text" id="engTitle" value="Front Graphic Sweatshirt" oninput="render()">
-    </div>
-    <div class="input-group">
-        <label>한글 상품명</label>
-        <input type="text" id="korTitle" value="전면 그래픽 맨투맨" oninput="render()">
-    </div>
-    <div class="sec-head"><span>소개 이미지</span><button class="btn-add" onclick="addSlot('intro')">+</button></div>
+    <div class="sec-head"><span>② 모델컷 1</span><button class="btn-add" onclick="addSlot('intro')">+</button></div>
     <div class="file-slots" id="introSlots"></div>
-    <div class="input-group">
-        <label>짧은 소개</label>
-        <textarea id="desc1" oninput="render()">아웃도어 프로덕츠 키즈의
-바시티 패딩 점퍼입니다.</textarea>
-    </div>
-    <div class="input-group">
-        <label>상세 설명</label>
-        <textarea id="desc2" rows="6" oninput="render()">여유 있는 핏으로 제작되었으며,
-3oz 패딩을 퀼팅한 원단의 안감으로
-보온성이 좋아 쌀쌀한 환절기 아이템으로
-좋은 점퍼입니다.
-소매의 배색 라인과 등판의 바시티 그래픽으로
-포인트를 준 점퍼 스타일이며,
-등하교 룩, 외출 룩 등 다양한 코디가 가능한
-실용적인 아우터입니다.</textarea>
-    </div>
 
-    <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcut')">+</button></div>
+    <div class="sec-head"><span>③ 모델컷 2</span><button class="btn-add" onclick="addSlot('modelcut')">+</button></div>
     <div class="file-slots" id="modelcutSlots"></div>
 
-    <div class="sec-head"><span>④ Detail Point</span></div>
-    <div class="input-group">
-        <label>원단 구성 (FABRIC)</label>
-        <textarea id="fabricInfo" rows="2" oninput="render()">겉감, 배색 : 나일론 100%
-안감, 충전재 : 폴리에스터 100%</textarea>
-    </div>
-    <div class="sec-head"><span>디테일컷</span><button class="btn-add" onclick="addSlot('detailcut')">+</button></div>
+    <div class="sec-head"><span>④ 상세정보 (top)</span><button class="btn-add" onclick="addSlot('detailcut')">+</button></div>
     <div class="file-slots" id="detailcutSlots"></div>
 
-    <div class="sec-head"><span>⑤ 모델 사이즈</span></div>
-    <div class="input-group">
-        <label>모델 정보 (이름,키/몸무게,사이즈)</label>
-        <textarea id="modelInfo" rows="5" oninput="render()">DANIELLE,127cm / 23kg,130 size
-RUBY,126cm / 23kg,130 size
-RUKA,130cm / 24kg,130 size
-ALEXANDER,126cm / 25.5kg,130 size
-EMMA,124cm / 23kg,130 size</textarea>
-    </div>
-    <div class="sec-head"><span>모델 썸네일</span><button class="btn-add" onclick="addSlot('modelthumb')">+</button></div>
+    <div class="sec-head"><span>⑤ 디테일컷</span><button class="btn-add" onclick="addSlot('modelthumb')">+</button></div>
     <div class="file-slots" id="modelthumbSlots"></div>
 
-    <div class="sec-head"><span>⑥ Size Guide</span></div>
-    <div class="input-group"><label>사이즈</label><input type="text" id="sizes" value="120,130,145,155,165" oninput="render()"></div>
-    <div class="input-group"><label>나이</label><input type="text" id="ages" value="5-6,7-8,9-10,11-12,13-14" oninput="render()"></div>
-    <div class="input-group"><label>신장</label><input type="text" id="heights" value="110-120,120-130,130-140,140-150,150-160" oninput="render()"></div>
-    <div class="input-group"><label>체중</label><input type="text" id="weights" value="20-25,25-30,30-35,35-40,40-45" oninput="render()"></div>
-
-    <div class="sec-head"><span>⑦ Product Size</span></div>
-    <div class="input-group"><label>어깨너비</label><input type="text" id="shoulder" value="44.1,46.5,49.1,51.7,54.3" oninput="render()"></div>
-    <div class="input-group"><label>가슴둘레</label><input type="text" id="chest" value="95,100,105.5,111,116.5" oninput="render()"></div>
-    <div class="input-group"><label>소매길이</label><input type="text" id="sleeve" value="40.1,43.5,46.8,50.1,53.4" oninput="render()"></div>
-    <div class="input-group"><label>총장</label><input type="text" id="totalLength" value="48.5,52.5,56.5,60.5,64.5" oninput="render()"></div>
-    <div class="sec-head"><span>도식화 이미지</span><button class="btn-add" onclick="addSlot('sizechart')">+</button></div>
+    <div class="sec-head"><span>⑥ 하단 정보 (bottom-info)</span><button class="btn-add" onclick="addSlot('sizechart')">+</button></div>
     <div class="file-slots" id="sizechartSlots"></div>
-
-    <div class="sec-head"><span>⑧ Check Point</span></div>
-    <div class="input-group"><label>핏</label><select id="checkFit" onchange="render()"><option value="0" selected>크게나옴</option><option value="1">정사이즈</option><option value="2">작게나옴</option></select></div>
-    <div class="input-group"><label>두께감</label><select id="checkThick" onchange="render()"><option value="0" selected>두꺼움</option><option value="1">적당함</option><option value="2">얇음</option></select></div>
-    <div class="input-group"><label>신축성</label><select id="checkStretch" onchange="render()"><option value="0">좋음</option><option value="1">약간있음</option><option value="2" selected>없음</option></select></div>
-    <div class="input-group"><label>안감</label><select id="checkLining" onchange="render()"><option value="0" selected>있음</option><option value="1">부분안감</option><option value="2">없음</option></select></div>
     </div><!-- /editorArea -->
 </div>
 
@@ -269,7 +212,7 @@ EMMA,124cm / 23kg,130 size</textarea>
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="uploadCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
+            <input type="text" id="uploadCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
         </div>
         <div style="text-align:left; margin-bottom:16px; display:flex; gap:12px;">
             <div style="flex:1;">
@@ -322,7 +265,7 @@ EMMA,124cm / 23kg,130 size</textarea>
         <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 저장합니다. (현재 품번도 유지됨)</p>
         <div style="text-align:left; margin-bottom:12px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="saveAsCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="saveAsCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
@@ -343,7 +286,7 @@ EMMA,124cm / 23kg,130 size</textarea>
         <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 복사합니다. 복사 후 해당 품번으로 전환됩니다.</p>
         <div style="text-align:left; margin-bottom:12px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="copyToCode" placeholder="OD251ILS72" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="copyToCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
@@ -506,163 +449,52 @@ function checkRow(label, opts, active) {
 }
 
 function render() {
-    // 히어로
-    let heroHtml = '';
-    if (data.hero.length > 0) {
-        heroHtml = data.hero.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x1106';
-            return `<img class="main-hero" src="${src}" onclick="imgClick('hero',${i})">`;
-        }).join('');
-    } else {
-        heroHtml = `<img class="main-hero" src="https://placehold.co/800x1106" onclick="imgClick('hero',0)">`;
-    }
+    // ① 인트로 이미지
+    const introSrc = (data.hero[0] && data.hero[0].src) ? data.hero[0].src : 'https://placehold.co/800x600';
+    const introHtml = data.hero.length > 0
+        ? data.hero.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x600'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('hero',${i})">`)
+            .join('')
+        : `<img src="${introSrc}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('hero',0)">`;
 
-    // 소개 이미지
-    let introHtml = '';
-    if (data.intro.length > 0) {
-        introHtml = data.intro.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x451';
-            return `<img src="${src}" style="width:100%;cursor:pointer;" onclick="imgClick('intro',${i})">`;
-        }).join('');
-    } else {
-        introHtml = `<img src="https://placehold.co/800x451" style="width:100%;cursor:pointer;" onclick="imgClick('intro',0)">`;
-    }
+    // ② 모델컷 1
+    const mc1Html = data.intro.length > 0
+        ? data.intro.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x1106'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('intro',${i})">`)
+            .join('')
+        : `<img src="https://placehold.co/800x1106" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('intro',0)">`;
 
-    // 모델컷
-    let modelcutHtml = '';
-    if (data.modelcut.length > 0) {
-        modelcutHtml = data.modelcut.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x1106';
-            return `<img class="product-img" src="${src}" onclick="imgClick('modelcut',${i})">`;
-        }).join('');
-    } else {
-        modelcutHtml = `<img class="product-img" src="https://placehold.co/800x1106" onclick="imgClick('modelcut',0)">`;
-    }
+    // ③ 모델컷 2
+    const mc2Html = data.modelcut.length > 0
+        ? data.modelcut.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x1106'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('modelcut',${i})">`)
+            .join('')
+        : `<img src="https://placehold.co/800x1106" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('modelcut',0)">`;
 
-    // 디테일컷
-    let detailHtml = '';
-    if (data.detailcut.length > 0) {
-        detailHtml = data.detailcut.map((item, i) => {
-            const src = item.src || 'https://placehold.co/800x600';
-            return `<img class="detail-img" src="${src}" onclick="imgClick('detailcut',${i})">`;
-        }).join('');
-    } else {
-        detailHtml = `<img class="detail-img" src="https://placehold.co/800x600" onclick="imgClick('detailcut',0)">`;
-    }
+    // ④ 상세정보 (top)
+    const topHtml = data.detailcut.length > 0
+        ? data.detailcut.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x600'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('detailcut',${i})">`)
+            .join('')
+        : `<img src="https://placehold.co/800x600" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('detailcut',0)">`;
 
-    // 도식화
-    const sizeChartSrc = (data.sizechart[0] && data.sizechart[0].src) ? data.sizechart[0].src : 'https://placehold.co/620x637';
+    // ⑤ 디테일컷
+    const detailHtml = data.modelthumb.length > 0
+        ? data.modelthumb.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x600'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('modelthumb',${i})">`)
+            .join('')
+        : `<img src="https://placehold.co/800x600" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('modelthumb',0)">`;
 
-    // 모델 정보
-    const models = val('modelInfo').trim().split('\n').filter(l => l.trim()).map(l => l.split(',').map(s=>s.trim()));
-    const modelRow1 = models.slice(0,3).map((m,i) => {
-        if (m.length < 2) return '';
-        const src = (data.modelthumb[i] && data.modelthumb[i].src) ? data.modelthumb[i].src : 'https://placehold.co/400x400';
-        return `<div class="model-card"><div class="model-thumb" onclick="imgClick('modelthumb',${i})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
-    }).join('');
-    const modelRow2 = models.slice(3).map((m,i) => {
-        if (m.length < 2) return '';
-        const idx = i + 3;
-        const src = (data.modelthumb[idx] && data.modelthumb[idx].src) ? data.modelthumb[idx].src : 'https://placehold.co/400x400';
-        return `<div class="model-card"><div class="model-thumb light-bg" onclick="imgClick('modelthumb',${idx})"><img src="${src}"></div>
-            <div class="model-name">${m[0]}</div><div class="model-info">${m[1]}${m[2] ? '<br>'+m[2] : ''}</div></div>`;
-    }).join('');
-
-    // 테이블
-    const sizes = split('sizes');
-    const sizeH = sizes.map(s=>`<th>${s}</th>`).join('');
-    const ageR = split('ages').map(a=>`<td>${a}</td>`).join('');
-    const hgtR = split('heights').map(h=>`<td>${h}</td>`).join('');
-    const wgtR = split('weights').map(w=>`<td>${w}</td>`).join('');
-    const sh=split('shoulder'), ch=split('chest'), sl=split('sleeve'), tl=split('totalLength');
-    let pRows = '';
-    sizes.forEach((s,i) => { pRows += `<tr class="table-data-row"><td>${s}</td><td>${sh[i]||''}</td><td>${ch[i]||''}</td><td>${sl[i]||''}</td><td>${tl[i]||''}</td></tr>`; });
+    // ⑥ 하단 정보 (bottom-info)
+    const bottomHtml = data.sizechart.length > 0
+        ? data.sizechart.map((item, i) => `<img src="${item.src || 'https://placehold.co/800x400'}" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('sizechart',${i})">`)
+            .join('')
+        : `<img src="https://placehold.co/800x400" style="width:100%;display:block;cursor:pointer;" onclick="imgClick('sizechart',0)">`;
 
     document.getElementById('preview-container').innerHTML = `
-    <section class="intro-section">
-        ${heroHtml}
-        <div class="intro-text-area">
-            <div style="display:flex;flex-direction:column;gap:50px;align-items:center;">
-                <div class="eng-title">${val('engTitle')}</div>
-                <div class="kor-title">${val('korTitle')}</div>
-            </div>
-            <div class="intro-images">${introHtml}</div>
-            <div class="description-box">
-                <p>${nl2br(val('desc1'))}</p>
-                <p>${nl2br(val('desc2'))}</p>
-            </div>
-        </div>
-        <div class="product-images">${modelcutHtml}</div>
-        <div class="color-notice">제품의 실제 색상은 모델컷보다는 하단 상품컷 이미지에 가까우며,<br>사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="detail-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Detail Point</h3>
-        <p class="section-subtitle" style="font-weight:400;">제품 상세 특징</p>
-        <div class="fabric-box"><span class="label">FABRIC</span><br><span class="value">${nl2br(val('fabricInfo'))}</span></div>
-        <div class="detail-images">${detailHtml}</div>
-        <div class="detail-notice">
-            <div class="detail-notice-title">디테일한 특징을 확인해주세요!</div>
-            <div class="detail-notice-desc">사용자의 모니터 환경과 해상도에 따라 실제 색상과 차이가 있을 수 있습니다.</div>
-        </div>
-    </section>
-
-    <section class="kc-section">
-        <div class="kc-badge-box">
-            <img src="https://placehold.co/94x143">
-            <div class="kc-text"><div class="kc-title">KC안전인증마크</div>
-            <div class="kc-desc">FITI시험연구원의 품질안전검사 합격 판정을 받아<br>믿을 수 있는 제품입니다.</div></div>
-        </div>
-    </section>
-
-    <section class="model-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Model Size</h3>
-        <p class="section-subtitle" style="font-weight:500;">모델 사이즈</p>
-        <div class="model-row">${modelRow1}</div>
-        <div class="model-row">${modelRow2}</div>
-    </section>
-
-    <section class="size-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Size Guide</h3>
-        <p class="section-subtitle" style="font-weight:500;">사이즈 가이드</p>
-        <div class="table-container"><table><thead><tr><th>사이즈</th>${sizeH}</tr></thead><tbody>
-            <tr class="table-data-row"><td><span style="font-size:26px;">나이</span><br><span style="font-size:24px;">(세)</span></td>${ageR}</tr>
-            <tr class="table-data-row"><td><span style="font-size:26px;">신장</span><br><span style="font-size:24px;">(cm)</span></td>${hgtR}</tr>
-            <tr class="table-data-row"><td><span style="font-size:26px;">체중</span><br><span style="font-size:24px;">(kg)</span></td>${wgtR}</tr>
-        </tbody></table></div>
-        <div class="size-notice">평균 사이즈표로 체형과 제품에 따라 다소 차이가 있을 수 있습니다.</div>
-    </section>
-
-    <section class="size-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Product Size</h3>
-        <p class="section-subtitle" style="font-weight:500;">상품 사이즈</p>
-        <div class="size-illustration" onclick="imgClick('sizechart',0)"><img src="${sizeChartSrc}"></div>
-        <div class="unit-text">(cm)</div>
-        <div class="table-container"><table><thead><tr><th>치수항목</th><th>어깨너비</th><th>가슴둘레</th><th>소매길이</th><th>총장</th></tr></thead>
-        <tbody>${pRows}</tbody></table></div>
-    </section>
-
-    <section class="check-section">
-        <div class="section-divider"></div>
-        <h3 class="section-title">Check Point</h3>
-        <p class="section-subtitle" style="font-weight:500;">체크 포인트</p>
-        <div class="check-area">
-            ${checkRow('핏',['크게나옴','정사이즈','작게나옴'], val('checkFit'))}
-            ${checkRow('두께감',['두꺼움','적당함','얇음'], val('checkThick'))}
-            ${checkRow('신축성',['좋음','약간있음','없음'], val('checkStretch'))}
-            ${checkRow('안감',['있음','부분안감','없음'], val('checkLining'))}
-        </div>
-    </section>
-
-    <section style="width:100%; display:flex; flex-direction:column; align-items:center;">
-        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg" style="width:100%; height:auto; display:block;">
-        <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg" style="width:100%; height:auto; display:block;">
-    </section>`;
+    <div style="width:100%; background:#ffffff; display:flex; flex-direction:column; align-items:flex-start;">
+        ${introHtml}
+        ${mc1Html}
+        ${mc2Html}
+        ${topHtml}
+        ${detailHtml}
+        ${bottomHtml}
+    </div>`;
 }
 
 function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
@@ -803,11 +635,12 @@ async function startDownload() {
     btn.classList.remove('loading'); btn.textContent = '📥 이미지로 다운로드 (PNG)';
 }
 
-// 초기: 각 섹션에 기본 1개 슬롯
+// 초기: 각 섹션에 기본 1개 슬롯 (OH Sample 구조: intro/mc1/mc2/top/detail/bottom)
 addSlot('hero');
 addSlot('intro');
 addSlot('modelcut');
 addSlot('detailcut');
+addSlot('modelthumb');
 addSlot('sizechart');
 render();
 
@@ -836,11 +669,11 @@ function updateCodeDisplay() {
     }
 }
 
-function getStorageKey(code) { return `odp_detail_${code}`; }
+function getStorageKey(code) { return `oh_detail_${code}`; }
 
 function getColorsForCode(code) {
     // localStorage에서 해당 품번의 모든 컬러 키를 찾음
-    const prefix = `odp_detail_${code}_`;
+    const prefix = `oh_detail_${code}_`;
     const colors = [];
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -894,24 +727,7 @@ function saveCurrentWork() {
     const formData = {
         ts: (versions[idx] && versions[idx].ts) || getTimestamp(),
         savedAt: savedAt,
-        engTitle: val('engTitle'),
-        korTitle: val('korTitle'),
-        desc1: val('desc1'),
-        desc2: val('desc2'),
-        fabricInfo: val('fabricInfo'),
-        modelInfo: val('modelInfo'),
-        sizes: val('sizes'),
-        ages: val('ages'),
-        heights: val('heights'),
-        weights: val('weights'),
-        shoulder: val('shoulder'),
-        chest: val('chest'),
-        sleeve: val('sleeve'),
-        totalLength: val('totalLength'),
-        checkFit: val('checkFit'),
-        checkThick: val('checkThick'),
-        checkStretch: val('checkStretch'),
-        checkLining: val('checkLining')
+        korTitle: fullCode
     };
     if (idx >= 0 && idx < versions.length) {
         versions[idx] = formData;
@@ -1029,24 +845,7 @@ function executeCopyTo() {
 }
 
 function loadVersion(versionData) {
-    document.getElementById('engTitle').value = versionData.engTitle || '';
-    document.getElementById('korTitle').value = versionData.korTitle || '';
-    document.getElementById('desc1').value = versionData.desc1 || '';
-    document.getElementById('desc2').value = versionData.desc2 || '';
-    document.getElementById('fabricInfo').value = versionData.fabricInfo || '';
-    document.getElementById('modelInfo').value = versionData.modelInfo || '';
-    document.getElementById('sizes').value = versionData.sizes || '';
-    document.getElementById('ages').value = versionData.ages || '';
-    document.getElementById('heights').value = versionData.heights || '';
-    document.getElementById('weights').value = versionData.weights || '';
-    document.getElementById('shoulder').value = versionData.shoulder || '';
-    document.getElementById('chest').value = versionData.chest || '';
-    document.getElementById('sleeve').value = versionData.sleeve || '';
-    document.getElementById('totalLength').value = versionData.totalLength || '';
-    document.getElementById('checkFit').value = versionData.checkFit || '0';
-    document.getElementById('checkThick').value = versionData.checkThick || '0';
-    document.getElementById('checkStretch').value = versionData.checkStretch || '2';
-    document.getElementById('checkLining').value = versionData.checkLining || '0';
+    // OH는 이미지 기반이므로 텍스트 필드 없음 - korTitle만 참고용으로 저장
     render();
 }
 
@@ -1187,29 +986,26 @@ document.getElementById('lookupCode').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') doLookup();
 });
 
-// 테스트용 더미 데이터 (OD251ILS72)
+// 테스트용 더미 데이터 (OH12345678)
 (function seedTestData() {
-    const testCode = 'OD251ILS72';
-    // BLK 컬러
+    const testCode = 'OH12345678';
     const blkKey = getStorageKey(`${testCode}_BLK`);
     if (!localStorage.getItem(blkKey)) {
         localStorage.setItem(blkKey, JSON.stringify([
-            { ts: '2505201430', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (블랙)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n3oz 패딩을 퀼팅한 원단의 안감으로\n보온성이 좋습니다.', fabricInfo: '겉감 : 나일론 100%\n안감 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' },
-            { ts: '2505221015', engTitle: 'Kids Varsity Jacket V2', korTitle: '키즈 바시티 자켓 블랙 (수정)', desc1: '아웃도어 프로덕츠 키즈의\n인기 바시티 점퍼입니다.', desc2: '넉넉한 핏으로 제작되었습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '1', checkThick: '1', checkStretch: '1', checkLining: '0' }
+            { ts: '2505201430', korTitle: '오디너리홀리데이 셔츠 (블랙)', savedAt: '' },
+            { ts: '2505221015', korTitle: '오디너리홀리데이 셔츠 블랙 (수정)', savedAt: '' }
         ]));
     }
-    // NVY 컬러
-    const nvyKey = getStorageKey(`${testCode}_NVY`);
-    if (!localStorage.getItem(nvyKey)) {
-        localStorage.setItem(nvyKey, JSON.stringify([
-            { ts: '2505251100', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (네이비)', desc1: '아웃도어 프로덕츠 키즈의\n대표 바시티 패딩 점퍼입니다.', desc2: '여유 있는 핏으로 제작되었으며,\n보온성이 좋습니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size\nALEXANDER,126cm / 25.5kg,130 size\nEMMA,124cm / 23kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+    const sblKey = getStorageKey(`${testCode}_SBL`);
+    if (!localStorage.getItem(sblKey)) {
+        localStorage.setItem(sblKey, JSON.stringify([
+            { ts: '2505251100', korTitle: '오디너리홀리데이 셔츠 (스카이블루)', savedAt: '' }
         ]));
     }
-    // TTL (전체컬러)
     const ttlKey = getStorageKey(`${testCode}_TTL`);
     if (!localStorage.getItem(ttlKey)) {
         localStorage.setItem(ttlKey, JSON.stringify([
-            { ts: '2505241800', engTitle: 'Kids Varsity Jacket', korTitle: '키즈 바시티 자켓 (전체)', desc1: '아웃도어 프로덕츠 키즈의\n바시티 패딩 점퍼입니다.', desc2: '전체 컬러 통합 상세입니다.', fabricInfo: '겉감, 배색 : 나일론 100%\n안감, 충전재 : 폴리에스터 100%', modelInfo: 'DANIELLE,127cm / 23kg,130 size\nRUBY,126cm / 23kg,130 size\nRUKA,130cm / 24kg,130 size', sizes: '120,130,145,155,165', ages: '5-6,7-8,9-10,11-12,13-14', heights: '110-120,120-130,130-140,140-150,150-160', weights: '20-25,25-30,30-35,35-40,40-45', shoulder: '44.1,46.5,49.1,51.7,54.3', chest: '95,100,105.5,111,116.5', sleeve: '40.1,43.5,46.8,50.1,53.4', totalLength: '48.5,52.5,56.5,60.5,64.5', checkFit: '0', checkThick: '0', checkStretch: '2', checkLining: '0' }
+            { ts: '2505241800', korTitle: '오디너리홀리데이 셔츠 (전체)', savedAt: '' }
         ]));
     }
 })();
@@ -1250,7 +1046,7 @@ function renderFolderTabs() {
 }
 
 function getAllItems() {
-    const prefix = 'odp_detail_';
+    const prefix = 'oh_detail_';
     const items = [];
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
