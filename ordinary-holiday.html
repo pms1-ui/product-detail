@@ -134,8 +134,8 @@
         <input type="text" id="brandCollab" value="VONDUTCH COLLABORATION" oninput="render()">
     </div>
 
-    <div class="sec-head"><span>③ 모델컷 1</span><button class="btn-add" onclick="addSlot('model1Img')">+</button></div>
-    <div class="file-slots" id="model1ImgSlots"></div>
+    <div class="sec-head"><span>③ 모델컷</span><button class="btn-add" onclick="addSlot('modelcutImg')">+</button></div>
+    <div class="file-slots" id="modelcutImgSlots"></div>
 
     <div class="sec-head"><span>④ 모델 캡션</span></div>
     <div class="input-group">
@@ -144,13 +144,10 @@
 MODEL : 173cm 51kg / S size</textarea>
     </div>
 
-    <div class="sec-head"><span>⑤ 모델컷 2</span><button class="btn-add" onclick="addSlot('model2Img')">+</button></div>
-    <div class="file-slots" id="model2ImgSlots"></div>
-
-    <div class="sec-head"><span>⑥ 상품 메인 이미지</span><button class="btn-add" onclick="addSlot('mainImg')">+</button></div>
+    <div class="sec-head"><span>⑤ 상품 메인 이미지</span><button class="btn-add" onclick="addSlot('mainImg')">+</button></div>
     <div class="file-slots" id="mainImgSlots"></div>
 
-    <div class="sec-head"><span>⑦ 상품명</span></div>
+    <div class="sec-head"><span>⑥ 상품명</span></div>
     <div class="input-group">
         <label>영문 상품명</label>
         <input type="text" id="engTitle" value="LACE TRIMMING SHIRTS" oninput="render()">
@@ -165,25 +162,26 @@ MODEL : 173cm 51kg / S size</textarea>
 넥라인 레이스가 포인트가 되며, 소매와 바스트 셔링 디테일로 페미닌한 무드의 아이템입니다.</textarea>
     </div>
 
-    <div class="sec-head"><span>⑧ 컬러 (최대 4개)</span><button class="btn-add" onclick="addColor()" id="btnAddColor">+</button></div>
+    <div class="sec-head"><span>⑦ 컬러 (최대 4개)</span><button class="btn-add" onclick="addColor()" id="btnAddColor">+</button></div>
     <div id="colorItems"></div>
 
-    <div class="sec-head"><span>⑨ 디테일 이미지 1~2</span><button class="btn-add" onclick="addSlot('detailTop')">+</button></div>
-    <div class="file-slots" id="detailTopSlots"></div>
+    <div class="sec-head"><span>⑧ 디테일 이미지</span><button class="btn-add" onclick="addSlot('detailImg')">+</button></div>
+    <div class="file-slots" id="detailImgSlots"></div>
 
-    <div class="sec-head"><span>⑩ 디테일 상세 이미지</span><button class="btn-add" onclick="addSlot('detailSub')">+</button></div>
-    <div class="file-slots" id="detailSubSlots"></div>
-
-    <div class="sec-head"><span>⑪ 원단 정보</span></div>
+    <div class="sec-head"><span>⑨ 원단 정보</span></div>
     <div class="input-group">
         <label>원단 구성 텍스트</label>
         <input type="text" id="fabricText" value="POLYESTER 72%  |  COTTON 24%  |  LINEN 4%" oninput="render()">
     </div>
 
-    <div class="sec-head"><span>⑫ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('fabricImg')">+</button></div>
+    <div class="sec-head"><span>⑩ FABRIC INFO 이미지</span><button class="btn-add" onclick="addSlot('fabricImg')">+</button></div>
     <div class="file-slots" id="fabricImgSlots"></div>
 
-    <div class="sec-head"><span>⑬ SIZE INFO</span></div>
+    <div class="sec-head"><span>⑪ SIZE GUIDE</span></div>
+    <div class="input-group">
+        <label>섹션 타이틀</label>
+        <input type="text" id="sizeGuideTitle" value="SIZE GUIDE" oninput="render()">
+    </div>
     <div class="input-group">
         <label>사이즈 항목 (쉼표 구분, 예: S,M)</label>
         <input type="text" id="sizes" value="S,M" oninput="render()">
@@ -600,11 +598,13 @@ MODEL : 173cm 51kg / S size</textarea>
 const data = {
     // SHIRT
     introImg: [],
-    model1Img: [],
-    model2Img: [],
+    modelcutImg: [],  // 모델컷 통합 (구 model1Img + model2Img)
+    model1Img: [],    // 하위호환 유지
+    model2Img: [],    // 하위호환 유지
     mainImg: [],
-    detailTop: [],
-    detailSub: [],
+    detailImg: [],    // 디테일 통합 (구 detailTop + detailSub)
+    detailTop: [],    // 하위호환 유지
+    detailSub: [],    // 하위호환 유지
     fabricImg: [],
     colors: [],
     // BAG
@@ -630,11 +630,11 @@ const data = {
 let bagSectionOrder = ['intro','notice','pd','detail','detailNotice','model','fabric','size','product','washing','info'];
 
 // SHIRT 섹션 순서
-let shirtSectionOrder = ['intro','model1','caption','model2','top','detail','fabric','size','product','washing','info'];
+let shirtSectionOrder = ['intro','modelcut','top','detail','fabric','size','product','washing','info'];
 const SHIRT_SECTION_LABELS = {
-    intro: '인트로 이미지', model1: '모델컷 1', caption: '모델 캡션',
-    model2: '모델컷 2', top: '상품 정보 (TOP)', detail: 'DETAIL',
-    fabric: 'FABRIC INFO', size: 'SIZE INFO', product: 'PRODUCT INFO',
+    intro: '인트로 이미지', modelcut: '모델컷 (캡션 포함)',
+    top: '상품 정보 (TOP)', detail: 'DETAIL',
+    fabric: 'FABRIC INFO', size: 'SIZE GUIDE', product: 'PRODUCT INFO',
     washing: 'WASHING TIP', info: '상품정보 제공고시'
 };
 
@@ -1063,14 +1063,14 @@ function sizeTable() {
             <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${chest[i] || ''}</td>
             <td style="padding:25px 0;font-weight:400;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">${sleeve[i] || ''}</td>
         </tr>`).join('');
-    return `<table style="width:870px;border-collapse:collapse;font-size:28px;">
+    return `<table style="width:100%;border-collapse:collapse;font-size:28px;">
         <thead>
             <tr style="border-bottom:1px solid #292929;">
-                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;">SIZE(cm)</th>
-                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">a. 총장</th>
-                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">b. 어깨</th>
-                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">c. 가슴단면</th>
-                <th style="width:174px;padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">d. 소매</th>
+                <th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;">SIZE(cm)</th>
+                <th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">a. 총장</th>
+                <th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">b. 어깨</th>
+                <th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">c. 가슴단면</th>
+                <th style="padding:25px 0;font-weight:700;color:#292929;text-align:center;border-left:1px solid #e0e0e0;">d. 소매</th>
             </tr>
         </thead>
         <tbody>${rows}</tbody>
@@ -1166,37 +1166,38 @@ function renderBag() {
 }
 function render() {
     if (currentCategory === 'bag') { renderBag(); return; }
-    // INTRO 섹션
+
+    // INTRO 이미지 (업로드된 것만 표시)
     const introImgsHtml = data.introImg.length > 0
         ? data.introImg.map((item, i) => item.src
             ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('introImg',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
-            : `<div style="width:800px;background:#292929;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('introImg',${i})"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`
+            : ''
           ).join('')
-        : `<div style="width:800px;background:#292929;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('introImg',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
+        : '';
 
-    // MODEL 01 섹션
-    const model1Html = data.model1Img.length > 0
-        ? data.model1Img.map((item, i) => item.src
-            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('model1Img',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
-            : `<div style="width:800px;background:${i===0?'#292929':'#868686'};display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('model1Img',${i})"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`
+    // 모델컷 통합 (업로드된 것만 표시)
+    const modelcutHtml = data.modelcutImg.length > 0
+        ? data.modelcutImg.map((item, i) => item.src
+            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('modelcutImg',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
+            : ''
           ).join('')
-        : `<div style="width:800px;background:#292929;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('model1Img',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
+        : '';
 
-    // MODEL 02 섹션
-    const model2Html = data.model2Img.length > 0
-        ? data.model2Img.map((item, i) => item.src
-            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('model2Img',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
-            : `<div style="width:800px;background:#868686;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('model2Img',${i})"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`
+    // 메인 상품 이미지 (업로드된 것만 표시)
+    const mainImgHtml = data.mainImg.length > 0
+        ? data.mainImg.map((item, i) => item.src
+            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('mainImg',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
+            : ''
           ).join('')
-        : `<div style="width:800px;background:#868686;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('model2Img',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
+        : '';
 
-    // 메인 상품 이미지
-    const mainImgSrc = data.mainImg[0] && data.mainImg[0].src ? data.mainImg[0].src : '';
-    const mainImgHtml = mainImgSrc
-        ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('mainImg',0)"><img src="${mainImgSrc}" style="width:800px;display:block;height:auto;"></div>`
-        : `<div style="width:800px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('mainImg',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
-
-    // COLOR 섹션
+    // 디테일 이미지 통합 (업로드된 것만 표시)
+    const detailImgHtml = data.detailImg.length > 0
+        ? data.detailImg.map((item, i) => item.src
+            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('detailImg',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
+            : ''
+          ).join('')
+        : '';
     let colorHtml = '';
     if (data.colors.length > 0) {
         const rows = [];
@@ -1216,27 +1217,11 @@ function render() {
         colorHtml = `<div style="color:#aaa;font-size:14px;text-align:center;padding:40px 0;">컬러를 추가하세요 (최대 4개)</div>`;
     }
 
-    // DETAIL TOP 이미지 (1~2장)
-    const detailTopHtml = data.detailTop.length > 0
-        ? data.detailTop.slice(0, 2).map((item, i) => item.src
-            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('detailTop',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
-            : `<div style="width:800px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('detailTop',${i})"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`
-          ).join('')
-        : `<div style="width:800px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:80px 0;" onclick="imgClick('detailTop',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
-
-    // DETAIL SUB 이미지들
-    const detailSubHtml = data.detailSub.length > 0
-        ? data.detailSub.map((item, i) => item.src
-            ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('detailSub',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
-            : `<div style="width:800px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:60px 0;" onclick="imgClick('detailSub',${i})"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`
-          ).join('')
-        : `<div style="width:800px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:60px 0;" onclick="imgClick('detailSub',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
-
-    // FABRIC INFO 이미지
+    // FABRIC INFO 이미지 (업로드된 것만 표시)
     const fabricImgSrc = data.fabricImg[0] && data.fabricImg[0].src ? data.fabricImg[0].src : '';
     const fabricImgHtml = fabricImgSrc
         ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('fabricImg',0)"><img src="${fabricImgSrc}" style="width:800px;display:block;height:auto;"></div>`
-        : `<div style="width:800px;background:#898989;display:flex;align-items:center;justify-content:center;cursor:pointer;min-height:200px;padding:60px 0;" onclick="imgClick('fabricImg',0)"><span style="color:#fff;font-size:16px;font-weight:500;">800 x n</span></div>`;
+        : '';
 
     // WASHING TIP (data.washItems 기반)
     const washHtml = data.washItems.map((w, i) => `
@@ -1255,6 +1240,8 @@ function render() {
             </div>
         </div>`).join('');
 
+    const sizeGuideTitle = val('sizeGuideTitle') || 'SIZE GUIDE';
+
     // SHIRT 섹션 HTML 맵
     const shirtSectionHtmlMap = {
         intro: `<div style="width:800px;background:#fff;">
@@ -1262,16 +1249,15 @@ function render() {
     <span style="position:absolute;left:40px;top:152px;font-size:23px;font-weight:500;color:#292929;">${val('collectionName') || '2026 summer COLLCECTION'}</span>
     <span style="position:absolute;left:600px;top:135px;width:160px;font-size:23px;font-weight:400;color:#292929;line-height:1.3;">${(val('brandCollab') || 'VONDUTCH COLLABORATION').replace(/\s+/g, '<br>')}</span>
 </div>
-<div style="width:800px;">${introImgsHtml}</div>
+${introImgsHtml}
 </div>`,
-        model1: `<div style="width:800px;">${model1Html}</div>`,
-        caption: `<div style="position:relative;width:800px;height:224px;">
-    <div style="position:absolute;left:140px;top:70px;width:520px;font-size:31px;font-weight:700;color:#292929;line-height:1.4;">${nl2br(val('modelCaption'))}</div>
+        modelcut: `<div style="width:800px;">${modelcutHtml}</div>
+<div style="position:relative;width:800px;min-height:224px;padding:70px 140px;">
+    <div style="font-size:31px;font-weight:700;color:#292929;line-height:1.4;">${nl2br(val('modelCaption'))}</div>
 </div>`,
-        model2: `<div style="width:800px;">${model2Html}</div>`,
-        top: `<div style="width:800px;background:#fff;padding:200px 40px 0;">
-    <div style="display:flex;gap:40px;align-items:flex-start;">${mainImgHtml}</div>
-    <div style="padding:0 60px;margin-top:60px;">
+        top: `<div style="width:800px;background:#fff;padding:200px 0 0;">
+${mainImgHtml}
+    <div style="padding:60px 60px 0;">
         <div style="text-align:center;">
             <div style="font-size:28px;font-weight:500;color:#939393;margin-bottom:12px;">${val('engTitle') || 'LACE TRIMMING SHIRTS'}</div>
             <div style="font-size:60px;font-weight:700;color:#292929;margin-bottom:40px;">${val('korTitle') || '레이스 트리밍 셔츠'}</div>
@@ -1285,12 +1271,9 @@ function render() {
     </div>
 </div>`,
         detail: `<div style="width:800px;background:#fff;padding:100px 0 0;">
-    ${detailTopHtml}
-    <div style="padding:150px 0 0;">
-        <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">DETAIL</div>
-        <div style="display:flex;flex-direction:column;gap:0;">${detailSubHtml}</div>
-        <div style="font-size:26px;font-weight:400;color:#292929;margin-top:40px;padding:0 40px;">*제품 색상은 사용자의 모니터 해상도에 따라 다소 차이가 있을 수 있습니다.<br>*제품의 디테일컷이 실제 제품과 가장 흡사합니다.</div>
-    </div>
+    <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">DETAIL</div>
+    ${detailImgHtml}
+    <div style="font-size:26px;font-weight:400;color:#292929;margin-top:40px;padding:0 40px;">*제품 색상은 모니터 해상도에 따라 다소 차이가 있을 수 있습니다.<br>*제품의 디테일컷이 실제 제품과 가장 흡사합니다.</div>
 </div>`,
         fabric: `<div style="width:800px;background:#fff;padding:100px 0 0;">
     <div style="text-align:center;font-size:46px;font-weight:700;color:#292929;margin-bottom:50px;">FABRIC INFO</div>
@@ -1298,14 +1281,14 @@ function render() {
     <div style="text-align:center;font-size:30px;font-weight:700;color:#292929;margin-top:30px;">${val('fabricText') || 'POLYESTER 72%  |  COTTON 24%  |  LINEN 4%'}</div>
 </div>`,
         size: `<div style="width:800px;background:#fff;padding:200px 0 0;">
-    <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">SIZE INFO</div>
-    <div style="padding:0 40px;margin-bottom:40px;">
-        <div style="width:720px;height:609px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;border:1px solid #e0e0e0;border-radius:4px;">
-            <div style="font-size:20px;color:#999;text-align:center;">[ 도식화 이미지 영역 ]<br><span style="font-size:14px;">a.총장 / b.어깨 / c.가슴단면 / d.소매</span></div>
-        </div>
-    </div>
+    <div style="text-align:center;font-size:45px;font-weight:700;color:#292929;margin-bottom:50px;">${sizeGuideTitle}</div>
     <div style="padding:0 40px;">
-        ${sizeTable()}
+        <div style="overflow-x:auto;">
+            ${sizeTable()}
+        </div>
+        <div style="font-size:23px;font-weight:400;color:#292929;margin-top:20px;text-align:center;">*실측은 측정 방법에 따라 1~3cm 정도의 오차가 있을 수 있습니다.</div>
+    </div>
+</div>`,
         <div style="font-size:23px;font-weight:400;color:#292929;margin-top:20px;text-align:center;">*실측은 측정 방법에 따라 1~3cm 정도의 오차가 있을 수 있습니다.</div>
     </div>
 </div>`,
@@ -2025,11 +2008,9 @@ function openVersionForEdit(fullCode, verIdx) {
 
 // ===== 초기화 =====
 addSlot('introImg');
-addSlot('model1Img');
-addSlot('model2Img');
+addSlot('modelcutImg');
 addSlot('mainImg');
-addSlot('detailTop');
-addSlot('detailSub');
+addSlot('detailImg');
 addSlot('fabricImg');
 addSlot('bagIntro');
 addSlot('bagTop');
