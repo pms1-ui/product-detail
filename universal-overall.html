@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 상세 페이지 생성기</title>
+    <title>상품 상세 페이지 생성기 - 유니버셜오버롤</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -93,8 +93,8 @@
     </div>
     <div class="brand-tabs">
         <a class="brand-tab" href="/outdoorproducts.html">아웃도어프로덕츠</a>
-        <a class="brand-tab active" href="/ordinary-holiday.html">오디너리홀리데이</a>
-        <a class="brand-tab" href="/universal-overall.html">유니버셜오버롤</a>
+        <a class="brand-tab" href="/ordinary-holiday.html">오디너리홀리데이</a>
+        <a class="brand-tab active" href="/universal-overall.html">유니버셜오버롤</a>
     </div>
 </div>
 <div class="app-layout">
@@ -111,7 +111,7 @@
     <div style="margin-bottom:20px; padding:16px; background:#0a1628; border:1px solid #1e3a5f; border-radius:8px;">
         <label style="display:block; color:#ccd6f6; font-size:12px; font-weight:600; margin-bottom:8px;">품번 조회</label>
         <div style="display:flex; gap:8px;">
-            <input type="text" id="lookupCode" placeholder="OH12345678" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="lookupCode" placeholder="UO12345678" style="flex:1; padding:10px 12px; background:#16213e; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
             <button onclick="doLookup()" style="padding:10px 16px; background:#14297E; color:white; border:none; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; white-space:nowrap;">조회</button>
         </div>
         <div id="lookupStatus" style="margin-top:8px; font-size:11px; color:#64748b;">품번을 입력하고 조회하세요.</div>
@@ -450,7 +450,7 @@
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="uploadCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
+            <input type="text" id="uploadCode" placeholder="UO12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); updateUploadPreview()">
         </div>
         <div style="text-align:left; margin-bottom:16px; display:flex; gap:12px;">
             <div style="flex:1;">
@@ -507,7 +507,7 @@
         <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 저장합니다. (현재 품번도 유지됨)</p>
         <div style="text-align:left; margin-bottom:12px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="saveAsCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="saveAsCode" placeholder="UO12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
@@ -528,7 +528,7 @@
         <p style="color:#8892b0; font-size:12px; margin-bottom:16px;">현재 작업 내용을 다른 품번+컬러로 복사합니다. 복사 후 해당 품번으로 전환됩니다.</p>
         <div style="text-align:left; margin-bottom:12px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">품번</label>
-            <input type="text" id="copyToCode" placeholder="OH12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <input type="text" id="copyToCode" placeholder="UO12345678" style="width:100%; padding:9px 12px; background:#0a1628; border:1px solid #1e3a5f; border-radius:6px; color:#e6f1ff; font-size:13px; outline:none; text-transform:uppercase;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
         </div>
         <div style="text-align:left; margin-bottom:16px;">
             <label style="display:block; color:#8892b0; font-size:11px; margin-bottom:4px;">컬러코드 (3글자)</label>
@@ -1534,7 +1534,7 @@ async function executeUpload() {
     if (count < 1 || count > 10) { alert('분할 수는 1~10 사이로 입력하세요.'); return; }
     hideUploadModal();
 
-    const baseUrl = 'https://img.childy.kr/img/oh2026/oh26_SP';
+    const baseUrl = 'https://img.childy.kr/img/uo2026/uo26_SP';
     const ver = currentVersion || 1;
     let imageUrls = [];
     for (let i = 0; i < count; i++) {
@@ -1621,10 +1621,10 @@ function updateCodeDisplay() {
     }
 }
 
-function getStorageKey(code) { return `oh_detail_${code}`; }
+function getStorageKey(code) { return `uo_detail_${code}`; }
 
 function getColorsForCode(code) {
-    const prefix = `oh_detail_${code}_`;
+    const prefix = `uo_detail_${code}_`;
     const colors = [];
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -1944,9 +1944,9 @@ document.getElementById('lookupCode').addEventListener('keydown', function(e) {
 document.getElementById('uploadCode').addEventListener('input', updateUploadPreview);
 document.getElementById('uploadCropCount').addEventListener('input', updateUploadPreview);
 
-// ===== 더미 데이터 (OH12345678_SBL) =====
+// ===== 더미 데이터 (UO12345678_SBL) =====
 (function seedTestData() {
-    const testCode = 'OH12345678';
+    const testCode = 'UO12345678';
     const sblKey = getStorageKey(`${testCode}_SBL`);
     if (!localStorage.getItem(sblKey)) {
         localStorage.setItem(sblKey, JSON.stringify([{
@@ -2028,7 +2028,7 @@ function renderFolderTabs() {
 }
 
 function getAllItems() {
-    const prefix = 'oh_detail_';
+    const prefix = 'uo_detail_';
     const items = [];
     for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
