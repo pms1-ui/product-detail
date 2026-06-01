@@ -1158,6 +1158,7 @@ function sizeTable() {
 
 // ===== RENDER =====
 function renderBag() {
+    try {
     const mkImgs = (key, defBg) => data[key].length > 0
         ? data[key].map((item,i) => item.src
             ? `<div style="width:800px;overflow:hidden;cursor:pointer;" onclick="imgClick('${key}',${i})"><img src="${item.src}" style="width:800px;display:block;height:auto;"></div>`
@@ -1242,8 +1243,12 @@ function renderBag() {
         '<div style="width:800px;background:#fff;font-family:\'Apple SD Gothic Neo\',\'Noto Sans KR\',sans-serif;">' +
         bagSectionOrder.filter(sec => !bagHiddenSections.has(sec)).map(sec => sectionHtmlMap[sec] || '').join('') +
         '</div>';
+    } catch(e) {
+        console.error('renderBag error:', e);
+    }
 }
 function render() {
+    try {
     if (currentCategory === 'bag') { renderBag(); return; }
 
     // INTRO 이미지 (업로드된 것만 표시)
@@ -1462,6 +1467,9 @@ ${mainImgHtml}
         '<div style="width:800px;background:#fff;font-family:\'Apple SD Gothic Neo\',\'Noto Sans KR\',sans-serif;">' +
         shirtSectionOrder.filter(sec => !shirtHiddenSections.has(sec)).map(sec => shirtSectionHtmlMap[sec] || '').join('') +
         '</div>';
+    } catch(e) {
+        console.error('render error:', e);
+    }
 }
 
 // ===== 모달 / 다운로드 =====

@@ -577,6 +577,7 @@ function checkRow(label, opts, active) {
 }
 
 function render() {
+    try {
     // 히어로
     let heroHtml = '';
     if (data.hero.length > 0) {
@@ -731,6 +732,9 @@ function render() {
         <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg" style="width:100%; height:auto; display:block;">
         <img src="https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg" style="width:100%; height:auto; display:block;">
     </section>`;
+    } catch(e) {
+        console.error('render error:', e);
+    }
 }
 
 function showCropModal() { document.getElementById('cropModal').classList.add('show'); }
