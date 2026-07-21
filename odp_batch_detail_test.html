@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ODP 26FA 전체 검증 (73개)</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+
+#topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: #1a1a2e; color: #fff; padding: 10px 20px;
+  display: flex; align-items: center; gap: 20px; font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+#topbar .brand { font-weight: 700; font-size: 14px; white-space: nowrap; }
+#topbar .stats { display: flex; gap: 14px; }
+#topbar .stat { padding: 3px 10px; border-radius: 4px; font-weight: 600; }
+#topbar .stat.total { background: #334; }
+#topbar .stat.ok { background: #1b5e20; }
+#topbar .stat.fail { background: #b71c1c; }
+
+/* Tabs */
+#tabs {
+  position: fixed; top: 44px; left: 0; right: 0; z-index: 998;
+  background: #0f3460; display: flex; padding: 0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+#tabs button {
+  flex: 1; padding: 10px 20px; border: none; background: transparent;
+  color: #8ab4f8; font-size: 13px; font-weight: 600; cursor: pointer;
+  border-bottom: 3px solid transparent; transition: all .2s;
+}
+#tabs button:hover { background: rgba(255,255,255,.05); }
+#tabs button.active { color: #fff; border-bottom-color: #4fc3f7; background: rgba(255,255,255,.08); }
+
+#failPanel {
+  display: none; position: fixed; top: 84px; left: 0; right: 0; z-index: 997;
+  background: #fff3f3; border-bottom: 2px solid #e53935; padding: 8px 20px;
+  max-height: 180px; overflow-y: auto; font-size: 12px;
+}
+#failPanel.show { display: block; }
+#failPanel h4 { color: #c62828; margin-bottom: 4px; }
+#failPanel .fail-item { color: #555; padding: 2px 0; word-break: break-all; }
+
+#sidebar {
+  position: fixed; top: 84px; left: 0; width: 180px; bottom: 0;
+  background: #16213e; overflow-y: auto; padding: 10px 0; z-index: 900;
+}
+#sidebar a {
+  display: block; padding: 6px 12px; color: #aab; text-decoration: none;
+  font-size: 11px; border-left: 3px solid transparent; transition: all .15s;
+}
+#sidebar a:hover, #sidebar a.active { background: #1a1a2e; color: #fff; border-left-color: #4fc3f7; }
+#sidebar .group-label { color: #4fc3f7; font-weight: 700; font-size: 11px; padding: 10px 12px 4px; }
+
+#main {
+  margin-left: 180px; padding: 100px 20px 40px; max-width: 1060px;
+}
+.card {
+  background: #fff; border-radius: 8px; margin-bottom: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08); overflow: hidden;
+}
+.card-header {
+  padding: 10px 16px; background: #263238; color: #fff; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; font-size: 13px;
+  user-select: none;
+}
+.card-header:hover { background: #37474f; }
+.card-header .pum { font-weight: 700; color: #80cbc4; }
+.card-header .color { color: #ffcc80; margin-left: 8px; }
+.card-header .name { color: #cfd8dc; margin-left: 8px; }
+.card-header .toggle { font-size: 16px; transition: transform .2s; }
+.card-header.collapsed .toggle { transform: rotate(-90deg); }
+.card-body { padding: 10px; text-align: center; }
+.card-body.hidden { display: none; }
+.card-body img {
+  display: block; width: 100%; max-width: 860px; margin: 0 auto;
+  border: 3px solid #e0e0e0; transition: border-color .3s;
+}
+.card-body img.loaded { border-color: #4caf50; }
+.card-body img.error { border-color: #f44336; }
+
+/* Thumbnail tab styles */
+.thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; padding: 10px; }
+.thumb-item { text-align: center; }
+.thumb-item img { width: 100%; max-width: 200px; border: 3px solid #e0e0e0; border-radius: 4px; }
+.thumb-item img.loaded { border-color: #4caf50; }
+.thumb-item img.error { border-color: #f44336; }
+.thumb-item .label { font-size: 11px; color: #666; margin-top: 4px; word-break: break-all; }
+.thumb-size-label { font-weight: 700; font-size: 12px; color: #1a1a2e; padding: 8px 0 4px; border-bottom: 1px solid #ddd; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">ODP 26FA 전체 검증 (73개) v3</div>
+  <div class="stats">
+    <span class="stat total">전체: <span id="cntTotal">0</span></span>
+    <span class="stat ok">성공: <span id="cntOk">0</span></span>
+    <span class="stat fail">실패: <span id="cntFail">0</span></span>
+  </div>
+</div>
+
+<div id="tabs">
+  <button class="active" data-tab="detail">상품상세 검증</button>
+  <button data-tab="thumb">썸네일 검증</button>
+</div>
+
+<div id="failPanel"><h4>❌ 실패 URL 목록</h4><div id="failList"></div></div>
+
+<div id="sidebar"></div>
+<div id="main"></div>
+
+<script>
+const BASE = 'https://img.childy.kr/img/outdoor2026/odp26_FA/';
+
+const COMMON_IMGS = [
+  'https://img.childy.kr/img/outdoor2023/notice/top_notice_odp.jpg',
+  'https://img.childy.kr/img/outdoor2026/odp26_FA/2026FA_intro.jpg',
+  'https://img.childy.kr/img/outdoor2024/odp24_FA/kc.jpg',
+  'https://img.childy.kr/img/outdoor2026/odp26_FA/modelspec.jpg',
+  'https://img.childy.kr/img/outdoor2024/odp24_FA/size.jpg',
+  'https://img.childy.kr/img/outdoor2024/odp24_SP/washingtip.jpg',
+  'https://img.childy.kr/img/outdoor2024/odp24_SP/delivery.jpg'
+];
+
+const MODEL_C_SET = new Set([
+  'OD263ILS01_NVY','OD263ILS02_LKH','OD263ILS03_BLU','OD263ILS04_CML',
+  'OD263ILS04_MLG','OD263ILS05_IVY','OD263ILS06_LGN','OD263ILC07_BRN',
+  'OD263ILS08_MUS','OD263IHD01_MWH','OD263IHD01_KHA','OD263ILS09_OTM',
+  'OD263IMM02_OTM','OD263IMM03_MLG','OD263IZM04_BLU','OD263IHD05_MLG',
+  'OD263IHD05_BLK','OD263IZM71_OTM','OD263IMM72_BRN','OD263IHZ73_PNK',
+  'OD263IHD75_OTM','OD263BPT01_MLG','OD263BPT01_OTM','OD263BPT01_NVY',
+  'OD263BPT01_BLK','OD263BPT02_LBE','OD263BPT03_MWH','OD263BPT03_MLG',
+  'OD263BPT03_BLK','OD263BPT04_OTM','OD263BPT04_BLK','OD263BPT05_BEI',
+  'OD263BPT05_CHC','OD263BPT06_BRN','OD263BPT06_KHA','OD263BPT06_BLK',
+  'OD263ISH06_BRN','OD263ISH06_NVY',
+  'OD263BPT07_CRE','OD263BPT73_PNK','OD263BPT74_MLG','OD263BPT74_OTM'
+]);
+
+const PRODUCTS = [
+  ['OD263ILS01','BLU','멀티 스트라이프 티셔츠'],
+  ['OD263ILS01','NVY','멀티 스트라이프 티셔츠'],
+  ['OD263ILS01','BRN','멀티 스트라이프 티셔츠'],
+  ['OD263ILS02','LKH','단스트라이프 티셔츠'],
+  ['OD263ILS02','DGY','단스트라이프 티셔츠'],
+  ['OD263ILS03','BLU','배색 레이어드 티셔츠'],
+  ['OD263ILS03','BLK','배색 레이어드 티셔츠'],
+  ['OD263ILS04','OWH','소매 그래픽 티셔츠'],
+  ['OD263ILS04','CML','소매 그래픽 티셔츠'],
+  ['OD263ILS04','MLG','소매 그래픽 티셔츠'],
+  ['OD263ILS04','BLK','소매 그래픽 티셔츠'],
+  ['OD263ILS05','IVY','전면 그래픽 티셔츠'],
+  ['OD263ILS05','BLU','전면 그래픽 티셔츠'],
+  ['OD263ILS05','BLK','전면 그래픽 티셔츠'],
+  ['OD263ILS06','MWH','백 그래픽 티셔츠'],
+  ['OD263ILS06','LGN','백 그래픽 티셔츠'],
+  ['OD263ILS06','DGY','백 그래픽 티셔츠'],
+  ['OD263ILC07','BLU','멀티스트라이프 럭비티셔츠'],
+  ['OD263ILC07','BRN','멀티스트라이프 럭비티셔츠'],
+  ['OD263ILS08','MUS','라글란 그래픽 티셔츠'],
+  ['OD263ILS08','DGY','라글란 그래픽 티셔츠'],
+  ['OD263ILS08','BLK','라글란 그래픽 티셔츠'],
+  ['OD263IHD01','MWH','레이어드 후드티'],
+  ['OD263IHD01','KHA','레이어드 후드티'],
+  ['OD263ILS09','OTM','베이직 긴팔티'],
+  ['OD263ILS09','MLG','베이직 긴팔티'],
+  ['OD263ILS09','GRY','베이직 긴팔티'],
+  ['OD263IMM02','OTM','전면 그래픽 맨투맨'],
+  ['OD263IMM02','LBL','전면 그래픽 맨투맨'],
+  ['OD263IMM02','BLK','전면 그래픽 맨투맨'],
+  ['OD263IMM03','CRE','백 그래픽 맨투맨'],
+  ['OD263IMM03','NVY','백 그래픽 맨투맨'],
+  ['OD263IMM03','MLG','백 그래픽 맨투맨'],
+  ['OD263IZM04','BLU','컬러블록 반집맨투맨'],
+  ['OD263IZM04','PNK','컬러블록 반집맨투맨'],
+  ['OD263IZM04','BLK','컬러블록 반집맨투맨'],
+  ['OD263IHD05','MLG','전면 그래픽 후드티'],
+  ['OD263IHD05','BLK','전면 그래픽 후드티'],
+  ['OD263ISH06','BRN','플란넬 체크셔츠'],
+  ['OD263ISH06','NVY','플란넬 체크셔츠'],
+  ['OD263BPT01','MLG','에센셜 조거팬츠'],
+  ['OD263BPT01','OTM','에센셜 조거팬츠'],
+  ['OD263BPT01','NVY','에센셜 조거팬츠'],
+  ['OD263BPT01','BLK','에센셜 조거팬츠'],
+  ['OD263BPT02','LBE','커브드 저지팬츠'],
+  ['OD263BPT02','MLG','커브드 저지팬츠'],
+  ['OD263BPT02','BLK','커브드 저지팬츠'],
+  ['OD263BPT03','MWH','카고 조거 저지팬츠'],
+  ['OD263BPT03','MLG','카고 조거 저지팬츠'],
+  ['OD263BPT03','BLK','카고 조거 저지팬츠'],
+  ['OD263BPT04','OTM','배색 스트레이트 저지팬츠'],
+  ['OD263BPT04','BRN','배색 스트레이트 저지팬츠'],
+  ['OD263BPT04','BLK','배색 스트레이트 저지팬츠'],
+  ['OD263BPT05','BEI','세미배기 우븐팬츠'],
+  ['OD263BPT05','CHC','세미배기 우븐팬츠'],
+  ['OD263BPT06','BRN','카고 우븐팬츠'],
+  ['OD263BPT06','KHA','카고 우븐팬츠'],
+  ['OD263BPT06','BLK','카고 우븐팬츠'],
+  ['OD263BPT07','CRE','코듀로이 카고팬츠'],
+  ['OD263BPT07','DBL','코듀로이 카고팬츠'],
+  ['OD263BPT07','BLK','코듀로이 카고팬츠'],
+  ['OD263IZM71','MLG','여아 반집 맨투맨'],
+  ['OD263IZM71','OTM','여아 반집 맨투맨'],
+  ['OD263IMM72','BRN','여아 그래픽 크롭 맨투맨'],
+  ['OD263IMM72','BLK','여아 그래픽 크롭 맨투맨'],
+  ['OD263IHZ73','PNK','여아 벨로아 후드집업'],
+  ['OD263IHZ73','MLG','여아 벨로아 후드집업'],
+  ['OD263BPT73','PNK','여아 벨로아 팬츠'],
+  ['OD263BPT73','MLG','여아 벨로아 팬츠'],
+  ['OD263IHD75','MLG','여아 크롭 후드티셔츠'],
+  ['OD263IHD75','OTM','여아 크롭 후드티셔츠'],
+  ['OD263BPT74','MLG','여아 백그래픽 저지팬츠'],
+  ['OD263BPT74','OTM','여아 백그래픽 저지팬츠']
+];
+
+// 썸네일 사이즈 목록
+const THUMB_SIZES = ['ERP','750','800','960','1000','1500','ERP_ALL'];
+
+let totalImgs = 0, okImgs = 0, failImgs = 0;
+let currentTab = 'detail';
+
+function updateStats() {
+  document.getElementById('cntTotal').textContent = totalImgs;
+  document.getElementById('cntOk').textContent = okImgs;
+  document.getElementById('cntFail').textContent = failImgs;
+}
+
+function addFail(url) {
+  const panel = document.getElementById('failPanel');
+  panel.classList.add('show');
+  const div = document.createElement('div');
+  div.className = 'fail-item';
+  div.textContent = url;
+  document.getElementById('failList').appendChild(div);
+}
+
+function resetStats() {
+  totalImgs = 0; okImgs = 0; failImgs = 0;
+  updateStats();
+  document.getElementById('failList').innerHTML = '';
+  document.getElementById('failPanel').classList.remove('show');
+}
+
+function getDetailImages(pum, color) {
+  const key = pum + '_' + color;
+  const hasModelC = MODEL_C_SET.has(key);
+  const imgs = [];
+  imgs.push(COMMON_IMGS[0]);
+  imgs.push(COMMON_IMGS[1]);
+  imgs.push(BASE + pum + '_txt.jpg');
+  if (hasModelC) imgs.push(BASE + key + '_model_c.jpg');
+  imgs.push(BASE + key + '_model.jpg');
+  imgs.push(BASE + key + '_prd.jpg');
+  imgs.push(BASE + key + '_detail.jpg');
+  imgs.push(COMMON_IMGS[2]);
+  imgs.push(COMMON_IMGS[3]);
+  imgs.push(COMMON_IMGS[4]);
+  imgs.push(BASE + pum + '_size.jpg');
+  imgs.push(BASE + pum + '_check.jpg');
+  imgs.push(COMMON_IMGS[5]);
+  imgs.push(COMMON_IMGS[6]);
+  return imgs;
+}
+
+function getThumbUrls(pum, color) {
+  const key = pum + '_' + color;
+  const THUMB_BASE = 'https://img.childy.kr/img/outdoor2026/odp26_FA/thum/';
+  return {
+    'ERP': THUMB_BASE + key + '.jpg',
+    '750': THUMB_BASE + key + '_750.jpg',
+    '800': THUMB_BASE + key + '_800.jpg',
+    '960': THUMB_BASE + key + '_960.jpg',
+    '1000': THUMB_BASE + key + '_1000.jpg',
+    '1500': THUMB_BASE + key + '_1500.jpg',
+    'ERP_ALL': THUMB_BASE + pum + '_ALL.jpg'
+  };
+}
+
+function createImg(src) {
+  totalImgs++;
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = src.split('/').pop();
+  img.onload = function() { this.classList.add('loaded'); okImgs++; updateStats(); };
+  img.onerror = function() { this.classList.add('error'); failImgs++; updateStats(); addFail(src); };
+  return img;
+}
+
+function buildDetailTab() {
+  const main = document.getElementById('main');
+  const sidebar = document.getElementById('sidebar');
+  main.innerHTML = '';
+  sidebar.innerHTML = '';
+  resetStats();
+  const seenPum = new Set();
+
+  PRODUCTS.forEach((p, idx) => {
+    const [pum, color, name] = p;
+    const cardId = `card-${idx}`;
+    const isFirstOfGroup = !seenPum.has(pum);
+    if (isFirstOfGroup) seenPum.add(pum);
+    const collapsed = !isFirstOfGroup;
+
+    if (isFirstOfGroup) {
+      const label = document.createElement('div');
+      label.className = 'group-label';
+      label.textContent = pum;
+      sidebar.appendChild(label);
+    }
+    const link = document.createElement('a');
+    link.href = '#' + cardId;
+    link.textContent = `${color} - ${name}`;
+    sidebar.appendChild(link);
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = cardId;
+
+    const header = document.createElement('div');
+    header.className = 'card-header' + (collapsed ? ' collapsed' : '');
+    const hasModelC = MODEL_C_SET.has(pum + '_' + color);
+    const badge = hasModelC ? ' <span style="color:#ff9800;font-size:10px;">[model_c]</span>' : '';
+    header.innerHTML = `<div><span class="pum">${pum}</span><span class="color">${color}</span><span class="name">${name}</span>${badge}</div><span class="toggle">▼</span>`;
+
+    const body = document.createElement('div');
+    body.className = 'card-body' + (collapsed ? ' hidden' : '');
+
+    getDetailImages(pum, color).forEach(src => body.appendChild(createImg(src)));
+
+    header.addEventListener('click', () => {
+      body.classList.toggle('hidden');
+      header.classList.toggle('collapsed');
+    });
+
+    card.appendChild(header);
+    card.appendChild(body);
+    main.appendChild(card);
+  });
+  updateStats();
+}
+
+function buildThumbTab() {
+  const main = document.getElementById('main');
+  const sidebar = document.getElementById('sidebar');
+  main.innerHTML = '';
+  sidebar.innerHTML = '';
+  resetStats();
+  const seenPum = new Set();
+
+  PRODUCTS.forEach((p, idx) => {
+    const [pum, color, name] = p;
+    const cardId = `thumb-${idx}`;
+    const isFirstOfGroup = !seenPum.has(pum);
+    if (isFirstOfGroup) seenPum.add(pum);
+    const collapsed = !isFirstOfGroup;
+
+    if (isFirstOfGroup) {
+      const label = document.createElement('div');
+      label.className = 'group-label';
+      label.textContent = pum;
+      sidebar.appendChild(label);
+    }
+    const link = document.createElement('a');
+    link.href = '#' + cardId;
+    link.textContent = `${color} - ${name}`;
+    sidebar.appendChild(link);
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = cardId;
+
+    const header = document.createElement('div');
+    header.className = 'card-header' + (collapsed ? ' collapsed' : '');
+    header.innerHTML = `<div><span class="pum">${pum}</span><span class="color">${color}</span><span class="name">${name}</span></div><span class="toggle">▼</span>`;
+
+    const body = document.createElement('div');
+    body.className = 'card-body' + (collapsed ? ' hidden' : '');
+
+    const thumbs = getThumbUrls(pum, color);
+    const grid = document.createElement('div');
+    grid.className = 'thumb-grid';
+
+    THUMB_SIZES.forEach(size => {
+      const item = document.createElement('div');
+      item.className = 'thumb-item';
+      const sizeLabel = document.createElement('div');
+      sizeLabel.className = 'thumb-size-label';
+      sizeLabel.textContent = size;
+      item.appendChild(sizeLabel);
+      item.appendChild(createImg(thumbs[size]));
+      const label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = thumbs[size].split('/').pop();
+      item.appendChild(label);
+      grid.appendChild(item);
+    });
+
+    body.appendChild(grid);
+
+    header.addEventListener('click', () => {
+      body.classList.toggle('hidden');
+      header.classList.toggle('collapsed');
+    });
+
+    card.appendChild(header);
+    card.appendChild(body);
+    main.appendChild(card);
+  });
+  updateStats();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('#tabs button').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tab);
+  });
+  if (tab === 'detail') buildDetailTab();
+  else buildThumbTab();
+}
+
+// Tab click handlers
+document.querySelectorAll('#tabs button').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// Init
+buildDetailTab();
+</script>
+</body>
+</html>
