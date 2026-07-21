@@ -1,97 +1,111 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 상세 페이지 생성기 - 사용 가이드</title>
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-        body { background: #0f172a; color: #e2e8f0; min-height: 100vh; }
-        .container { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
-        h1 { font-size: 32px; font-weight: 700; color: white; margin-bottom: 8px; }
-        .subtitle { font-size: 15px; color: #94a3b8; margin-bottom: 48px; }
-        h2 { font-size: 20px; font-weight: 600; color: #e2e8f0; margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 1px solid #1e293b; }
-        p, li { font-size: 14px; line-height: 1.8; color: #cbd5e1; }
-        ul, ol { padding-left: 20px; margin-bottom: 16px; }
-        li { margin-bottom: 6px; }
-        .brand-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 24px 0; }
-        .brand-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #1e293b; border: 1px solid #334155; border-radius: 10px; text-decoration: none; transition: all 0.15s; }
-        .brand-card:hover { border-color: #4a9eff; background: #1e3a5f; transform: translateY(-2px); }
-        .brand-card .brand-name { font-size: 14px; font-weight: 600; color: white; }
-        .brand-card .brand-arrow { margin-left: auto; color: #64748b; font-size: 18px; }
-        .brand-card:hover .brand-arrow { color: #4a9eff; }
-        .step-box { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px 24px; margin-bottom: 12px; }
-        .step-box .step-num { display: inline-block; width: 24px; height: 24px; background: #14297E; color: white; border-radius: 50%; font-size: 12px; font-weight: 700; text-align: center; line-height: 24px; margin-right: 10px; }
-        .step-box .step-title { font-size: 14px; font-weight: 600; color: white; display: inline; }
-        .step-box p { font-size: 13px; color: #94a3b8; margin-top: 8px; padding-left: 34px; }
-        .tip { background: #172554; border: 1px solid #1e3a5f; border-radius: 8px; padding: 16px 20px; margin: 20px 0; }
-        .tip strong { color: #60a5fa; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .tip p { margin-top: 6px; font-size: 13px; color: #93c5fd; }
-        .footer { margin-top: 60px; padding-top: 24px; border-top: 1px solid #1e293b; text-align: center; color: #64748b; font-size: 12px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 검증 시스템</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0f0f23;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: 14px;
+  color: #888;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+}
+.card {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-decoration: none;
+  color: #fff;
+  transition: all .2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.card:hover {
+  background: #16213e;
+  border-color: #4fc3f7;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(79,195,247,.15);
+}
+.card .badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  width: fit-content;
+}
+.card .badge.season { background: #1b5e20; color: #a5d6a7; }
+.card .badge.brand { background: #4a148c; color: #ce93d8; }
+.card h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.card p {
+  font-size: 13px;
+  color: #999;
+  line-height: 1.5;
+}
+.card .meta {
+  font-size: 11px;
+  color: #666;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid #2a2a4a;
+}
+footer {
+  margin-top: 60px;
+  font-size: 12px;
+  color: #555;
+}
+</style>
 </head>
 <body>
-<div class="container">
-    <h1>상품 상세 페이지 생성기</h1>
-    <p class="subtitle">브랜드별 상품 상세 이미지를 빠르게 제작하고 다운로드할 수 있는 도구입니다.</p>
 
-    <h2>브랜드 선택</h2>
-    <p>아래에서 작업할 브랜드를 선택하세요.</p>
-    <div class="brand-grid">
-        <a class="brand-card" href="/outdoorproducts.html">
-            <span class="brand-name">아웃도어프로덕츠</span>
-            <span class="brand-arrow">→</span>
-        </a>
-        <a class="brand-card" href="/ordinary-holiday.html">
-            <span class="brand-name">오디너리홀리데이</span>
-            <span class="brand-arrow">→</span>
-        </a>
-        <a class="brand-card" href="/universal-overall.html">
-            <span class="brand-name">유니버셜오버롤</span>
-            <span class="brand-arrow">→</span>
-        </a>
-    </div>
-
-    <h2>사용 방법</h2>
-    <div class="step-box">
-        <span class="step-num">1</span>
-        <span class="step-title">브랜드 선택</span>
-        <p>상단 탭 또는 위 카드에서 작업할 브랜드를 선택합니다.</p>
-    </div>
-    <div class="step-box">
-        <span class="step-num">2</span>
-        <span class="step-title">좌측 패널에서 내용 입력</span>
-        <p>상품명, 설명, 사이즈 정보 등을 입력합니다. + 버튼으로 이미지 슬롯을 추가하고 파일을 선택하세요.</p>
-    </div>
-    <div class="step-box">
-        <span class="step-num">3</span>
-        <span class="step-title">우측 미리보기에서 이미지 클릭</span>
-        <p>우측 미리보기의 이미지를 직접 클릭해서 교체할 수도 있습니다.</p>
-    </div>
-    <div class="step-box">
-        <span class="step-num">4</span>
-        <span class="step-title">이미지 다운로드</span>
-        <p>우측 하단 다운로드 버튼을 클릭합니다. 분할 수를 입력하면 여러 장으로 나눠 ZIP 파일로 받을 수 있습니다.</p>
-    </div>
-
-    <h2>주요 기능</h2>
-    <ul>
-        <li><strong>실시간 미리보기</strong> — 입력 즉시 우측에 반영됩니다.</li>
-        <li><strong>이미지 추가/삭제</strong> — + 버튼으로 슬롯 추가, 호버 시 ✕ 버튼으로 삭제합니다.</li>
-        <li><strong>이미지 직접 클릭 교체</strong> — 우측 미리보기의 이미지를 클릭하면 바로 파일 선택이 열립니다.</li>
-        <li><strong>분할 다운로드</strong> — 세로가 긴 상세 이미지를 1~10장으로 나눠 다운로드합니다. 2장 이상이면 ZIP으로 제공됩니다.</li>
-        <li><strong>브랜드별 양식</strong> — 각 브랜드의 상세 페이지 디자인 양식에 맞게 개별 페이지가 제공됩니다.</li>
-    </ul>
-
-    <div class="tip">
-        <strong>💡 Tip</strong>
-        <p>이미지는 가로 800px 기준으로 렌더링됩니다. 세로 길이는 원본 비율에 따라 자동 조절되므로, 가로 800px 이상의 이미지를 사용하면 가장 선명한 결과물을 얻을 수 있습니다.</p>
-    </div>
-
-    <div class="footer">
-        상품 상세 페이지 생성기 v1.0
-    </div>
+<div class="header">
+  <h1>상품 검증 시스템</h1>
+  <p>상품상세 · 썸네일 이미지 검증 도구 모음</p>
 </div>
+
+<div class="grid">
+  <a href="odp_batch_detail_test.html" class="card">
+    <span class="badge season">26 F/W</span>
+    <h2>ODP 26FA 전체 검증</h2>
+    <p>아웃도어프로덕츠 2026 F/W 시즌 73개 상품<br>상품상세 + 썸네일(ERP/750/800/960/1000/1500) 검증</p>
+    <div class="meta">73개 상품 · 상품상세 / 썸네일 탭</div>
+  </a>
+</div>
+
+<footer>msparkman.netlify.app</footer>
+
 </body>
 </html>
