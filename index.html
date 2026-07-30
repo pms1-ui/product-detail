@@ -1,111 +1,2213 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>상품 검증 시스템</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #0f0f23;
-  color: #fff;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-}
-.header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-.header h1 {
-  font-size: 28px;
-  font-weight: 700;
-  color: #e0e0e0;
-  margin-bottom: 8px;
-}
-.header p {
-  font-size: 14px;
-  color: #888;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  max-width: 900px;
-  width: 100%;
-}
-.card {
-  background: #1a1a2e;
-  border: 1px solid #2a2a4a;
-  border-radius: 12px;
-  padding: 28px 24px;
-  text-decoration: none;
-  color: #fff;
-  transition: all .2s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.card:hover {
-  background: #16213e;
-  border-color: #4fc3f7;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(79,195,247,.15);
-}
-.card .badge {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  width: fit-content;
-}
-.card .badge.season { background: #1b5e20; color: #a5d6a7; }
-.card .badge.brand { background: #4a148c; color: #ce93d8; }
-.card h2 {
-  font-size: 18px;
-  font-weight: 700;
-}
-.card p {
-  font-size: 13px;
-  color: #999;
-  line-height: 1.5;
-}
-.card .meta {
-  font-size: 11px;
-  color: #666;
-  margin-top: auto;
-  padding-top: 8px;
-  border-top: 1px solid #2a2a4a;
-}
-footer {
-  margin-top: 60px;
-  font-size: 12px;
-  color: #555;
-}
-</style>
-</head>
-<body>
-
-<div class="header">
-  <h1>상품 검증 시스템</h1>
-  <p>상품상세 · 썸네일 이미지 검증 도구 모음</p>
+<center>
+<!-- intro -->
+<img src="intro.png" style="width:890px; display:block; margin:0 auto;">
+<!-- button (톡채널 친구추가) -->
+<a href="https://pf.kakao.com/_xhHxcQG"><img src="button.png" style="width:890px; display:block; margin:0 auto;"></a>
+<!-- 방송혜택 -->
+<img src="방송혜택.png" style="width:890px; display:block; margin:0 auto;">
+<!-- 상품 리스트 (2열 x 44행 = 88개) -->
+<table style="width:890px; border-spacing:0; border-collapse:collapse; margin:0 auto;">
+<tbody>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product01.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 01</span>
 </div>
-
-<div class="grid">
-  <a href="odp_batch_detail_test.html" class="card">
-    <span class="badge season">26 F/W</span>
-    <h2>ODP 26FA 전체 검증</h2>
-    <p>아웃도어프로덕츠 2026 F/W 시즌 73개 상품<br>상품상세 + 썸네일(ERP/750/800/960/1000/1500) 검증</p>
-    <div class="meta">73개 상품 · 상품상세 / 썸네일 탭</div>
-  </a>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
 </div>
-
-<footer>msparkman.netlify.app</footer>
-
-</body>
-</html>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에센셜 파노라마 반팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">IVY, YEL, BLU, BLK, MWH</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product02.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 02</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에센셜 파노라마 반팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">IVY, YEL, BLU, BLK, MWH</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product03.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 03</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">클래식 마운틴 후디</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">79,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">62%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product04.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 04</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">울트라라이트 다운 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">NVY, BLK, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">129,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">59,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">57,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product05.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 05</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레킹 카고팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">KHK, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">69,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product06.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 06</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 반팔티 화이트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">39,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">59%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product07.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 07</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">파노라마 반팔티</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">OLV, BLK, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">17,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">15,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product08.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 08</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">고어텍스 레인자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLU, BLK, YEL</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">159,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">79,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">77,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product09.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 09</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">플리스 집업 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">CRM, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">65,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product10.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 10</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스트레치 조거팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">CHR, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">55,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">24,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">22,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product11.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 11</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 바디백</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">21,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">19,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product12.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 12</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">메쉬 캡</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">29,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">13,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">11,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product13.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 13</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레일 러닝화</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">RED/BLK, GRY/WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">119,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">59,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">57,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product14.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 14</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">UV 프로텍션 셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">LBL, WHT, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">52,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">23,400원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">21,400원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product15.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 15</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">컨버터블 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BGE, KHK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">72,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">32,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">30,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product16.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 16</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">소프트쉘 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">DGR, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">98,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">46,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">44,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product17.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 17</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">쿨맥스 양말 3팩</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">MIX</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">18,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">9,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">7,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product18.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 18</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 버킷햇</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BGE, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">32,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">14,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">12,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product19.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 19</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">방수 등산배낭 30L</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">ORG, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">43,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">41,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product20.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 20</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">기능성 이너웨어</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">28,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">12,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">10,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product21.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 21</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 숏팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">NVY, BLK, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product22.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 22</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">쿨링 크루넥 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, GRY, BLK, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">32,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">13,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">11,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product23.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 23</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">립스탑 윈드자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">39,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">37,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product24.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 24</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스트레치 클라이밍 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BLK, BGE</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">78,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product25.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 25</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에어메쉬 러닝 반팔티</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT, MNT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">14,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">12,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product26.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 26</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">하이킹 미드컷 부츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BRN, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">139,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">69,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">67,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product27.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 27</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">래쉬가드 상의</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product28.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 28</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">래쉬가드 하의</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">18,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">16,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product29.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 29</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">캠핑 플리스 블랭킷</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BGE, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">55,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">26,400원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">24,400원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product30.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 30</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 패커블 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, RED</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">79,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,300원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,300원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product31.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 31</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레킹 폴로 셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, NVY, BLK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">48,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">21,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">19,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product32.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 32</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">멀티 포켓 조끼</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">KHK, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">65,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">30,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">28,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product33.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 33</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스포츠 선글라스</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">39,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product34.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 34</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">드라이핏 긴팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">18,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">16,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product35.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 35</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">워터프루프 트레킹화</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK/RED, GRY/GRN</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">129,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">64,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">62,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product36.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 36</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 다운 베스트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">39,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">37,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product37.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 37</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 스커트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, BGE</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">52,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">23,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">21,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product38.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 38</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">테크 카고 조거</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, CHR, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">68,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">31,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">29,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product39.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 39</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">하이넥 바람막이</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, YEL</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">75,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product40.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 40</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아이스 쿨링 넥워머</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">15,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">7,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">5,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product41.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 41</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">프리미엄 등산 스틱</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, RED, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">22,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">20,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product42.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 42</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">멀티 스포츠 백팩 20L</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">69,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">33,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">31,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product43.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 43</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 레깅스</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">38,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">17,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">15,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product44.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 44</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">방한 기모 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, CHR</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">59,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">27,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">25,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product45.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 45</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에센셜 파노라마 반팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">IVY, YEL, BLU, BLK, MWH</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product46.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 46</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에센셜 파노라마 반팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">IVY, YEL, BLU, BLK, MWH</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product47.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 47</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">클래식 마운틴 후디</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">79,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">62%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product48.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 48</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">울트라라이트 다운 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">NVY, BLK, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">129,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">59,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">57,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product49.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 49</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레킹 카고팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">KHK, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">69,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product50.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 50</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 반팔티 화이트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">39,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">59%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">15,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">13,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product51.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 51</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">파노라마 반팔티</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">OLV, BLK, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">17,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">15,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product52.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 52</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">고어텍스 레인자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLU, BLK, YEL</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">159,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">79,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">77,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product53.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 53</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">플리스 집업 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">CRM, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">65,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">29,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">27,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product54.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 54</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스트레치 조거팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">CHR, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">55,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">24,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">22,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product55.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 55</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 바디백</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">21,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">19,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product56.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 56</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">메쉬 캡</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">29,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">13,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">11,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product57.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 57</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레일 러닝화</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">RED/BLK, GRY/WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">119,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">59,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">57,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product58.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 58</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">UV 프로텍션 셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">LBL, WHT, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">52,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">23,400원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">21,400원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product59.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 59</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">컨버터블 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BGE, KHK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">72,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">32,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">30,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product60.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 60</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">소프트쉘 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">DGR, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">98,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">46,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">44,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product61.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 61</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">쿨맥스 양말 3팩</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">MIX</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">18,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">9,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">7,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product62.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 62</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 버킷햇</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BGE, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">32,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">14,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">12,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product63.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 63</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">방수 등산배낭 30L</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">ORG, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">43,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">41,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product64.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 64</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">기능성 이너웨어</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">28,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">12,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">10,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product65.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 65</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 숏팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">NVY, BLK, KHK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product66.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 66</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">쿨링 크루넥 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, GRY, BLK, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">32,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">13,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">11,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product67.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 67</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">립스탑 윈드자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">39,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">37,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product68.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 68</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스트레치 클라이밍 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BLK, BGE</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">78,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product69.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 69</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">에어메쉬 러닝 반팔티</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT, MNT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">35,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">57%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">14,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">12,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product70.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 70</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">하이킹 미드컷 부츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BRN, BLK, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">139,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">69,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">67,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product71.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 71</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">래쉬가드 상의</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product72.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 72</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">래쉬가드 하의</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">18,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">16,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product73.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 73</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">캠핑 플리스 블랭킷</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">GRY, BGE, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">55,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">26,400원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">24,400원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product74.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 74</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 패커블 자켓</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, RED</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">79,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,300원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,300원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product75.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 75</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">트레킹 폴로 셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">WHT, NVY, BLK</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">48,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">56%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">21,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">19,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product76.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 76</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">멀티 포켓 조끼</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">KHK, BLK, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">65,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">30,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">28,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product77.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 77</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">스포츠 선글라스</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, WHT</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">39,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">19,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">17,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product78.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 78</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">드라이핏 긴팔 티셔츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, WHT, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">42,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">18,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">16,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product79.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 79</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">워터프루프 트레킹화</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK/RED, GRY/GRN</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">129,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">50%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">64,500원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">62,500원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product80.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 80</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">경량 다운 베스트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">89,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">39,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">37,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product81.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 81</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 스커트</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, BGE</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">52,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">23,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">21,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product82.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 82</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">테크 카고 조거</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, CHR, OLV</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">68,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">31,900원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">29,900원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product83.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 83</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">하이넥 바람막이</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, YEL</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">75,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">36,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">34,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product84.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 84</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아이스 쿨링 넥워머</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">15,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">53%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">7,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">5,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product85.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 85</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">프리미엄 등산 스틱</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, RED, BLU</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">45,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">51%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">22,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">20,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product86.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 86</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">멀티 스포츠 백팩 20L</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, GRY, NVY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">69,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">52%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">33,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">31,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+<tr>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product87.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 87</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">아웃도어 레깅스</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, GRY</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">38,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">55%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">17,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">15,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+<td style="width:445px; padding:4px; vertical-align:top;">
+<a href="https://your-hosting.com/detail/product88.html" style="text-decoration:none; color:inherit;">
+<div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
+<div style="background:#1e3a8a; padding:22px 0; text-align:center;">
+<span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#fff;">구성 88</span>
+</div>
+<div style="background:#f5f6f8; height:240px; border-bottom:1px solid #e5e7eb; display:flex; align-items:center; justify-content:center;">
+<img src="4_상품한개예시.jpeg" style="max-width:100%; max-height:100%; object-fit:contain;">
+</div>
+<div style="padding:24px;">
+<p style="font-family:Pretendard,sans-serif; font-size:24px; font-weight:800; color:#111827; margin:0 0 6px 0; line-height:1.3;">방한 기모 팬츠</p>
+<p style="font-family:Pretendard,sans-serif; font-size:16px; color:#8e939d; margin:0 0 16px 0;">BLK, NVY, CHR</p>
+<div style="border-top:1px solid #e5e7eb; padding-top:14px;">
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+<div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:20px; color:#8e939d; text-decoration:line-through;">59,000원</span></div>
+<span style="font-family:Pretendard,sans-serif; font-size:32px; font-weight:800; color:#e80000;">54%</span>
+</div>
+<div style="margin-bottom:6px;"><span style="display:inline-block; background:#1e3a8a; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">톡딜가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#1e3a8a;">27,000원</span></div>
+<div><span style="display:inline-block; background:#dc2626; color:#fff; font-size:14px; font-weight:700; padding:5px 10px; border-radius:6px; margin-right:8px;">쿠폰가</span><span style="font-family:Pretendard,sans-serif; font-size:28px; font-weight:800; color:#dc2626;">25,000원</span></div>
+</div>
+</div>
+</div>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
