@@ -1,0 +1,11 @@
+{
+  "name": "kakao-store-image-gen",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "openai": "^4.0.0",
+    "sharp": "^0.35.3",
+    "xlsx": "^0.18.5"
+  }
+}
