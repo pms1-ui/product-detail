@@ -67,21 +67,21 @@
 ### 8. 최종 HTML 생성 (output-for-kakao.html)
 - 카카오 편집기 호환 형태로 생성
 - 구조:
-```html
-<!-- 상단 이미지 -->
-<p align="center"><img src="...01_main_visual.jpg"></p>
-<p align="center"><a href="플친링크"><img src="...02_kakao_channel.jpg"></a></p>
-<p align="center"><img src="...03_broadcast_benefits.jpg"></p>
-<p align="center"><img src="...04_tokdeal_benefits.jpg"></p>
+```
+&lt;!-- 상단 이미지 --&gt;
+&lt;p align="center"&gt;&lt;img src="...01_main_visual.jpg"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;a href="플친링크"&gt;&lt;img src="...02_kakao_channel.jpg"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;img src="...03_broadcast_benefits.jpg"&gt;&lt;/p&gt;
+&lt;p align="center"&gt;&lt;img src="...04_tokdeal_benefits.jpg"&gt;&lt;/p&gt;
 
-<!-- 상품 카드 (2열 테이블, 이미지 기반) -->
-<table><tbody>
-<tr>
-  <td><a href="상세페이지URL"><img src="...cards/01.jpg"></a></td>
-  <td><a href="상세페이지URL"><img src="...cards/02.jpg"></a></td>
-</tr>
+&lt;!-- 상품 카드 (2열 테이블, 이미지 기반) --&gt;
+&lt;table&gt;&lt;tbody&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;a href="상세URL"&gt;&lt;img src="...cards/01.jpg"&gt;&lt;/a&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;a href="상세URL"&gt;&lt;img src="...cards/02.jpg"&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
 ...
-</tbody></table>
+&lt;/tbody&gt;&lt;/table&gt;
 ```
 
 ### 9. 카카오 스토어 등록
