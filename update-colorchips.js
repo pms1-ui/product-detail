@@ -20,7 +20,7 @@ const colorMap = {
   LBE: '#e8d8c4',
   LBL: '#8ab8e0',
   LEM: '#f0e040',
-  LGN: '#80c870',
+  LGN: '#d0e3c7',
   LGY: '#bbbbbb',
   LIM: '#b8e040',
   LKH: '#9a9a6a',
