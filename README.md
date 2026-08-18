@@ -77,15 +77,16 @@
 │
 ├── 03_output/
 │   ├── 260806/
-│   │   ├── kakao_final_260806.html
-│   │   ├── 01_main_visual.jpg
-│   │   ├── 02_kakao_channel.jpg
-│   │   └── cards/                 상품 카드 이미지
-│   ├── 260824/                    ← 이번 회차 산출물
-│   │   ├── kakao_final_260824.html
-│   │   ├── 01_main_visual.jpg
-│   │   ├── 02_kakao_channel.jpg
-│   │   └── cards/
+│   │   ├── before_upload/             ★ 이미지화 전 (Puppeteer 캡처 소스)
+│   │   │   ├── 작업용_260806.html       작업용 html 스냅샷
+│   │   │   ├── 01_main_visual.jpg       캡처된 상단 이미지
+│   │   │   ├── 02_kakao_channel.jpg     캡처된 채널 버튼 이미지
+│   │   │   └── cards/                   캡처된 상품 카드 이미지
+│   │   └── kakao_upload/              ★ 이미지화 후 (카카오 편집기 붙여넣기용)
+│   │       └── kakao_final_260806.html  서버 URL 조합 최종 html
+│   ├── 260824/                        ← 이번 회차 산출물
+│   │   ├── before_upload/
+│   │   └── kakao_upload/
 │   └── (YYMMDD)/
 │
 ├── README.md
@@ -125,9 +126,12 @@
 
 Kiro에게 엑셀 기준으로 `작업용.html`의 가격을 일괄 업데이트 요청합니다.
 
-### Step 5. 이미지 캡처 → `03_output/YYMMDD/`
+### Step 5. 이미지 캡처 → `03_output/YYMMDD/before_upload/`
 
 Puppeteer로 `작업용.html`의 상단 영역 + 상품 카드를 각각 JPG로 캡처합니다.
+- `작업용_YYMMDD.html` — 캡처 시점 소스 스냅샷
+- `01_main_visual.jpg`, `02_kakao_channel.jpg`
+- `cards/01.jpg ~ cards/N.jpg`
 
 ### Step 6. 서버 업로드
 
@@ -139,7 +143,7 @@ Puppeteer로 `작업용.html`의 상단 영역 + 상품 카드를 각각 JPG로 
 
 ### Step 7. 카카오 스토어 등록
 
-`03_output/YYMMDD/kakao_final_YYMMDD.html` 내용을
+`03_output/YYMMDD/kakao_upload/kakao_final_YYMMDD.html` 내용을
 카카오 스토어 상품상세 HTML 편집기에 붙여넣기.
 **모바일 미리보기 필수 확인.**
 
@@ -161,7 +165,7 @@ Puppeteer로 `작업용.html`의 상단 영역 + 상품 카드를 각각 JPG로 
 2. 고정 px 너비 사용 금지 — 이미지 기반이면 모바일 자동 스케일
 3. 톡채널 버튼에 `<a href="플친URL">` 링크 필수
 4. 구성 내 양말 등 특정 품목은 혜택가 없이 톡딜가만 노출 (매 회차 확인)
-5. 최종 파일명 규칙: `kakao_final_YYMMDD.html`
+5. 최종 파일명 규칙: `kakao_upload/kakao_final_YYMMDD.html`
 
 ---
 
