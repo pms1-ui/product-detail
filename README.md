@@ -31,7 +31,7 @@
    - "02_source/YYMMDD/작업용.html 이 있나요? 없으면 이전 날짜 것을 복사해 드릴까요?"
 
 6. **공용 에셋 확인**
-   - main-bg.png, outdoor-logo.png, talkdeal-logo.png, x-separator.png 가 해당 날짜 폴더에 있는지 확인
+   - `02_source/` 루트에 main-bg.png, outdoor-logo.png, talkdeal-logo.png, x-separator.png, 02_kakao_channel.jpg 있는지 확인 (공용이라 날짜 폴더 안에 넣을 필요 없음)
 
 7. **특이사항 확인**
    - "이번 회차에 새로 추가/제외된 상품이 있나요?"
@@ -63,16 +63,19 @@
 │   └── (YYMMDD)/                  회차별 폴더 추가
 │
 ├── 02_source/
+│   ├── main-bg.png              ★ 공용 에셋 (회차 무관)
+│   ├── outdoor-logo.png         ★ 공용 에셋
+│   ├── talkdeal-logo.png        ★ 공용 에셋
+│   ├── x-separator.png          ★ 공용 에셋
+│   ├── 02_kakao_channel.jpg     ★ 공용 에셋 (톡채널 버튼, 항상 동일)
 │   ├── 260806/
 │   │   ├── 작업용.html
 │   │   ├── html/                  상품별 상세 HTML
-│   │   ├── image/                 상품 이미지
-│   │   └── (에셋 png 파일들)
+│   │   └── image/                 상품 이미지
 │   ├── 260824/                    ← 이번 회차 작업 폴더
 │   │   ├── 작업용.html            (이전 회차에서 복사해올 것)
 │   │   ├── html/
-│   │   ├── image/
-│   │   └── (에셋 png 파일들)
+│   │   └── image/
 │   └── (YYMMDD)/
 │
 ├── 03_output/
