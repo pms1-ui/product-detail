@@ -106,7 +106,7 @@ function generateCard(item) {
   }
 
   return `<td style="width:445px; padding:4px; vertical-align:top;">
-<a href="https://img.childy.kr/img/outdoor2006/promotion/2609_kakaotalk_deal/kakao_detail/${item.seq}_${item.model}.html" style="text-decoration:none; color:inherit;">
+<a href="https://img.childy.kr/img/outdoor2026/promotion/2609_kakaotalk_deal/kakao_detail/${item.seq}_${item.model}.html" style="text-decoration:none; color:inherit;">
 <div style="width:100%; background:#fff; border-radius:20px; overflow:hidden; border:1px solid #e5e7eb;">
 <div style="background:#1e3a8a; padding:26px 0; text-align:center;">
 <span style="font-family:Pretendard,sans-serif; font-size:36px; font-weight:800; color:#fff;">구성 ${seq}</span>

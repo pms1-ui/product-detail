@@ -151,7 +151,7 @@ Puppeteer로 `작업용.html`의 상단 영역 + 상품 카드를 각각 JPG로 
 
 ### Step 6. 서버 업로드
 
-베이스 URL: `https://img.childy.kr/img/outdoor2006/promotion/`
+베이스 URL: `https://img.childy.kr/img/outdoor2026/promotion/`
 회차별 폴더: `YYMM_kakaotalk_deal/` (예: `2609_kakaotalk_deal/`)
 
 | 용도 | 서버 하위 경로 | 파일명 규칙 |
