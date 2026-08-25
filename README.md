@@ -151,11 +151,14 @@ Puppeteer로 `작업용.html`의 상단 영역 + 상품 카드를 각각 JPG로 
 
 ### Step 6. 서버 업로드
 
-| 용도 | 서버 경로 |
-|------|-----------|
-| 상단 프로모 이미지 | `img/outdoor2026/promotion/detail_image/` |
-| 상품 카드 이미지 | `img/outdoor2026/promotion/cards/` |
-| 상품 상세 HTML | `img/outdoor2026/promotion/kakao_detail/` |
+베이스 URL: `https://img.childy.kr/img/outdoor2006/promotion/`
+회차별 폴더: `YYMM_kakaotalk_deal/` (예: `2609_kakaotalk_deal/`)
+
+| 용도 | 서버 하위 경로 | 파일명 규칙 |
+|------|----------------|-------------|
+| 상단 공통 이미지 + 상품 상세 이미지 | `YYMM_kakaotalk_deal/detail_image/` | 01_main_visual.jpg, 02_kakao_channel.jpg, {순서}_{모델코드}.jpg |
+| 상품 카드 이미지 | `YYMM_kakaotalk_deal/cards/` | 01.jpg ~ N.jpg |
+| 상품 상세 HTML | `YYMM_kakaotalk_deal/kakao_detail/` | {순서}_{모델코드}.html |
 
 ### Step 7. 카카오 스토어 등록
 
