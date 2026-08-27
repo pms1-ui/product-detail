@@ -3,9 +3,10 @@ import { resolve, extname } from 'path';
 import { writeFileSync, readdirSync } from 'fs';
 
 // === 엑셀 파싱 ===
-const wb = XLSX.readFile(resolve('01_data/260903/260903_data.xlsx'));
+const wb = XLSX.readFile(resolve('_src/260903/data/260903_data_n.xlsx'));
 const ws = wb.Sheets[wb.SheetNames[0]];
 const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
+// 헤더: 순서(0), 년도(1), 시즌(2), 모델번호(3), 모델_컬러(4), 컬러코드(5), 품목명(6), 택가(7), 톡딜가(8), 혜택가(9), 최종할인율(10)
 
 // 구성별 그룹핑
 const groups = {};
@@ -17,19 +18,18 @@ for (let i = 1; i < rows.length; i++) {
     groups[seq] = {
       seq,
       model: r[3],
-      name: r[5],
-      tagPrice: r[6],
-      dealPrice: r[7],
-      benefitPrice: r[8],
-      discountRate: r[9],
+      name: r[6],
+      tagPrice: r[7],
+      dealPrice: r[8],
+      benefitPrice: r[9],
+      discountRate: r[10],
       colors: []
     };
   }
-  const fullCode = r[4] || '';
-  const colorCode = fullCode.split('_').pop();
+  const colorCode = r[5] || '';
   groups[seq].colors.push(colorCode);
 }
-const items = Object.values(groups);
+const items = Object.values(groups).sort((a, b) => a.seq - b.seq);
 
 // === 컬러코드 → HEX 매핑 (컬러칩용) ===
 const COLOR_MAP = {
@@ -38,7 +38,7 @@ const COLOR_MAP = {
   CRE: '#f5f0e8', DBE: '#B58F64', DGN: '#2d5a3a', DGY: '#555555',
   DNY: '#1a2a4a', GRN: '#3a8a3a', GRY: '#999999', IVY: '#f5f0e0',
   KHA: '#6b6b40', LBE: '#e8d8c4', LBL: '#8ab8e0', LEM: '#f0e040',
-  LGN: '#80c870', LGY: '#bbbbbb', LIM: '#b8e040', LKH: '#9a9a6a',
+  LGN: '#EEF2D5', LGY: '#bbbbbb', LIM: '#E6F2AC', LKH: '#9a9a6a',
   LPK: '#f5b0c0', LPU: '#c8a0d8', MIN: '#7ecbb8', MLG: '#c8c8c8',
   MUS: '#c8a030', MWH: '#f0ebe5', NVY: '#1a2050', OLI: '#6a7040',
   ORG: '#e87030', OTM: '#d8c0a0', OWH: '#fafaf5', PNK: '#e890a8',
@@ -46,11 +46,16 @@ const COLOR_MAP = {
   YEL: '#f0d020'
 };
 // 밝은 색상 (border 필요)
-const LIGHT_COLORS = new Set(['CRE', 'IVY', 'LBE', 'MWH', 'OWH', 'WHT']);
+const LIGHT_COLORS = new Set(['CRE', 'IVY', 'LBE', 'LGN', 'LIM', 'MWH', 'OWH', 'WHT']);
 
 // === 이미지 파일 매핑 ===
-const imageDir = resolve('02_source/260903/image');
-const imageFiles = readdirSync(imageDir).filter(f => !f.startsWith('.') && f !== '사은품');
+const imageDir = resolve('_src/260903/image');
+let imageFiles = [];
+try {
+  imageFiles = readdirSync(imageDir).filter(f => !f.startsWith('.') && f !== '사은품');
+} catch(e) {
+  console.log('⚠️ 이미지 폴더 없음, 이미지 없이 생성합니다.');
+}
 
 // 이미지 파일을 순서번호로 매핑
 function findImages(seq) {
@@ -78,11 +83,13 @@ function generateCard(item) {
   
   // OD263 신상품 마크
   const isNew = item.model.startsWith('OD263');
-  const newBadge = isNew ? `<div style="position:absolute; top:10px; left:10px; background:#e80000; color:#fff; font-size:16px; font-weight:800; padding:5px 12px; border-radius:6px; z-index:2;">NEW</div>` : '';
+  const newBadge = isNew ? `<div style="position:absolute; top:10px; left:10px; background:#FF8A00; color:#fff; font-size:20px; font-weight:800; padding:7px 14px; border-radius:6px; z-index:2;">NEW</div>` : '';
   
   // 컬러칩 생성
   const colorChips = item.colors.map(code => {
-    const hex = COLOR_MAP[code] || '#cccccc';
+    let hex = COLOR_MAP[code] || '#cccccc';
+    // 88번 BLU만 별도 hex 적용
+    if (item.seq === 88 && code === 'BLU') hex = '#1E3440';
     const border = LIGHT_COLORS.has(code) ? ' border:1px solid #ddd;' : '';
     return `<div style="width:18px; height:18px; border-radius:50%; background:${hex};${border}"></div>`;
   }).join('\n');
@@ -139,7 +146,7 @@ for (let i = 0; i < items.length; i += 2) {
 // === 상품 카드 영역만 생성하여 기존 작업용.html의 카드 부분 교체 ===
 import { readFileSync } from 'fs';
 
-const existingHtml = readFileSync(resolve('02_source/260903/작업용.html'), 'utf-8');
+const existingHtml = readFileSync(resolve('_src/260903/작업용.html'), 'utf-8');
 
 // 상품 리스트 테이블 부분 찾아서 교체
 const tableStart = existingHtml.indexOf('<!-- ===== 상품 리스트');
@@ -160,6 +167,6 @@ ${cardsHtml}
 </center>
 `;
 
-writeFileSync(resolve('02_source/260903/작업용.html'), before + newTable, 'utf-8');
+writeFileSync(resolve('_src/260903/작업용.html'), before + newTable, 'utf-8');
 console.log(`✅ 260903 작업용.html 카드 영역 재생성 완료 (${items.length}개 구성, OD263 NEW 마크 적용)`);
 
