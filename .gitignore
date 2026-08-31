@@ -13,10 +13,13 @@ node_modules/
 *.tmp
 
 # Images (served from external CDN, not git)
-_src/**/*.jpg
-_src/**/*.png
-_src/**/image/
-_src/**/before_upload/
+_작업소스/**/*.jpg
+_작업소스/**/*.png
+_작업소스/**/상품이미지/
+_작업소스/**/before_upload/
+
+# Backup folder (잔재 백업, git 제외)
+_백업/
 
 # Excel lock files
 ~$*.xlsx
