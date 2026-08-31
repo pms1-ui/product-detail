@@ -21,5 +21,6 @@ _작업소스/**/before_upload/
 # Backup folder (잔재 백업, git 제외)
 _백업/
 
-# Excel lock files
+# Excel (원본 데이터, 원칙상 저장소에 두지 않음 - source of truth는 작업용.html)
+*.xlsx
 ~$*.xlsx
