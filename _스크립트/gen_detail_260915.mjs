@@ -1,6 +1,6 @@
 // 260911 상세 HTML 재생성 (새 엑셀 상품데이터_260915.xlsx 기준, 23개 구성)
-// 출력: img/outdoor2026/promotion/2609_2_kakaotalk_deal/kakao_detail/{순서}_{품번}.html
-// 상세 이미지: S3 detail_image/{순서}_{품번}.jpg (서버에서 재사용/피그마 업로드)
+// 출력: _작업소스/260911/상품상세html/{순서}_{품번}.html (여기서 만들어 S3에 업로드)
+// 상세 이미지: S3 detail_image/{순서}_{품번}.jpg (피그마 작업물, 상세이미지/ 폴더에서 업로드)
 // 컬럼: 순서0 품번1 모델_컬러2 색상3 복종4 품명5 택가6 톡딜가7 최종가8 할인율9 비고10 썸네일11
 import XLSX from 'xlsx';
 import { resolve } from 'path';
@@ -8,7 +8,7 @@ import { writeFileSync, mkdirSync, existsSync, readdirSync, unlinkSync } from 'f
 
 const SERVER = '2609_2_kakaotalk_deal';
 const S3 = `https://aws-childy-image.s3.ap-northeast-2.amazonaws.com/img/outdoor2026/promotion/${SERVER}`;
-const OUT = resolve(`img/outdoor2026/promotion/${SERVER}/kakao_detail`);
+const OUT = resolve('_작업소스/260911/상품상세html'); // 엑셀기반 품번별 상세 html (여기서 만들고 S3 업로드)
 mkdirSync(OUT, { recursive: true });
 
 // 기존 상세 HTML 정리 (구성이 전면 재배치되었으므로 초기화)
@@ -18,7 +18,7 @@ if (existsSync(OUT)) {
   }
 }
 
-const wb = XLSX.readFile(resolve('_작업소스/260911/데이터/상품데이터_260915.xlsx'));
+const wb = XLSX.readFile(resolve('_작업소스/260911/기초데이터/상품데이터_260915.xlsx'));
 const rows = XLSX.utils.sheet_to_json(wb.Sheets['상품리스트'], { header: 1, defval: '' }).slice(1).filter(r => r.some(c => c !== ''));
 
 // 구성 대표(품번별 첫 행)

@@ -11,7 +11,7 @@ const S3 = `https://img.childy.kr/img/outdoor2026/promotion/${SERVER}`;
 const SRC = '_작업소스/260911';
 
 // === 엑셀 파싱 ===
-const wb = XLSX.readFile(resolve(SRC, '데이터/상품데이터_260915.xlsx'));
+const wb = XLSX.readFile(resolve(SRC, '기초데이터/상품데이터_260915.xlsx'));
 const ws = wb.Sheets['상품리스트'];
 const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' }).slice(1).filter(r => r.some(c => c !== ''));
 
@@ -55,7 +55,8 @@ const missing = [...allColors].filter(c => !COLOR_MAP[c]);
 if (missing.length) console.log('⚠️ 컬러맵 누락:', missing.join(', '));
 
 // === 이미지 매핑 ===
-const imageDir = resolve(SRC, '상품이미지');
+const IMGDIR = '누끼컷&사은품'; // 카드/사은품 누끼컷 소스 폴더
+const imageDir = resolve(SRC, IMGDIR);
 const imageFiles = readdirSync(imageDir).filter(f => !f.startsWith('.') && /\.(png|jpg)$/i.test(f) && f !== 'recommend.png');
 function findImages(seq) {
   const main = imageFiles.find(f => new RegExp(`^${seq}\\.`).test(f));
@@ -72,7 +73,7 @@ function card(item) {
   const colorStr = item.colors.join(', ');
 
   const recBadge = item.bigo === '추천'
-    ? `<img src="상품이미지/recommend.png" style="position:absolute; top:10px; left:10px; width:64px; height:64px; z-index:3; object-fit:contain;">`
+    ? `<img src="${IMGDIR}/recommend.png" style="position:absolute; top:10px; left:10px; width:64px; height:64px; z-index:3; object-fit:contain;">`
     : '';
 
   const chips = item.colors.map(code => {
@@ -84,10 +85,10 @@ function card(item) {
 
   let imgHtml = '';
   if (main && sub) {
-    imgHtml = `<img src="상품이미지/${main}" style="max-width:48%; max-height:100%; object-fit:contain;">
-<img src="상품이미지/${sub}" style="max-width:48%; max-height:100%; object-fit:contain;">`;
+    imgHtml = `<img src="${IMGDIR}/${main}" style="max-width:48%; max-height:100%; object-fit:contain;">
+<img src="${IMGDIR}/${sub}" style="max-width:48%; max-height:100%; object-fit:contain;">`;
   } else if (main) {
-    imgHtml = `<img src="상품이미지/${main}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+    imgHtml = `<img src="${IMGDIR}/${main}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
   }
 
   let price = `<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;"><div><span style="display:inline-block; background:#9ca3af; color:#fff; font-size:18px; font-weight:700; padding:6px 12px; border-radius:6px; margin-right:10px; vertical-align:middle;">정상가</span><span style="font-family:Pretendard,sans-serif; font-size:26px; color:#8e939d; text-decoration:line-through; vertical-align:middle;">${won(item.tag)}</span></div><span style="font-family:Pretendard,sans-serif; font-size:40px; font-weight:800; color:#e80000;">${dr}%</span></div>`;

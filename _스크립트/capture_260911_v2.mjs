@@ -5,7 +5,7 @@ import { mkdirSync, existsSync, readdirSync, unlinkSync, statSync } from 'fs';
 
 const BASE = resolve('.');
 const SOURCE = resolve(BASE, '_작업소스/260911');
-const OUTPUT = resolve(BASE, '_작업소스/260911/캡처결과');
+const OUTPUT = resolve(BASE, '_작업소스/260911/메인&카드 캡처결과');
 const CARDS_DIR = resolve(OUTPUT, 'cards');
 
 [CARDS_DIR].forEach(d => { if (!existsSync(d)) mkdirSync(d, { recursive: true }); });

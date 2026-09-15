@@ -9,7 +9,7 @@ const SERVER = '2609_2_kakaotalk_deal';
 const BASE = `https://aws-childy-image.s3.ap-northeast-2.amazonaws.com/img/outdoor2026/promotion/${SERVER}`;
 const SRC = '_작업소스/260911';
 
-const wb = XLSX.readFile(resolve(SRC, '데이터/상품데이터_260915.xlsx'));
+const wb = XLSX.readFile(resolve(SRC, '기초데이터/상품데이터_260915.xlsx'));
 const rows = XLSX.utils.sheet_to_json(wb.Sheets['상품리스트'], { header: 1, defval: '' }).slice(1).filter(r => r.some(c => c !== ''));
 
 // 품번별 대표(첫 행) → 순서/품번
@@ -51,7 +51,7 @@ writeFileSync(resolve(SRC, 'kakao_final_260911.html'), html, 'utf-8');
 console.log(`✅ kakao_final_260911 재생성 완료 (${items.length}개 구성)`);
 
 // === 로컬 확인용 프리뷰 (로컬 캡처 이미지 참조, 상세링크는 S3) ===
-const IMG = '../_작업소스/260911/캡처결과';
+const IMG = '../_작업소스/260911/메인&카드 캡처결과';
 const st = 'style="max-width:100%; width:100%; display:block;"';
 let pv = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
