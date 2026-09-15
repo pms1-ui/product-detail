@@ -79,3 +79,31 @@ for (let i = 0; i < items.length; i += 2) {
 pv += `</tbody></table>\n</div>\n</body></html>\n`;
 writeFileSync(resolve('미리보기/260911_로컬확인.html'), pv, 'utf-8');
 console.log(`✅ 미리보기/260911_로컬확인.html 재생성 완료`);
+
+// === 네틀리파이 배포용 온라인 미리보기 (S3 이미지 참조) ===
+let ol = `<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>260911 카카오톡딜</title></head>
+<body style="margin:0; padding:0; background:#fff;">
+<div style="max-width:900px; margin:0 auto;">
+<p align="center"><img src="${BASE}/01_main_visual.jpg" ${st}></p>
+<p align="center"><a href="https://pf.kakao.com/_nfxkLT"><img src="${BASE}/02_kakao_channel.jpg" ${st}></a></p>
+<p align="center"><img src="${BASE}/03_benefits.jpg" ${st}></p>
+<p align="center"><img src="${BASE}/04_tokdeal_benefits.jpg" ${st}></p>
+<table style="width:100%; border-spacing:0; border-collapse:collapse;"><tbody>
+`;
+for (let i = 0; i < items.length; i += 2) {
+  const l = items[i];
+  const lNum = String(l.seq).padStart(2, '0');
+  const lCell = `<td style="width:50%; vertical-align:top; padding:2px;"><a href="${BASE}/kakao_detail/${l.seq}_${l.code}.html"><img src="${BASE}/card/${lNum}.jpg" ${st}></a></td>`;
+  let rCell = '<td style="width:50%;"></td>';
+  if (items[i + 1]) {
+    const r = items[i + 1];
+    const rNum = String(r.seq).padStart(2, '0');
+    rCell = `<td style="width:50%; vertical-align:top; padding:2px;"><a href="${BASE}/kakao_detail/${r.seq}_${r.code}.html"><img src="${BASE}/card/${rNum}.jpg" ${st}></a></td>`;
+  }
+  ol += `<tr>${lCell}${rCell}</tr>\n`;
+}
+ol += `</tbody></table>\n</div>\n</body></html>\n`;
+writeFileSync(resolve('미리보기/260911_카카오톡딜.html'), ol, 'utf-8');
+console.log(`✅ 미리보기/260911_카카오톡딜.html 재생성 완료 (네틀리파이 배포용)`);
